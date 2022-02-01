@@ -16,6 +16,10 @@ const userSchema = new Schema(
          type: String,
          required: true,
       },
+      role: {
+         type: String,
+         default: "Admin",
+      },
       profile_picture: { type: String },
       auth: {
          local: {

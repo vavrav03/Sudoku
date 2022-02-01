@@ -27,6 +27,7 @@ Strategies.local = new LocalStrategy(
          if (!user.isPasswordValid(password)) {
             return done(null, false, { message: "Incorrect email or password" });
          }
+         done(null, user);
       });
    }
 );
@@ -39,6 +40,7 @@ Strategies.google = new GoogleStrategy(
       proxy: true,
    },
    (accessToken, refreshToken, profile, done) => {
+      console.log(profile);
       const { id, emails, name, photos } = profile;
       const email = emails[0].value;
       const { givenName, familyName } = name;
@@ -54,7 +56,6 @@ Strategies.google = new GoogleStrategy(
                currentUser.save();
             }
             done(null, currentUser);
-
          } else {
             const newUser = new User({
                email: email,
@@ -103,7 +104,8 @@ Strategies.facebook = new FacebookStrategy(
                currentUser.profile_picture = profilePicture;
                currentUser.save();
             }
-            done(null, currentUser)
+            
+            done(null, currentUser);
          } else {
             const newUser = new User({
                email: email,
@@ -122,7 +124,7 @@ Strategies.facebook = new FacebookStrategy(
                if (err) {
                   throw err;
                }
-               done(null, newUser)
+               done(null, newUser);
             });
          }
       });
