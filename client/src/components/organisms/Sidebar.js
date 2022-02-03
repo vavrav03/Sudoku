@@ -12,20 +12,16 @@ import { connect } from 'react-redux';
 import { notImplementedYet } from 'redux/actions/error';
 import { attemptLogout } from 'redux/actions/auth';
 
-import classicEasyImage from 'assets/img/icons/classicEasy.png';
-import classicNormalImage from 'assets/img/icons/classicNormal.png';
-import classicHardImage from 'assets/img/icons/classicHard.png';
-import size2x2Image from 'assets/img/icons/size2x2.png';
-import size2x3Image from 'assets/img/icons/size2x3.png';
-import size4x4Image from 'assets/img/icons/size4x4.png';
-import diagonalImage from 'assets/img/icons/diagonal.png';
-import jigsawImage from 'assets/img/icons/jigsaw.png';
-import samuraiImage from 'assets/img/icons/samurai.png';
-import samuraiMixed from 'assets/img/icons/samuraiMixed.png';
+import { Link } from 'react-router-dom';
+import { ClassicEasySudokuIcon, ClassicHardSudokuIcon, ClassicNormalSudokuIcon, DiagonalSudokuIcon, JigsawSudokuIcon, SamuraiMixedSudokuIcon, SamuraiSudokuIcon, Size2x2SudokuIcon, Size2x3SudokuIcon, Size4x4SudokuIcon } from 'components/atoms/Icons';
 
-const SidebarItem = ({ id, name, image, height = 20, width = 20 }) => {
+const standardIconSize = 23;
+
+const SidebarItem = ({ id, name, imageIcon }) => {
    return (
       <ListItem
+         component={Link}
+         to={`/game/${id}`}
          onClick={() => {
             /*TODO dispatch(name)*/
          }}
@@ -33,9 +29,7 @@ const SidebarItem = ({ id, name, image, height = 20, width = 20 }) => {
          key={id}
       >
          <ListItemIcon className='sidebar-list-item'>
-            <div class='icon-container'>
-               <img height={height} width={width} src={image}></img>
-            </div>
+            <div class='icon-container'>{imageIcon}</div>
          </ListItemIcon>
          <ListItemText primary={name} />
       </ListItem>
@@ -57,18 +51,19 @@ function Sidebar({ open, closeSidebar, showNotImplementedYet, attemptLogout }) {
                <ListSubheader>KLASIKA</ListSubheader>
                <SidebarItem
                   id='classicEasy'
-                  name='Jednoduché'jigsawImage
-                  image={classicEasyImage}
+                  name='Jednoduché'
+                  jigsawImage
+                  imageIcon={<ClassicEasySudokuIcon width={standardIconSize} height={standardIconSize} />}
                ></SidebarItem>
                <SidebarItem
-                  id='classicMedium'
+                  id='classicNormal'
                   name='Střední'
-                  image={classicNormalImage}
+                  imageIcon={<ClassicNormalSudokuIcon width={standardIconSize} height={standardIconSize} />}
                ></SidebarItem>
                <SidebarItem
                   id='classicHard'
                   name='Těžké'
-                  image={classicHardImage}
+                  imageIcon={<ClassicHardSudokuIcon width={standardIconSize} height={standardIconSize} />}
                ></SidebarItem>
             </List>
             <Divider />
@@ -77,23 +72,17 @@ function Sidebar({ open, closeSidebar, showNotImplementedYet, attemptLogout }) {
                <SidebarItem
                   id='size2x2'
                   name='2x2'
-                  image={size2x2Image}
-                  height={13}
-                  width={13}
+                  imageIcon={<Size2x2SudokuIcon width={standardIconSize*2/3} height={standardIconSize*2/3} />}
                ></SidebarItem>
                <SidebarItem
                   id='size2x3'
                   name='2x3'
-                  image={size2x3Image}
-                  height={13}
-                  width={20}
+                  imageIcon={<Size2x3SudokuIcon width={standardIconSize} height={standardIconSize*2/3} />}
                ></SidebarItem>
                <SidebarItem
                   id='size4x4'
                   name='4x4'
-                  image={size4x4Image}
-                  height={26}
-                  width={26}
+                  imageIcon={<Size4x4SudokuIcon width={standardIconSize*1.3} height={standardIconSize*1.3} />}
                ></SidebarItem>
             </List>
             <Divider />
@@ -102,22 +91,22 @@ function Sidebar({ open, closeSidebar, showNotImplementedYet, attemptLogout }) {
                <SidebarItem
                   id='diagonal'
                   name='Diagonální'
-                  image={diagonalImage}
+                  imageIcon={<DiagonalSudokuIcon width={standardIconSize} height={standardIconSize} />}
                ></SidebarItem>
                <SidebarItem
                   id='jigsaw'
                   name='Jigsaw'
-                  image={jigsawImage}
+                  imageIcon={<JigsawSudokuIcon width={standardIconSize} height={standardIconSize} />}
                ></SidebarItem>
                <SidebarItem
                   id='samurai'
                   name='Samurai'
-                  image={samuraiImage}
+                  imageIcon={<SamuraiSudokuIcon width={standardIconSize} height={standardIconSize} />}
                ></SidebarItem>
                <SidebarItem
                   id='samuraiMixed'
                   name='Samurai kombinace'
-                  image={samuraiMixed}
+                  imageIcon={<SamuraiMixedSudokuIcon width={standardIconSize} height={standardIconSize} />}
                ></SidebarItem>
             </List>
          </div>

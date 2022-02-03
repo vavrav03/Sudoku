@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import { LockSocialIcon } from "components/atoms/SocialIcon";
+import { LockIcon } from "components/atoms/Icons";
 import { PropTypes } from "prop-types";
 
 import React from "react";
@@ -7,7 +7,7 @@ import React from "react";
 function SignFormHeadding({ text }) {
    return (
       <div className={"sign-form-headding"}>
-         <LockSocialIcon />
+         <LockIcon />
          <Typography variant="h5">{text}</Typography>
       </div>
    );

@@ -1,10 +1,10 @@
 import React from "react";
 
-function Separator() {
+function Separator({middleText}) {
    return (
       <div className="center-children">
          <div className="separator-border-line" />
-         <span className="separator-content">Or</span>
+         <span className="separator-content">{middleText}</span>
          <div className="separator-border-line" />
       </div>
    );

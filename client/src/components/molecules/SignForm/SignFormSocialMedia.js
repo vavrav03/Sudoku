@@ -4,7 +4,7 @@ import {
    GoogleSocialIcon,
    LinkedInSocialIcon,
    TwitterSocialIcon,
-} from "components/atoms/SocialIcon";
+} from "components/atoms/Icons";
 import { notImplementedYet } from "redux/actions/error";
 import { connect } from "react-redux";
 
@@ -20,9 +20,6 @@ function SocialMedia({showNotImplementedYet}) {
          <a href="/api/auth/google">
             <GoogleSocialIcon />
          </a>
-         <div onClick={showNotImplementedYet}>
-            <LinkedInSocialIcon />
-         </div>
       </div>
    );
 }

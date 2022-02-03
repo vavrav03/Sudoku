@@ -4,9 +4,10 @@ import { connect, Provider } from "react-redux";
 import { ConnectedRouter } from "connected-react-router";
 import { Switch, Route } from "react-router";
 import Notifications from "react-notification-system-redux";
-import { HomePage } from "components/pages/HomePage";
-import { SignInPage } from "components/pages/SignInPage";
-import { SignUpPage } from "components/pages/SignUpPage";
+import HomePage from "components/pages/HomePage";
+import SignInPage from "components/pages/SignInPage";
+import SignUpPage from "components/pages/SignUpPage";
+import ClassicEasy from "components/pages/games/ClassicEasy";
 
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import blue from "@material-ui/core/colors/blue";
@@ -37,6 +38,16 @@ function App({ history, store, notifications, isLoading, email, attemptUpdateUse
                   <div className="main">
                      <Switch>
                         <Route exact path="/" component={HomePage} />
+                        <Route exact path="/game/classicEasy" component={ClassicEasy}></Route>
+                        {/* <Route exact path="/game/classicMedium" component={}></Route>
+                        <Route exact path="/game/classicHard" component={}></Route>
+                        <Route exact path="/game/size2x2" component={}></Route>
+                        <Route exact path="/game/size2x3" component={}></Route>
+                        <Route exact path="/game/size4x4" component={}></Route>
+                        <Route exact path="/game/diagonal" component={}></Route>
+                        <Route exact path="/game/jigsaw" component={}></Route>
+                        <Route exact path="/game/samurai" component={}></Route>
+                        <Route exact path="/game/samuraiMixed" component={}></Route> */}
                         <Route path="/login" component={SignInPage} />
                         <Route path="/register" component={SignUpPage} />
                      </Switch>
