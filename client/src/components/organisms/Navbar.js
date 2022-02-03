@@ -18,13 +18,15 @@ function Navbar({ showNotImplementedYet, isSidebarOpen, menuButtonAction }) {
             <Grid container justify="space-between">
                <div className={"center-children"}>
                   {!isSidebarOpen ? (
+                     
                      <IconButton
                         edge="start"
                         color="inherit"
                         aria-label="open drawer"
                         onClick={menuButtonAction}
-                     >
+                     ><>
                         <MenuIcon />
+                        Hry</>
                      </IconButton>
                   ) : null}
                </div>
@@ -42,9 +44,7 @@ function Navbar({ showNotImplementedYet, isSidebarOpen, menuButtonAction }) {
                   <UserNavbarCard
                   // firstName={"Vladimír"}
                   // lastName={"Vávra"}
-                  // role={"admin"}
                   // imageUrl={"https://picsum.photos/200"}
-                  // status={"online"}
                   />
                </div>
             </Grid>

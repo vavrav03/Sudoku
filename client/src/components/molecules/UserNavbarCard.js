@@ -76,9 +76,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
    return {
-      attemptSetOnline: () => dispatch(attemptSetOnline()),
-      attemptSetIdle: () => dispatch(attemptSetIdle()),
-      attemptSetOffline: () => dispatch(attemptSetOffline()),
       showNotImplementedYet: () => dispatch(notImplementedYet()),
       attemptLogout: () => dispatch(attemptLogout()),
    };
