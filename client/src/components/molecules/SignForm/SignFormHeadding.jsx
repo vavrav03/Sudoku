@@ -1,4 +1,4 @@
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import { LockIcon } from "components/atoms/Icons";
 import { PropTypes } from "prop-types";
 

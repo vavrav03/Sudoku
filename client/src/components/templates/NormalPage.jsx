@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Hidden from "@material-ui/core/Hidden";
-import Navbar from "components/organisms/Navbar";
+import Hidden from "@mui/material/Hidden";
+import Navbar from "components/organisms/Navbar/Navbar";
 import Sidebar from "components/organisms/Sidebar";
 
 function NormalPage(props) {

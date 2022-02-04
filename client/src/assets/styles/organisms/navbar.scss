@@ -1,59 +1,100 @@
 .navbar {
    height: $navbar-height;
+   background-color: $blue-theme-primary;
+   color: white;
+   padding-left: 10px;
+   padding-right: 10px;
+   padding-top: 10px;
+   padding-bottom: 10px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
 
-   & .brand-button {
-      border-radius: 10%;
+   nav {
       display: flex;
-      justify-self: center;
+      justify-content: center;
       align-items: center;
-      font-size: 20px;
-      text-transform: uppercase;
-      font-weight: 600;
+      height: 100%;
 
-      & .brand-icon {
+      .divider {
+         width: 2px;
+         height: 35px;
+         background-color: white;
+         margin-left: 5px;
          margin-right: 5px;
       }
-   }
 
-   .children-margin-left-10 > * {
-      margin-left: 10px;
-   }
-
-   .user-navbar-card {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: nowrap;
-
-      & > button {
-         text-transform: none;
-         color: white;
-      }
-
-      & .user-info-container {
-         margin-right: 10px;
-         text-align: right;
-      }
-
-      & .user-name {
-         font-size: 13px;
-         font-weight: bold;
-      }
-
-      & .user-coins-container {
+      & .nav-item {
+         padding-left: 5px;
+         padding-right: 5px;
          display: flex;
          align-items: center;
-         justify-content: right;
+         height: 100%;
 
-         & .coins-count {
-            margin-right: 2px;
+         text-decoration: none;
+         color: inherit;
+         border-radius: 10%;
+         transition: background-color 200ms;
+
+         &:hover {
+            background-color: rgba(0, 0, 0, 0.04);
          }
       }
    }
 
-   .user-card-menu {
-      & .list-item {
-         width: 35px;
+   & .nav-left {
+      & .brand-button {
+         color: inherit;
+         // display: flex;
+         // justify-self: center;
+         // align-items: center;
+         font-size: 20px;
+         text-transform: uppercase;
+         font-weight: 600;
+
+         & .brand-icon {
+            margin-right: 5px;
+         }
+      }
+   }
+
+   & .nav-right {
+      .user-navbar-card {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         flex-wrap: nowrap;
+
+         & > button {
+            text-transform: none;
+            color: white;
+         }
+
+         & .user-info-container {
+            margin-right: 10px;
+            text-align: right;
+         }
+
+         & .user-name {
+            font-size: 13px;
+            font-weight: bold;
+         }
+
+         & .user-coins-container {
+            display: flex;
+            align-items: center;
+            justify-content: right;
+
+            & .coins-count {
+               margin-right: 2px;
+            }
+         }
+      }
+
+      .user-card-menu {
+         & .list-item {
+            width: 35px;
+         }
       }
    }
 }

@@ -21,7 +21,7 @@ export function Icon({ divClassName, iconClassName }) {
 }
 
 export function ImageIcon({ width, height, image }) {
-   return <img height={height} width={width} src={image}></img>;
+   return <img alt={"nothing important"} height={height} width={width} src={image}></img>;
 }
 
 export function ClassicEasySudokuIcon({ width, height }) {

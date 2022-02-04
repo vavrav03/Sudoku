@@ -8,19 +8,14 @@
       // padding-right: 16px;
    }
 
-   & .sidebar-section {
-      padding-top: 5px;
-      padding-bottom: 5px;
-   }
-
-   & .sidebar-item {
-      padding: 8px 16px;
-   }
-
-   & .sidebar-list-item {
+   & .list-item {
       color: inherit;
       text-decoration: inherit;
       min-width: 35px;
+
+      &.active {
+         background-color: rgba(0, 0, 0, 0.1);
+      }
 
       & .icon-container {
          min-width: 26px;

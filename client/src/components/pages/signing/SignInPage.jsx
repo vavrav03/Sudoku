@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { Checkbox, FormControlLabel, Grid } from '@material-ui/core';
+import { Checkbox, FormControlLabel, Grid, Divider, Typography } from '@mui/material';
 import { SignInButton } from 'components/atoms/Button';
+import { LockIcon } from "components/atoms/Icons";
 import { PasswordFormInput, SignFormInput } from 'components/atoms/Input';
-import { Separator } from 'components/atoms/Separator';
 import { ConnectedSignInFormFooter } from 'components/molecules/SignForm/SignFormFooter';
-import { SignInFormHeadding } from 'components/molecules/SignForm/SignFormHeadding';
 import { ConnectedSocialMedia } from 'components/molecules/SignForm/SignFormSocialMedia';
 
 import { Formik, Form, FastField } from 'formik';
@@ -27,13 +26,16 @@ function SignInPage({ onSubmit }) {
                <Form>
                   <Grid container spacing={3}>
                      <Grid item xs={12}>
-                        <SignInFormHeadding />
+                        <div className={'sign-form-headding'}>
+                           <LockIcon />
+                           <Typography variant='h5'>Welcome back!</Typography>
+                        </div>
                      </Grid>
                      <Grid item xs={12}>
                         <ConnectedSocialMedia />
                      </Grid>
                      <Grid item xs={12}>
-                        <Separator middleText={"or"}/>
+                        <Divider>nebo</Divider>
                      </Grid>
                      <Grid item xs={12}>
                         <FastField name='email'>

@@ -1,17 +1,17 @@
 import React from 'react';
-
-import { Grid } from '@material-ui/core';
+import {  } from "@mui/material";
+import { Grid, Divider, Typography } from '@mui/material';
 import { SignUpButton } from 'components/atoms/Button';
 import { PasswordFormInput, SignFormInput } from 'components/atoms/Input';
-import { Separator } from 'components/atoms/Separator';
 import { SignUpFormFooter } from 'components/molecules/SignForm/SignFormFooter';
-import { SignUpFormHeadding } from 'components/molecules/SignForm/SignFormHeadding';
+import { LockIcon } from "components/atoms/Icons";
 import { ConnectedSocialMedia } from 'components/molecules/SignForm/SignFormSocialMedia';
 
 import { Formik, Form, FastField } from 'formik';
 import * as Yup from 'yup';
 import { attemptRegister } from 'redux/actions/auth';
 import { connect } from 'react-redux';
+
 
 function SignUpPage({ onSubmit }) {
    return (
@@ -42,13 +42,16 @@ function SignUpPage({ onSubmit }) {
                <Form>
                   <Grid container spacing={3}>
                      <Grid item xs={12}>
-                        <SignUpFormHeadding />
+                        <div className={'sign-form-headding'}>
+                           <LockIcon />
+                           <Typography variant='h5'>Create an account</Typography>
+                        </div>
                      </Grid>
                      <Grid item xs={12}>
                         <ConnectedSocialMedia />
                      </Grid>
                      <Grid item xs={12}>
-                        <Separator middleText={"or"}/>
+                        <Divider>nebo</Divider>
                      </Grid>
                      <Grid item container spacing={3}>
                         <Grid item xs={6}>

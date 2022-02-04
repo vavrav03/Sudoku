@@ -1,11 +1,11 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import Button from 'components/atoms/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
-import Avatar from '@material-ui/core/Avatar';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import Avatar from '@mui/material/Avatar';
 import { attemptLogout } from 'redux/actions/auth';
 import { notImplementedYet } from 'redux/actions/error';
 import { connect } from 'react-redux';
@@ -29,7 +29,7 @@ function UserNavbarCard({
       setAnchorEl(null);
    };
    return (
-      <div className='user-navbar-card'>
+      <div className='nav-item user-navbar-card'>
          <Button onClick={handleClick}>
             <div className='user-info-container'>
                <div className='user-name'>{`${fullName}`}</div>
