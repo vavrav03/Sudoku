@@ -27,6 +27,8 @@
       & .nav-item {
          padding-left: 5px;
          padding-right: 5px;
+         margin-left: 3px;
+         margin-right: 3px;
          display: flex;
          align-items: center;
          height: 100%;
@@ -59,7 +61,10 @@
    }
 
    & .nav-right {
-      .user-navbar-card {
+      & .notifications-button {
+         margin-right:5px;
+      }
+      & .user-navbar-card {
          display: flex;
          align-items: center;
          justify-content: center;
@@ -90,11 +95,11 @@
             }
          }
       }
+   }
+}
 
-      .user-card-menu {
-         & .list-item {
-            width: 35px;
-         }
-      }
+.user-card-menu {
+   & .icon {
+      margin-right: 5px;
    }
 }

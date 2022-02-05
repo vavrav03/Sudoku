@@ -32,7 +32,7 @@ const SidebarItem = ({ path, name, imageIcon }) => {
          key={path}
       >
          <ListItemIcon>
-            <div class='icon-container'>{imageIcon}</div>
+            <div className='icon-container'>{imageIcon}</div>
          </ListItemIcon>
          <ListItemText primary={name} />
       </ListItem>
@@ -51,7 +51,7 @@ function Sidebar({ open, closeSidebar }) {
             </header>
             <Divider />
             <List>
-               <ListSubheader>KLASIKA</ListSubheader>
+               <ListSubheader>CLASSIC</ListSubheader>
                <SidebarItem
                   path={games.classic.classicEasy.route}
                   name={games.classic.classicEasy.name}
@@ -85,7 +85,7 @@ function Sidebar({ open, closeSidebar }) {
             </List>
             <Divider />
             <List>
-               <ListSubheader>UPRAVENÉ ROZMĚRY</ListSubheader>
+               <ListSubheader>ADJUSTED SIZE</ListSubheader>
                <SidebarItem
                   path={games.size.size2x2.route}
                   name={games.size.size2x2.name}
@@ -119,7 +119,7 @@ function Sidebar({ open, closeSidebar }) {
             </List>
             <Divider />
             <List>
-               <ListSubheader>JINÉ MÓDY</ListSubheader>
+               <ListSubheader>OTHER MODES</ListSubheader>
                <SidebarItem
                   path={games.other.diagonal.route}
                   name={games.other.diagonal.name}

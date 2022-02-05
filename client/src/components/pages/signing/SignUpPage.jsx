@@ -1,17 +1,16 @@
 import React from 'react';
-import {  } from "@mui/material";
+import {} from '@mui/material';
 import { Grid, Divider, Typography } from '@mui/material';
-import { SignUpButton } from 'components/atoms/Button';
+import { SignButton } from 'components/atoms/Button';
 import { PasswordFormInput, SignFormInput } from 'components/atoms/Input';
 import { SignUpFormFooter } from 'components/molecules/SignForm/SignFormFooter';
-import { LockIcon } from "components/atoms/Icons";
+import { LockIcon } from 'components/atoms/Icons';
 import { ConnectedSocialMedia } from 'components/molecules/SignForm/SignFormSocialMedia';
 
 import { Formik, Form, FastField } from 'formik';
 import * as Yup from 'yup';
 import { attemptRegister } from 'redux/actions/auth';
 import { connect } from 'react-redux';
-
 
 function SignUpPage({ onSubmit }) {
    return (
@@ -44,14 +43,16 @@ function SignUpPage({ onSubmit }) {
                      <Grid item xs={12}>
                         <div className={'sign-form-headding'}>
                            <LockIcon />
-                           <Typography variant='h5'>Create an account</Typography>
+                           <Typography variant='h5'>
+                              Create an account
+                           </Typography>
                         </div>
                      </Grid>
                      <Grid item xs={12}>
                         <ConnectedSocialMedia />
                      </Grid>
                      <Grid item xs={12}>
-                        <Divider>nebo</Divider>
+                        <Divider>or</Divider>
                      </Grid>
                      <Grid item container spacing={3}>
                         <Grid item xs={6}>
@@ -143,7 +144,7 @@ function SignUpPage({ onSubmit }) {
                         </FastField>
                      </Grid>
                      <Grid item xs={12}>
-                        <SignUpButton />
+                        <SignButton text={'Sign up'} />
                      </Grid>
                   </Grid>
                </Form>

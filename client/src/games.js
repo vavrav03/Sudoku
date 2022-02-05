@@ -22,17 +22,13 @@ class Game {
 
 const games = {
    classic: {
-      classicEasy: new Game(
-         routes.classicEasy,
-         'Jednoduché',
-         ClassicEasySudokuIcon
-      ),
+      classicEasy: new Game(routes.classicEasy, 'Easy', ClassicEasySudokuIcon),
       classicNormal: new Game(
          routes.classicNormal,
-         'Střední',
+         'Normal',
          ClassicNormalSudokuIcon
       ),
-      classicHard: new Game(routes.classicHard, 'Těžké', ClassicHardSudokuIcon),
+      classicHard: new Game(routes.classicHard, 'Hard', ClassicHardSudokuIcon),
    },
    size: {
       size2x2: new Game(routes.size2x2, '2x2', Size2x2SudokuIcon),
@@ -40,15 +36,28 @@ const games = {
       size4x4: new Game(routes.size4x4, '4x4', Size4x4SudokuIcon),
    },
    other: {
-      diagonal: new Game(routes.diagonal, 'Diagonální', DiagonalSudokuIcon),
+      diagonal: new Game(routes.diagonal, 'Diagonal', DiagonalSudokuIcon),
       jigsaw: new Game(routes.jigsaw, 'Jigsaw', JigsawSudokuIcon),
       samurai: new Game(routes.samurai, 'Samurai', SamuraiSudokuIcon),
       samuraiMixed: new Game(
          routes.samuraiMixed,
-         'Samurai kombinace',
+         'Samurai combo',
          SamuraiMixedSudokuIcon
       ),
    },
 };
 
+const getOpenedGame = (route) => {
+   for (const gameCategory in games) {
+      const gameCategoryObject = games[gameCategory];
+      for (const game in gameCategoryObject) {
+         const gameObject = gameCategoryObject[game];
+         if (gameObject.route === route) {
+            return gameObject;
+         }
+      }
+   }
+};
+
+export { getOpenedGame };
 export default games;

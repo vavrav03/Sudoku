@@ -1,12 +1,12 @@
 import { logout } from "./auth";
-
 import { error } from "react-notification-system-redux";
-import { toLoginPage } from "./redirect";
+import {push} from 'connected-react-router';
+import routes from 'routes';
 
 export const responseError = (res, errorMessage) => (dispatch) => {
    if (res.status === 401) {
       dispatch(logout());
-      dispatch(toLoginPage());
+      dispatch(push(routes.login));
    }
    dispatch(notificationError("", errorMessage));
 };

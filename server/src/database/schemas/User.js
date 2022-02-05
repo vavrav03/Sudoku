@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const { MongooseAutoIncrementID } = require("mongoose-auto-increment-reworked");
-const bcrypt = require("bcryptjs");
+const mongoose = require('mongoose');
+const { MongooseAutoIncrementID } = require('mongoose-auto-increment-reworked');
+const bcrypt = require('bcryptjs');
 
 const { Schema } = mongoose;
 
@@ -16,9 +16,10 @@ const userSchema = new Schema(
          type: String,
          required: true,
       },
-      role: {
-         type: String,
-         default: "Admin",
+      coinsCount: {
+         type: Number,
+         required: false,
+         default: 0,
       },
       profile_picture: { type: String },
       auth: {
@@ -46,12 +47,12 @@ const userSchema = new Schema(
    { versionKey: false, timestamps: true }
 );
 
-if (process.env.NODE_ENV !== "test") {
-   MongooseAutoIncrementID.initialise("counters");
+if (process.env.NODE_ENV !== 'test') {
+   MongooseAutoIncrementID.initialise('counters');
 
    userSchema.plugin(MongooseAutoIncrementID.plugin, {
-      modelName: "User",
-      field: "user",
+      modelName: 'User',
+      field: 'user',
       incrementBy: 1,
       startAt: 1,
       unique: true,
@@ -60,7 +61,7 @@ if (process.env.NODE_ENV !== "test") {
    });
 }
 
-userSchema.virtual("full_name").get(function () {
+userSchema.virtual('full_name').get(function () {
    if (this.first_name && this.last_name) {
       return `${this.first_name} ${this.last_name}`;
    }
@@ -73,7 +74,7 @@ userSchema.virtual("full_name").get(function () {
    return undefined;
 });
 
-userSchema.virtual("initials").get(function () {
+userSchema.virtual('initials').get(function () {
    return (
       this.first_name &&
       this.last_name &&
@@ -104,9 +105,13 @@ userSchema.methods.hashPassword = function () {
 };
 
 userSchema.methods.toResponseObject = function () {
-   return { ...this.toObject({ virtuals: true }), _id: undefined, password: undefined };
+   return {
+      ...this.toObject({ virtuals: true }),
+      _id: undefined,
+      password: undefined,
+   };
 };
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
-module.exports = User ;
+module.exports = User;

@@ -131,7 +131,7 @@ export function LockIcon() {
 
 export function CoinIcon({ height, width }) {
    return (
-      <span style={{height: height, width: width}} class='coin-icon'>
+      <span style={{height: height, width: width}} className='coin-icon'>
          <ImageIcon height={height} width={width} image={coinImage} />
       </span>
    );

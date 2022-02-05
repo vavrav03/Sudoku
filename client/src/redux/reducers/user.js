@@ -1,10 +1,12 @@
 import { LOGIN_USER, LOGOUT_USER } from "../actions/auth";
-import { UPDATE_USER, START_LOADING_USER } from "../actions/user";
+import { UPDATE_USER, START_LOADING_USER, STOP_LOADING_USER} from "../actions/user";
 
-export default function user(user = {isLoading: true}, action) {
+export default function user(user = {isUserLoading: false}, action) {
    switch (action.type) {
       case START_LOADING_USER:
-         return { ...user, isLoading: true };
+         return { ...user, isUserLoading: true };
+      case STOP_LOADING_USER:
+         return {...user, isUserLoading: false}
       case LOGIN_USER:
          return action.user;
       case LOGOUT_USER:
@@ -24,13 +26,13 @@ export const getUserEmail = (state) => {
    return state.user.email
 };
 
-export const isLoading = (state) => {
-   return state.user.isLoading;
+export const isUserLoading = (state) => {
+   return state?.user?.isUserLoading;
 };
 
 export const isLoadingForTheFirstTime = (state) => {
    console.log(state);
-   return isLoading(state) && !state.user.email
+   return isUserLoading(state) && !state.user.email
 }
 
 export { user };

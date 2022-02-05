@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Checkbox, FormControlLabel, Grid, Divider, Typography } from '@mui/material';
-import { SignInButton } from 'components/atoms/Button';
+import { SignButton } from 'components/atoms/Button';
 import { LockIcon } from "components/atoms/Icons";
 import { PasswordFormInput, SignFormInput } from 'components/atoms/Input';
 import { ConnectedSignInFormFooter } from 'components/molecules/SignForm/SignFormFooter';
@@ -35,7 +35,7 @@ function SignInPage({ onSubmit }) {
                         <ConnectedSocialMedia />
                      </Grid>
                      <Grid item xs={12}>
-                        <Divider>nebo</Divider>
+                        <Divider>or</Divider>
                      </Grid>
                      <Grid item xs={12}>
                         <FastField name='email'>
@@ -80,7 +80,7 @@ function SignInPage({ onSubmit }) {
                         </FastField>
                      </Grid>
                      <Grid item xs={12}>
-                        <SignInButton />
+                        <SignButton text={"Sign in"} />
                      </Grid>
                   </Grid>
                </Form>

@@ -1,17 +1,22 @@
 import React from 'react';
-import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
-import MenuIcon from '@mui/icons-material/Menu';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import Grid from '@mui/material/Grid';
+import { Badge, IconButton, Divider } from '@mui/material';
+
+import {
+   Menu as MenuIcon,
+   Notifications as NotificationsIcon,
+   LocalGroceryStore as LocalGroceryStoreIcon,
+} from '@mui/icons-material';
 
 import UserNavbarCard from 'components/organisms/Navbar/UserNavbarCard';
 import { connect } from 'react-redux';
 import { notImplementedYet } from 'redux/actions/error';
-import Divider from '@mui/material/Divider';
+import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
+import { getOpenedGame } from 'games';
 
-function Navbar({ openedGame, isSidebarOpen, menuButtonAction }) {
+function Navbar({ isSidebarOpen, menuButtonAction }) {
+   const location = useLocation();
+   const game = getOpenedGame(location.pathname);
    return (
       <header position='sticky' className='navbar'>
          <nav className='nav-left'>
@@ -23,31 +28,31 @@ function Navbar({ openedGame, isSidebarOpen, menuButtonAction }) {
                      className={'nav-item brand-button'}
                   >
                      <MenuIcon className={'brand-icon'} />
-                     <span>Hry ({openedGame})</span>
+                     <span>{game?.name}</span>
                   </IconButton>
                   <Divider className={'divider'} orientation='vertical' />
                </>
             ) : null}
             <Link className='nav-item' to='/'>
-               Domů
+               Home
             </Link>
          </nav>
          <nav className='nav-right'>
             <IconButton
+               className='nav-item'
                onClick={() => {}}
-               aria-label='show 17 new notifications'
-               color='inherit'
+            >
+               <LocalGroceryStoreIcon />
+            </IconButton>
+            <IconButton
+               className='nav-item'
+               onClick={() => {}}
             >
                <Badge badgeContent={17} color='secondary'>
                   <NotificationsIcon />
                </Badge>
             </IconButton>
-            <UserNavbarCard
-               className='nav-item'
-               // firstName={"Vladimír"}
-               // lastName={"Vávra"}
-               // imageUrl={"https://picsum.photos/200"}
-            />
+            <UserNavbarCard />
          </nav>
       </header>
    );
