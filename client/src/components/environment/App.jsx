@@ -4,6 +4,7 @@ import { connect, Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { Switch, Route } from 'react-router';
 import Notifications from 'react-notification-system-redux';
+import ReactTooltip from 'react-tooltip';
 
 import { getNotifications } from 'redux/selectors';
 import { attemptUpdateUser } from 'redux/actions/user';
@@ -24,11 +25,15 @@ import {
    HomePage,
    SignInPage,
    SignUpPage,
+   UnfinishedGamesPage,
+   ShopPage,
 } from 'components/pages/index';
+import UserProfilePage from 'components/pages/UserProfilePage';
 
 function App({ history, store, notifications }) {
    return (
       <Provider store={store}>
+         <ReactTooltip />
          <Notifications notifications={notifications} />
          <ConnectedRouter history={history}>
             <div className='main'>
@@ -93,6 +98,21 @@ function App({ history, store, notifications }) {
                      path={routes.signUp}
                      exact
                      component={SignUpPage}
+                  ></Route>
+                  <Route
+                     path={routes.shop}
+                     exact
+                     component={ShopPage}
+                  ></Route>
+                  <Route
+                     path={routes.unfinishedGames}
+                     exact
+                     component={UnfinishedGamesPage}
+                  ></Route>
+                  <Route
+                     path={routes.userProfile}
+                     exact
+                     component={UserProfilePage}
                   ></Route>
                </Switch>
             </div>

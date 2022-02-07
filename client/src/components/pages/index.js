@@ -9,9 +9,9 @@ export { default as SamuraiPage } from './games/SamuraiPage'
 export { default as Size2x2Page } from './games/Size2x2Page'
 export { default as Size2x3Page } from './games/Size2x3Page'
 export { default as Size4x4Page } from './games/Size4x4Page'
-
 export { default as HomePage } from './HomePage'
-
+export { default as ShopPage } from './ShopPage'
 export { default as SignInPage } from './signing/SignInPage'
 export { default as SignUpPage } from './signing/SignUpPage'
+export { default as UnfinishedGamesPage } from './UnfinishedGamesPage'
 // @endindex

@@ -40,12 +40,14 @@ function Navbar({ isSidebarOpen, menuButtonAction }) {
          <nav className='nav-right'>
             <IconButton
                className='nav-item'
+               data-tip={'Shop'}
                onClick={() => {}}
             >
                <LocalGroceryStoreIcon />
             </IconButton>
             <IconButton
-               className='nav-item'
+               className='nav-item' 
+               data-tip={'Notifications'}
                onClick={() => {}}
             >
                <Badge badgeContent={17} color='secondary'>

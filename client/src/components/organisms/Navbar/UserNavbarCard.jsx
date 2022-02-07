@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Typography, Menu, MenuItem, Avatar, IconButton, Button } from '@mui/material';
+import { Menu, MenuItem, Avatar, IconButton, Button } from '@mui/material';
 import {
    ExitToApp,
    PersonOutline,
@@ -13,10 +13,9 @@ import { connect } from 'react-redux';
 import { getUser, isUserLoading } from 'redux/reducers/user';
 import { CoinIcon } from 'components/atoms/Icons';
 import { attemptUpdateUser } from 'redux/actions/user';
-import ClipLoader from 'react-spinners/ClipLoader';
-import ReactTooltip from 'react-tooltip';
 import {push} from 'connected-react-router';
 import routes from 'routes';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 function UserNavbarCard({
    fullName,
@@ -42,12 +41,9 @@ function UserNavbarCard({
 
    if (isUserLoading && !fullName) {
       return (
-         <>
-            <ReactTooltip />
-            <div className='nav-item' data-tip={'Loading user'}>
-               <ClipLoader color={'white'} loading={true} size={38} />
-            </div>
-         </>
+         <div className='nav-item' data-tip={'Loading user'}>
+            <ClipLoader color={'white'} loading={true} size={38} />
+         </div>
       );
    } else if (fullName == undefined) {
       return (
@@ -67,11 +63,11 @@ function UserNavbarCard({
             >
                <MenuItem onClick={e => push(routes.singIn)}>
                   <LoginIcon className="icon" fontSize='small' />
-                  <Typography variant='inherit'>Sign in</Typography>
+                  <span>Sign in</span>
                </MenuItem>
                <MenuItem onClick={e => push(routes.signUp)}>
                   <AppRegistrationIcon className="icon" fontSize='small' />
-                  <Typography variant='inherit'>Sign up</Typography>
+                  <span>Sign up</span>
                </MenuItem>
             </Menu>
          </>
@@ -99,13 +95,13 @@ function UserNavbarCard({
             transformOrigin={{ vertical: 'top', horizontal: 'center' }}
             onClose={handleClose}
          >
-            <MenuItem onClick={showNotImplementedYet}>
+            <MenuItem onClick={e => push(routes.userProfilePage)}>
                <PersonOutline className="icon" fontSize='small' />
-               <Typography variant='inherit'>Your profile</Typography>
+               <span>Your profile</span>
             </MenuItem>
             <MenuItem onClick={attemptLogout}>
                <ExitToApp className="icon" fontSize='small' />
-               <Typography variant='inherit'>Log out</Typography>
+               <span>Log out</span>
             </MenuItem>
          </Menu>
       </div>
