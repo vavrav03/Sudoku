@@ -1,0 +1,13 @@
+.game-controls-container {
+   background-color: black;
+   height: 100%;
+   
+
+   &.collapsed {
+      width: 40px;
+   }
+
+   &.open {
+      width: 200px;
+   }
+}

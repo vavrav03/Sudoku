@@ -5,7 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
-import { makeStyles, useTheme } from "@mui/material/styles";
+import { makeStyles, useTheme } from "@mui/styles";
 import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({

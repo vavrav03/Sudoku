@@ -1,0 +1,16 @@
+.normal-page-container {
+   width: 100%;
+   height: 100%;
+   padding-top: $navbar-height;
+}
+
+.content-container {
+   width: 100%;
+   height: 100%;
+   position: relative;
+   transition: width, margin-left 225ms cubic-bezier(0, 0, 0.2, 1) 0s; //musi byt stejne jako u sidebaru (z MU-I dat)
+   &.sidebar-open {
+      width: calc(100% - $sidebar-width);
+      margin-left: $sidebar-width;
+   }
+}

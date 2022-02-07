@@ -18,7 +18,7 @@ function Navbar({ isSidebarOpen, menuButtonAction }) {
    const location = useLocation();
    const game = getOpenedGame(location.pathname);
    return (
-      <header position='sticky' className='navbar'>
+      <header className={`navbar ${isSidebarOpen ? 'open' : ''}`}>
          <nav className='nav-left'>
             {!isSidebarOpen ? (
                <>
@@ -46,7 +46,7 @@ function Navbar({ isSidebarOpen, menuButtonAction }) {
                <LocalGroceryStoreIcon />
             </IconButton>
             <IconButton
-               className='nav-item' 
+               className='nav-item'
                data-tip={'Notifications'}
                onClick={() => {}}
             >

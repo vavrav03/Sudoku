@@ -8,9 +8,10 @@
 
 @import "./organisms/forms.scss";
 @import "./organisms/navbar.scss";
+@import "./organisms/game-controls.scss";
 @import "./organisms/sidebar.scss";
 
-@import "./templates/normal-page.scss";
-@import "./templates/game-page.scss";
+@import "./templates/normal-template.scss";
+@import "./templates/game-template.scss";
 
 @import "./environment/general.scss";

@@ -4,7 +4,7 @@ import clsx from "clsx";
 import DeleteIcon from "@mui/icons-material/Delete";
 import GlobalFilter from "./GlobalFilter";
 import IconButton from "@mui/material/IconButton";
-import { lighten, makeStyles } from "@mui/material/styles";
+import { lighten, makeStyles } from "@mui/styles";
 import PropTypes from "prop-types";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -20,7 +20,7 @@ const useToolbarStyles = makeStyles((theme) => ({
       theme.palette.type === "light"
          ? {
               color: theme.palette.secondary.main,
-              backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+            //   backgroundColor: lighten(theme.palette.secondary.light, 0.85),
            }
          : {
               color: theme.palette.text.primary,
