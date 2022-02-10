@@ -47,18 +47,19 @@ const userSchema = new Schema(
    { versionKey: false, timestamps: true }
 );
 
-if (process.env.NODE_ENV !== 'test') {
-   MongooseAutoIncrementID.initialise('counters');
 
-   userSchema.plugin(MongooseAutoIncrementID.plugin, {
-      modelName: 'User',
-      field: 'user',
-      incrementBy: 1,
-      startAt: 1,
-      unique: true,
-      nextCount: false,
-      resetCount: false,
-   });
+if (process.env.NODE_ENV !== 'test') {
+   userSchema.plugin(MongooseAutoIncrementID.plugin, {modelName: 'user'});
+
+   // userSchema.plugin(MongooseAutoIncrementID.plugin, {
+   //    modelName: 'User',
+   //    field: 'id',
+   //    incrementBy: 1,
+   //    startAt: 1,
+   //    unique: true,
+   //    nextCount: false,
+   //    resetCount: false,
+   // });
 }
 
 userSchema.virtual('full_name').get(function () {
@@ -112,6 +113,5 @@ userSchema.methods.toResponseObject = function () {
    };
 };
 
-const User = mongoose.model('User', userSchema);
-
+const User = mongoose.model('user', userSchema);
 module.exports = User;

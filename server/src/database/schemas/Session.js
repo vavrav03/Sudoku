@@ -8,6 +8,6 @@ const sessionSchema = new Schema({
   expire: Date,
 });
 
-const Session = mongoose.model('Session', sessionSchema);
+const Session = mongoose.model('session', sessionSchema);
 
 module.exports = Session;

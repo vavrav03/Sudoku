@@ -5,8 +5,6 @@ const { User } = require("/src/database/schemas");
 
 const router = express.Router();
 
-module.exports = router;
-
 router.get("/", requireAuth, (req, res) => {
    res.send({
       message: "User info successfully retreived",
@@ -38,3 +36,5 @@ router.put("/password", requireAuth, (req, res) => {
       res.status(400).send({ message: "Old password did not match" });
    }
 });
+
+module.exports = router;

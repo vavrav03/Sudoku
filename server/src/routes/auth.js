@@ -4,8 +4,6 @@ const { User } = require("/src/database/schemas");
 
 const router = express.Router();
 
-module.exports = router;
-
 router.post("/register", (req, res) => {
    if (!req || !req.body || !req.body.email || !req.body.password) {
       res.status(400).send({ message: "Username and Password required" });
@@ -93,3 +91,5 @@ router.post("/logout", (req, res) => {
       res.send({ message: "Logged out successfully" });
    });
 });
+
+module.exports = router;
