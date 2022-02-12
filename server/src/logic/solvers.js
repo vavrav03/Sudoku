@@ -1,16 +1,49 @@
 const _ = require('lodash');
 const { writeGrid } = require('./variationCreator');
 
-const startSolving = (grid, boxRowCount, boxColCount, results) => {
-   solveClassic(grid, 0, -1, boxRowCount, boxColCount, results);
-}
+const startSolvingDiagonal = (grid, boxRowCount, boxColCount, results) => {
+   const conditions = [
+      rowContainsNumber,
+      colContainsNumber,
+      boxContainsNumber.bind(this, boxRowCount, boxColCount),
+      mainDiagContainsNumber,
+      secDiagContainsNumber,
+   ];
+   solveGeneral(conditions, grid, 0, -1, results);
+};
 
-const solveClassic = (
+const startSolvingJigsaw = (grid, areaPointersGrid, results) => {
+   const areasLists = [];
+   for (let i = 0; i < grid.length; i++) {
+      areasLists.push([]);
+   }
+   for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid[i].length; j++) {
+         areasLists[areaPointersGrid[i][j]].push({ row: i, col: j });
+      }
+   }
+   const conditions = [
+      rowContainsNumber,
+      colContainsNumber,
+      jigsawAreaContainsNumber.bind(this, areaPointersGrid, areasLists),
+   ];
+   solveGeneral(conditions, grid, 0, -1, results);
+};
+
+const startSolvingClassic = (grid, boxRowCount, boxColCount, results) => {
+   const conditions = [
+      rowContainsNumber,
+      colContainsNumber,
+      boxContainsNumber.bind(this, boxRowCount, boxColCount),
+   ];
+   solveGeneral(conditions, grid, 0, -1, results);
+};
+
+const solveGeneral = (
+   conditions /* conditinos must only take arguments: grid, row, col, number -- everything else must be bound*/,
    grid,
    previousRow,
    previousCol,
-   boxRowCount,
-   boxColCount,
    results
 ) => {
    let currentRow = previousRow;
@@ -29,36 +62,19 @@ const solveClassic = (
          break;
       }
    }
-   for (let num = 1; num <= grid.length; num++) {
-      if (
-         rowContainsNumber(grid, currentRow, num) ||
-         colContainsNumber(grid, currentCol, num) ||
-         boxContainsNumber(
-            grid,
-            boxRowCount,
-            boxColCount,
-            currentRow,
-            currentCol,
-            num
-         )
-      ) {
-         continue;
+   numberloop: for (let num = 1; num <= grid.length; num++) {
+      for (const condition of conditions) {
+         if (condition(grid, currentRow, currentCol, num)) {
+            continue numberloop;
+         }
       }
       grid[currentRow][currentCol] = num;
-
-      solveClassic(
-         grid,
-         currentRow,
-         currentCol,
-         boxRowCount,
-         boxColCount,
-         results
-      );
+      solveGeneral(conditions, grid, currentRow, currentCol, results);
    }
    grid[currentRow][currentCol] = -1;
 };
 
-const rowContainsNumber = (grid, row, number) => {
+const rowContainsNumber = (grid, row, col, number) => {
    for (let i = 0; i < grid[row].length; i++) {
       if (grid[row][i] === number) {
          return true;
@@ -67,7 +83,7 @@ const rowContainsNumber = (grid, row, number) => {
    return false;
 };
 
-const colContainsNumber = (grid, col, number) => {
+const colContainsNumber = (grid, row, col, number) => {
    for (let i = 0; i < grid.length; i++) {
       if (grid[i][col] === number) {
          return true;
@@ -77,9 +93,9 @@ const colContainsNumber = (grid, col, number) => {
 };
 
 const boxContainsNumber = (
-   grid,
    boxRowCount,
    boxColCount,
+   grid,
    row,
    col,
    number
@@ -98,6 +114,49 @@ const boxContainsNumber = (
    return false;
 };
 
+const jigsawAreaContainsNumber = (
+   areaPointersGrid,
+   areasLists,
+   grid,
+   row,
+   col,
+   number
+) => {
+   const areaList = areasLists[areaPointersGrid[row][col]];
+   for (const areaItem of areaList) {
+      if (grid[areaItem.row][areaItem.col] === number) {
+         return true;
+      }
+   }
+   return false;
+};
+
+const mainDiagContainsNumber = (grid, row, col, number) => {
+   if (row !== col) {
+      return false;
+   }
+   for (let i = 0; i < grid.length; i++) {
+      if (grid[i][i] === number) {
+         return true;
+      }
+   }
+   return false;
+};
+
+const secDiagContainsNumber = (grid, row, col, number) => {
+   if (row !== grid.length - col - 1) {
+      return false;
+   }
+   for (let i = 0; i < grid.length; i++) {
+      if (grid[i][grid.length - i - 1] === number) {
+         return true;
+      }
+   }
+   return false;
+};
+
 module.exports = {
-   startSolving,
+   startSolvingClassic,
+   startSolvingJigsaw,
+   startSolvingDiagonal,
 };

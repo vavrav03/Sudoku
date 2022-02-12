@@ -16,16 +16,7 @@ const DefaultGameSchema = new Schema({
 
 const JigsawSchema = new Schema({
    ...DefaultGameSchema.obj,
-   areasList: {
-      type: [
-         {
-            row: Number,
-            col: Number,
-         },
-      ],
-      required: true,
-   },
-   areaGrid: {
+   areaPointersGrid: {
       type: [[Number]], //NxN array with indexes into areasList for each grid item
       required: true,
    },
@@ -34,25 +25,25 @@ const JigsawSchema = new Schema({
 const SamuraiSchema = new Schema({
    gameTL: {
       type: Object,
-      required: true
+      required: true,
    },
    gameTR: {
       type: Object,
-      required: true
+      required: true,
    },
    gameM: {
       type: Object,
-      required: true
+      required: true,
    },
    gameBL: {
       type: Object,
-      required: true
+      required: true,
    },
    gameBR: {
       type: Object,
-      required: true
+      required: true,
    },
-})
+});
 
 module.exports = {
    EasyGame: mongoose.model('easyGame', DefaultGameSchema),

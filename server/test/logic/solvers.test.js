@@ -1,4 +1,8 @@
-const { startSolving } = require('../../src/logic/solvers');
+const {
+   startSolvingClassic,
+   startSolvingJigsaw,
+   startSolvingDiagonal
+} = require('../../src/logic/solvers');
 
 test('normal sudoku solver', () => {
    const seed = [
@@ -27,7 +31,7 @@ test('normal sudoku solver', () => {
 
    // console.log(createVariant(game));
    const results = [];
-   startSolving(seed, 3, 3, results);
+   startSolvingClassic(seed, 3, 3, results);
    expect(results.length).toBe(1);
    gridEquals(results[0], solution);
 });
@@ -40,7 +44,7 @@ test('2x2 nonexistent solution', () => {
       [4, -1, -1, 1],
    ];
    const results = [];
-   startSolving(grid, 2, 2, results);
+   startSolvingClassic(grid, 2, 2, results);
    expect(results.length).toBe(0);
 });
 
@@ -60,7 +64,8 @@ test('2x2 nonexistent solution', () => {
    ];
 
    const results = [];
-   startSolving(grid, 2, 2, results);
+   startSolvingClassic(grid, 2, 2, results);
+   expect(results.length).toBe(1);
    gridEquals(results[0], solution);
 });
 
@@ -84,7 +89,8 @@ test('2x3 existing solution', () => {
    ];
 
    const results = [];
-   startSolving(grid, 2, 3, results);
+   startSolvingClassic(grid, 2, 3, results);
+   expect(results.length).toBe(1);
    gridEquals(results[0], solution);
 });
 
@@ -126,11 +132,86 @@ test('more solutions 3x3', () => {
    ];
 
    const results = [];
-   startSolving(grid, 3, 3, results);
+   startSolvingClassic(grid, 3, 3, results);
 
    expect(results.length).toBe(2);
    gridEquals(results[0], solution1);
    gridEquals(results[1], solution2);
+});
+
+test('jigsaw solution', () => {
+   const grid = [
+      [2, -1, -1, -1, -1, 6, -1, -1, -1],
+      [9, -1, -1, 4, -1, -1, -1, 2, -1],
+      [-1, -1, -1, -1, -1, 5, -1, -1, -1],
+      [5, -1, -1, -1, 9, -1, -1, 8, -1],
+      [6, -1, 3, -1, -1, -1, 9, -1, 2],
+      [-1, 1, -1, -1, 2, -1, -1, -1, 3],
+      [-1, -1, -1, 3, -1, -1, -1, -1, -1],
+      [-1, 9, -1, -1, -1, 4, -1, -1, 8],
+      [-1, -1, -1, 7, -1, -1, -1, -1, 4],
+   ];
+
+   const areaPointersGrid = [
+      [0, 0, 0, 0, 0, 0, 0, 1, 1],
+      [2, 2, 0, 0, 3, 3, 3, 3, 1],
+      [2, 2, 2, 3, 3, 3, 3, 4, 1],
+      [2, 2, 2, 3, 5, 5, 6, 4, 1],
+      [2, 5, 5, 5, 5, 6, 6, 4, 1],
+      [7, 5, 6, 6, 6, 6, 6, 4, 1],
+      [7, 5, 5, 7, 7, 6, 4, 4, 1],
+      [7, 7, 7, 7, 8, 4, 4, 4, 1],
+      [7, 8, 8, 8, 8, 8, 8, 8, 8],
+   ];
+
+   const solution = [
+      [2, 8, 9, 1, 3, 6, 7, 4, 5],
+      [9, 7, 5, 4, 8, 3, 1, 2, 6],
+      [3, 2, 8, 9, 7, 5, 4, 6, 1],
+      [5, 4, 1, 6, 9, 2, 3, 8, 7],
+      [6, 5, 3, 8, 4, 1, 9, 7, 2],
+      [8, 1, 4, 5, 2, 7, 6, 9, 3],
+      [4, 6, 7, 3, 5, 8, 2, 1, 9],
+      [7, 9, 6, 2, 1, 4, 5, 3, 8],
+      [1, 3, 2, 7, 6, 9, 8, 5, 4],
+   ];
+
+   const results = [];
+   startSolvingJigsaw(grid, areaPointersGrid, results);
+   expect(results.length).toBe(1);
+   gridEquals(results[0], solution);
+});
+
+test('diagonal solution', () => {
+   const grid = [
+      [-1, -1, -1, -1, -1, 2, -1, -1, 6],
+      [-1, 1, -1, 9, 3, -1, 2, -1, -1],
+      [-1, -1, -1, -1, 7, -1, -1, 3, -1],
+      [-1, 4, -1, 7, -1, -1, -1, -1, 8],
+      [-1, 6, 5, -1, -1, -1, 7, 4, -1],
+      [8, -1, -1, -1, -1, 3, -1, 5, -1],
+      [-1, 5, -1, -1, 2, -1, -1, -1, -1],
+      [-1, -1, 2, -1, 5, 4, -1, 6, -1],
+      [4, -1, -1, 3, -1, -1, -1, -1, -1],
+   ];
+
+   const solution = [
+      [5, 3, 7, 4, 1, 2, 8, 9, 6],
+      [6, 1, 4, 9, 3, 8, 2, 7, 5],
+      [9, 2, 8, 5, 7, 6, 1, 3, 4],
+      [3, 4, 1, 7, 6, 5, 9, 2, 8],
+      [2, 6, 5, 8, 9, 1, 7, 4, 3],
+      [8, 7, 9, 2, 4, 3, 6, 5, 1],
+      [1, 5, 3, 6, 2, 9, 4, 8, 7],
+      [7, 8, 2, 1, 5, 4, 3, 6, 9],
+      [4, 9, 6, 3, 8, 7, 5, 1, 2],
+   ];
+
+   const results = [];
+
+   startSolvingDiagonal(grid, 3, 3, results);
+   expect(results.length).toBe(1);
+   gridEquals(results[0], solution);
 });
 
 const gridEquals = (generatedGrid, solutionGrid) => {
