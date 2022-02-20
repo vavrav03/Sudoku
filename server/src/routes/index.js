@@ -1,14 +1,18 @@
 const express = require("express");
-const path = require("path");
+const {validator} = require('/src/helpers')
+const {createHash} = require('/src/service/passwordManager');
+const {makeAuthRoutes} = require("./auth");
+const {makeUserRoutes} = require("./user");
+const {makeGameRoutes} = require("./games");
 
-const auth = require("./auth");
-const user = require("./user");
-const games = require("./games");
 
-const router = express.Router();
+const makeRoutes = ({database}) => {
+   const router = express.Router();
+   
+   router.use("/api/auth", makeAuthRoutes({database, validator, createHash}));
+   router.use("/api/user", makeUserRoutes({database}));
+   router.use("/api/games", makeGameRoutes({database}));
 
-router.use("/api/auth", auth);
-router.use("/api/user", user);
-router.use("/api/games", games);
-
-module.exports = router;
+   return router;
+}
+module.exports = {makeRoutes};

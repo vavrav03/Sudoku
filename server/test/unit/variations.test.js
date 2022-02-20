@@ -1,12 +1,15 @@
 const {
    rotate90counterClockwise,
-   writeGrid,
    transposeX,
    transposeY,
    transposeMDiag,
    transposeSDiag,
-} = require('../../src/logic/variationCreator');
+} = require('/src/service/variationCreator');
+const { gridEquals } = require('../helpers');
 
+describe('test functionality for creating variations', function(){
+   
+})
 test('rotate', () => {
    const grid = [
       [5, 3, 4, 6, 7, 8, 9, 1, 2],
@@ -34,11 +37,7 @@ test('rotate', () => {
 
    // console.log(createVariant(game));
    rotate90counterClockwise(grid);
-   for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid.length; j++) {
-         expect(result[i][j]).toBe(grid[i][j]);
-      }
-   }
+   gridEquals(grid, result);
 });
 
 test('transposeX', () => {
@@ -68,11 +67,7 @@ test('transposeX', () => {
 
    // console.log(createVariant(game));
    transposeX(grid);
-   for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid.length; j++) {
-         expect(result[i][j]).toBe(grid[i][j]);
-      }
-   }
+   gridEquals(grid, result);
 });
 
 test('rotate', () => {
@@ -102,11 +97,7 @@ test('rotate', () => {
 
    // console.log(createVariant(game));
    transposeY(grid);
-   for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid.length; j++) {
-         expect(result[i][j]).toBe(grid[i][j]);
-      }
-   }
+   gridEquals(grid, result);
 });
 
 test('rotate', () => {
@@ -136,11 +127,7 @@ test('rotate', () => {
 
    // console.log(createVariant(game));
    transposeMDiag(grid);
-   for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid.length; j++) {
-         expect(result[i][j]).toBe(grid[i][j]);
-      }
-   }
+   gridEquals(grid, result);
 });
 
 test('rotate', () => {
@@ -170,9 +157,5 @@ test('rotate', () => {
 
    // console.log(createVariant(game));
    transposeSDiag(grid);
-   for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid.length; j++) {
-         expect(result[i][j]).toBe(grid[i][j]);
-      }
-   }
+   gridEquals(grid, result);
 });

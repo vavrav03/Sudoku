@@ -14,6 +14,14 @@ const DefaultGameSchema = new Schema({
    createdAt: { type: Date, default: Date.now },
 });
 
+const ClassicGameSchema = new Schema({
+   ...DefaultGameSchema.obj,
+   difficulty: {
+      type: String,
+      enum : ['easy', 'normal', 'hard'],
+  },
+})
+
 const JigsawSchema = new Schema({
    ...DefaultGameSchema.obj,
    areaPointersGrid: {
@@ -46,14 +54,10 @@ const SamuraiSchema = new Schema({
 });
 
 module.exports = {
-   EasyGame: mongoose.model('easyGame', DefaultGameSchema),
-   NormalGame: mongoose.model('normalGame', DefaultGameSchema),
-   HardGame: mongoose.model('hardGame', DefaultGameSchema),
-   Size2x2Game: mongoose.model('size2x2Game', DefaultGameSchema),
-   Size2x3Game: mongoose.model('size2x3Game', DefaultGameSchema),
-   Size4x4Game: mongoose.model('size4x4Game', DefaultGameSchema),
-   DiagonalGame: mongoose.model('diagonalGame', DefaultGameSchema),
-   JigsawGame: mongoose.model('jigsawGame', JigsawSchema),
-   SamuraiGame: mongoose.model('samuraiGame', SamuraiSchema),
-   SamuraiMixedGame: mongoose.model('samuraiMixedGame', SamuraiSchema),
+   ClassicGame: mongoose.model('classic_games', ClassicGameSchema),
+   ClassicResizedGame: mongoose.model('classic_games_resized', DefaultGameSchema),
+   ClassicXGame: mongoose.model('classic_xes', DefaultGameSchema),
+   JigsawGame: mongoose.model('jigsaw_games', JigsawSchema),
+   SamuraiGame: mongoose.model('samurai_games', SamuraiSchema),
+   SamuraiMixedGame: mongoose.model('samurai_mixed_games', SamuraiSchema),
 };

@@ -42,7 +42,7 @@ const SidebarItem = ({ path, name, imageIcon }) => {
 function Sidebar({ open, closeSidebar }) {
    return (
       <Drawer variant='persistent' anchor='left' open={open}>
-         <div className={'sidebar'}>
+         {/* <div className={'sidebar'}>
             <header className='sidebar-header'>
                <Typography variant='h6'>SUDOKU</Typography>
                <IconButton onClick={closeSidebar}>
@@ -161,7 +161,7 @@ function Sidebar({ open, closeSidebar }) {
                   }
                ></SidebarItem>
             </List>
-         </div>
+         </div> */}
       </Drawer>
    );
 }

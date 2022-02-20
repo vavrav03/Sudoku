@@ -1,9 +1,16 @@
 const _ = require('lodash');
 
+const createJigsawVariant = (game) => {
+   
+}
+
+const createSamuraiVariant = (game) => {
+
+}
+
 const createVariant = (
    game,
-   boxRowCount = Math.sqrt(game.seed.length),
-   boxColCount = Math.sqrt(game.seed.length)
+   sameBoxRowsCols = true,
 ) => {
    const clonedGame = _.cloneDeep(game);
    const clonedSeedGrid = clonedGame.seed;
@@ -15,16 +22,14 @@ const createVariant = (
    changeNumbers(clonedSolutionGrid, size, numbers);
 
    let rotateCounter = Math.floor(Math.random() * 4);
-   if (boxRowCount !== boxColCount) {
+   let transposeNumber = Math.floor(Math.random() * 5);
+   if (!sameBoxRowsCols) {
       rotateCounter = Math.floor(Math.random() * 2) * 2;
+      transposeNumber = Math.floor(Math.random() * 3);
    }
    for (let i = 0; i < rotateCounter; i++) {
       rotate90counterClockwise(clonedSeedGrid);
       rotate90counterClockwise(clonedSolutionGrid);
-   }
-   let transposeNumber = Math.floor(Math.random() * 5);
-   if (boxRowCount !== boxColCount) {
-      transposeNumber = Math.floor(Math.random() * 3);
    }
    switch (transposeNumber) {
       case 0:
@@ -155,6 +160,8 @@ const writeGrid = (
 
 module.exports = {
    createVariant,
+   createJigsawVariant,
+   createSamuraiVariant,
    rotate90counterClockwise,
    transposeX,
    transposeY,

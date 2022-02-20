@@ -1,53 +1,47 @@
-const express = require("express");
-const {EasyGame, NormalGame, HardGame, Size2x2Game, Size2x3Game, Size4x4Game, DiagonalGame, JigsawGame, SamuraiGame, SamuraiMixedGame} = require('/src/database/schemas/Games');
+const express = require('express');
+const {
+   createVariant,
+   createJigsawVariant,
+   createSamuraiVariant,
+} = require('/src/service/variationCreator.js');
 
-const router = express.Router();
+const makeGameRoutes = ({database}) => {
+   const router = express.Router();
 
-router.get("/easy", async (req, res) => {
-   const game = await EasyGame.aggregate([{ $sample: { size: 1 } }]);
-   res.send(createVariant(game));
-});
+   router.get('/', async (req, res, next) => {
+      let games;
+      let createVariantMethod = createVariant;
+      const size = req.query.size ? req.query.size : 9;
+      switch (req.query.type) {
+         case 'classic':
+            games = await database.findRandomClassicGame(size, req.query.difficulty)
+         case 'classicResized':
+            games = await database.findRandomClassicResizedGame(size);
+         case 'classicX':
+            games = await database.findRandomClassicXGame(size);
+         case 'jigsaw':
+            games = await database.findRandomJigsawGame(size);
+            createVariantMethod = createJigsawVariant;
+         case 'samurai':
+            games = await database.findRandomSamuraiGame(size);
+            createVariantMethod = createSamuraiVariant;
+         case 'samuraiMixed':
+            games = await database.findRandomSamuraiMixedGame(size);
+            createVariantMethod = createSamuraiVariant;
+      }
+      if (!games) {
+         res.status(500).send('no games for this type of sudoku');
+      } else {
+         res.send(
+            createVariantMethod(
+               games[random.int(0, games.length - 1)],
+               req.query.boxRowCount === req.query.boxColCount
+            )
+         );
+      }
+   });
 
-router.get("/normal", async (req, res) => {
-   const game = await NormalGame.aggregate([{ $sample: { size: 1 } }]);
-   res.send(createVariant(game));
-});
+   return router;
+};
 
-router.get("/hard", async (req, res) => {
-   const game = await HardGame.aggregate([{ $sample: { size: 1 } }]);
-   res.send(createVariant(game));
-});
-
-router.get("/size2x2", async (req, res) => {
-   const game = await Size2x2Game.aggregate([{ $sample: { size: 1 } }]);
-   res.send(createVariant(game));
-});
-
-router.get("/size2x3", async (req, res) => {
-   const game = await Size2x3Game.aggregate([{ $sample: { size: 1 } }]);
-   res.send(createVariant(game));
-});
-
-router.get("/size4x4", async (req, res) => {
-   const game = await Size4x4Game.aggregate([{ $sample: { size: 1 } }]);
-   res.send(createVariant(game));
-});
-
-router.get("/diagonal", async (req, res) => {
-   const game = await DiagonalGame.aggregate([{ $sample: { size: 1 } }]);
-   res.send(createVariant(game));
-});
-
-router.get("/jigsaw", async (req, res) => {
-   
-});
-
-router.get("/samurai", async (req, res) => {
-   
-});
-
-router.get("/samuraiMixed", async (req, res) => {
-   
-});
-
-module.exports = router;
+module.exports = {makeGameRoutes};

@@ -38,7 +38,7 @@ function App({ history, store, notifications }) {
          <ConnectedRouter history={history}>
             <div className='main'>
                <Switch>
-                  <Route
+                  {/* <Route
                      path={routes.classicEasy}
                      exact
                      component={ClassicEasyPage}
@@ -69,11 +69,6 @@ function App({ history, store, notifications }) {
                      component={Size4x4Page}
                   ></Route>
                   <Route
-                     path={routes.diagonal}
-                     exact
-                     component={DiagonalPage}
-                  ></Route>
-                  <Route
                      path={routes.jigsaw}
                      exact
                      component={JigsawPage}
@@ -87,8 +82,8 @@ function App({ history, store, notifications }) {
                      path={routes.samuraiMixed}
                      exact
                      component={SamuraiMixedPage}
-                  ></Route>
-                  <Route path={routes.home} exact component={HomePage}></Route>
+                  ></Route> */}
+                  <Route path={routes.home} exact component={HomePage}></Route> 
                   <Route
                      path={routes.singIn}
                      exact

@@ -1,20 +1,13 @@
 const passport = require("passport");
 const session = require("express-session");
-const MongoStore = require("connect-mongo")(session);
 const uuid = require("uuid");
-const mongoose = require("mongoose");
 
-const Strategies = require("./strategies");
-const { User } = require("/src/database/schemas");
+const {makeStrategies} = require("./strategies");
 
-module.exports = (app) => {
+const makePassport = (app, database) => {
    app.use(
       session({
-         store: new MongoStore({
-            mongooseConnection: mongoose.connection,
-            clear_interval: 3600,
-            collection: "sessions",
-         }),
+         store: database.createSessionStore,
          genid: () => uuid.v4(),
          secret: process.env.SESSION_SECRET,
          cookie: { maxAge: 24 * 60 * 60 * 1000 },
@@ -26,16 +19,18 @@ module.exports = (app) => {
    app.use(passport.session());
 
    passport.serializeUser((user, done) => {
-      done(null, user.id);
+      done(null, user.getEmail());
    });
 
-   passport.deserializeUser((id, done) => {
-      User.findById({ _id: id })
-         .then((user) => done(null, user))
-         .catch((err) => console.warn(`err at deserialize: ${err}`));
+   passport.deserializeUser(async (email, done) => {
+      const user = await database.findUserByEmail(email);
+      done(null, user);
    });
 
+   const Strategies = makeStrategies(database);
    passport.use(Strategies.local);
    passport.use(Strategies.google);
    passport.use(Strategies.facebook)
 };
+
+module.exports = {makePassport}

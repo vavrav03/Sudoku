@@ -20,17 +20,21 @@ class Game {
    }
 }
 
+const sizes = {
+   size2x2: '2x2',
+   size2x3: '2x3',
+   size2x4: '2x4',
+   size3x3: '3x3',
+   size2x5: '2x5',
+   size3x4: '3x4',
+   size4x4: '4x4',
+   size4x5: '4x5',
+   size5x5: '5x5',
+};
+
 const games = {
-   classic: {
-      classicEasy: new Game(routes.classicEasy, 'Easy', ClassicEasySudokuIcon),
-      classicNormal: new Game(
-         routes.classicNormal,
-         'Normal',
-         ClassicNormalSudokuIcon
-      ),
-      classicHard: new Game(routes.classicHard, 'Hard', ClassicHardSudokuIcon),
-   },
-   size: {
+   // classic: new Game(routes.classic, ),
+   classicCustomSize: {
       size2x2: new Game(routes.size2x2, '2x2', Size2x2SudokuIcon),
       size2x3: new Game(routes.size2x3, '2x3', Size2x3SudokuIcon),
       size4x4: new Game(routes.size4x4, '4x4', Size4x4SudokuIcon),
