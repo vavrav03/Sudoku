@@ -41,7 +41,6 @@ const userSchema = new Schema(
 userSchema.plugin(MongooseAutoIncrementID.plugin, { modelName: 'users' });
 
 const DBUser = mongoose.model('users', userSchema);
-
 const makeDBUser = (user) => {
    return new DBUser({
       first_name: user.getFirstName(),

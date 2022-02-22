@@ -48,8 +48,8 @@ const makeStrategies = (database) => {
          const profilePicture = photos[0].value;
          let user = await database.findUserByEmail(email);
          if (user) {
-            if (!user.getGoogleAuthInfo()) {
-               user.setGoogleStrategy(id, accessToken);
+            if (!user.getGoogleAuthData().accessToken) {
+               user.setGoogleData(id, accessToken);
                database.updateUser(email, user);
             }
          } else {
@@ -69,7 +69,6 @@ const makeStrategies = (database) => {
             database.saveUser(user);
          }
 
-         console.log(user);
          done(null, user);
       }
    );
@@ -89,8 +88,8 @@ const makeStrategies = (database) => {
          const profilePicture = photos[0].value;
          let user = await database.findUserByEmail(email);
          if (user) {
-            if (!user.getFacebookAuthInfo()) {
-               user.setFacebookStrategy(id, accessToken);
+            if (!user.getFacebookAuthData().accessToken) {
+               user.setFacebookData(id, accessToken);
                database.updateUser(email, user);
             }
          } else {
@@ -100,7 +99,7 @@ const makeStrategies = (database) => {
                lastName: familyName,
                profilePictureLink: profilePicture,
                auth: {
-                  google: {
+                  facebook: {
                      id: id,
                      accessToken: accessToken,
                   },

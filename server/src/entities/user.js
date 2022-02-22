@@ -39,18 +39,29 @@ const buildMakeUser = (validator, createHash) => {
          getProfilePictureLink: () => profilePictureLink,
          getAuthData: () => auth,
          getPasswordHash: () => auth?.local?.passwordHash,
+         attemptPasswordChange: async (oldPassword, newPassword) => {
+            const oldPasswordHash = await createHash(oldPassword);
+            if(oldPasswordHash !== auth?.local?.passwordHash){
+               throw Error('Old password and new password do not match')
+            }
+            if(!validator.isStrongPassword(newPassword)){
+               throw Error('Password is not strong enough')
+            }
+            auth.local.passwordHash = await createHash(newPassword);
+            return true;
+         },
          isPasswordCorrect: async (password) => {
             const passwordHash = await createHash(password);
             return passwordHash === auth?.local?.passwordHash;
          },
-         getGoogleAuthInfo: () => Object.freeze(auth?.google),
-         getFacebookAuthInfo: () => Object.freeze(auth?.facebook),
-         setGoogleStrategy: (id, accessToken) => {
+         getGoogleAuthData: () => Object.freeze(auth?.google),
+         getFacebookAuthData: () => Object.freeze(auth?.facebook),
+         setGoogleData: (id, accessToken) => {
             auth.google = {
                id, accessToken
             }
          },
-         setFacebookStrategy: (id, accessToken) => {
+         setFacebookData: (id, accessToken) => {
             auth.facebook = {
                id, accessToken
             }

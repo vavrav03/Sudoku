@@ -1,4 +1,3 @@
-const express = require('express');
 const {
    ClassicGame,
    ClassicResizedGame,
@@ -7,6 +6,32 @@ const {
    SamuraiGame,
    SamuraiMixedGame,
 } = require('../../src/database/models');
+const {makeUser} = require('/src/entities');
+const { createHash } = require('/src/service/passwordManager');
+
+const user1 = makeUser({
+   email: 'jmeno@gmail.com',
+   firstName: 'firstName',
+   lastName: 'lastName',
+   auth: { google: { id: '' } },
+});
+
+const user1Password = 'StrongPassword123*';
+const user1NewPassword = 'StrongPassword123*New'
+
+const createUserWithPassword = async () => {
+   return makeUser({
+      email: user1.getEmail(),
+      firstName: user1.getFirstName(),
+      lastName: user1.getLastName(),
+      auth: {
+         google: { id: '' },
+         local: {
+            passwordHash: await createHash(user1Password),
+         },
+      },
+   });
+};
 
 const classicGames = [
    new ClassicGame({
@@ -183,6 +208,10 @@ const classicXGames = [
 ];
 
 module.exports = {
+   user1,
+   user1Password,
+   user1NewPassword,
+   createUserWithPassword,
    classicGames,
    unsolvable4x4Seed,
    classic4x4,

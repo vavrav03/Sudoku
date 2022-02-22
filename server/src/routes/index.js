@@ -10,7 +10,7 @@ const makeRoutes = ({database}) => {
    const router = express.Router();
    
    router.use("/api/auth", makeAuthRoutes({database, validator, createHash}));
-   router.use("/api/user", makeUserRoutes({database}));
+   router.use("/api/user", makeUserRoutes({database, createHash}));
    router.use("/api/games", makeGameRoutes({database}));
 
    return router;

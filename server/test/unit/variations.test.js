@@ -5,7 +5,7 @@ const {
    transposeMDiag,
    transposeSDiag,
 } = require('/src/service/variationCreator');
-const { gridEquals } = require('../helpers');
+const { gridEquals } = require('../setup/helpers');
 
 describe('test functionality for creating variations', function(){
    

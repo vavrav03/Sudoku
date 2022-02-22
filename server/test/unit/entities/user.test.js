@@ -1,4 +1,10 @@
+const {
+   createUserWithPassword,
+   user1Password,
+   user1NewPassword,
+} = require('../../setup/data');
 const { makeUser } = require('/src/entities');
+const { createHash } = require('/src/service/passwordManager');
 
 describe('testing user entity', function () {
    it('should should be ok', function () {
@@ -83,12 +89,59 @@ describe('testing user entity', function () {
             firstName: 'first',
             lastName: 'last',
             email: 'jmeno@gmail.com',
-            auth: {
-            },
+            auth: {},
          });
          expect(false).toBe(true);
       } catch (error) {
-         expect(error.message).toBe('At least 1 authentication mechanism must be specified');
+         expect(error.message).toBe(
+            'At least 1 authentication mechanism must be specified'
+         );
       }
+   });
+
+   describe('testing password management of user class', function () {
+      it('changes password and should fail because new password is too weak', async function () {
+         try {
+            const user = await createUserWithPassword();
+            await user.attemptPasswordChange(user1Password, 'weakpassword');
+            expect(true).toEqual(false);
+         } catch (err) {
+            expect(err.message).toEqual('Password is not strong enough');
+         }
+      });
+
+      it('changes password and should fail because old password do not match', async function () {
+         try {
+            const user = await createUserWithPassword();
+            await user.attemptPasswordChange(user1Password, 'weakpassword');
+            expect(true).toEqual(false);
+         } catch (err) {
+            expect(err.message).toEqual('Password is not strong enough');
+         }
+      });
+
+      it('should change password', async function () {
+         try {
+            const user = await createUserWithPassword();
+            await user.attemptPasswordChange('notMatchingPassword', 'weakpassword');
+            expect(true).toEqual(false);
+         } catch (err) {
+            expect(err.message).toEqual('Old password and new password do not match');
+         }
+      });
+
+      it('should change password', async function () {
+         try {
+            const user = await createUserWithPassword();
+            await user.attemptPasswordChange(user1Password, user1NewPassword);
+            expect(
+               expect(await createHash(user1NewPassword)).toEqual(
+                  user.getPasswordHash()
+               )
+            );
+         } catch (err) {
+            expect(true).toEqual(false);
+         }
+      });
    });
 });

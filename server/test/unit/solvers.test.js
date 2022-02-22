@@ -3,10 +3,8 @@ const {
    startSolvingJigsaw,
    startSolvingDiagonal,
 } = require('/src/service/solvers');
-
-const games = require('../data/games');
-
-const { gridEquals } = require('../helpers');
+const games = require('../setup/data');
+const { gridEquals } = require('../setup/helpers');
 
 describe('testing sudoku solvers', function () {
    test('solves classic sudoku', () => {

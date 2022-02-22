@@ -1,12 +1,10 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
 const { requireAuth } = require('/src/middleware/auth');
 
-const makeUserRoutes = ({database}) => {
+const makeUserRoutes = ({ database }) => {
    const router = express.Router();
 
    router.get('/', requireAuth, (req, res) => {
-      console.log(req.user)
       res.send({
          message: 'User info successfully retreived',
          user: req.user.toAPIObject(),
@@ -14,25 +12,24 @@ const makeUserRoutes = ({database}) => {
    });
 
    router.put('/password', requireAuth, async (req, res) => {
-      const { oldPassword, newPassword } = req.body;
-      if (!req.user.isPasswordSame(oldPassword)) {
-         res.status(400).send({ message: 'Old password did not match' });
+      if (!req.body.oldPassword || !req.body.newPassword) {
+         res.send('old password and new password must be specified');
+         return;
       }
       try {
-         const salt = await bcrypt.genSalt(10);
-         const hashedPassword = await bcrypt.hash(newPassword, salt);
-         const user = await database.updatePasswordHash(
-            req.user._id,
-            hashedPassword
+         await req.user.attemptPasswordChange(
+            req.body.oldPassword,
+            req.body.newPassword
          );
-         req.user = user;
-         res.status(200).send("password updated successfully");
-      } catch (error) {
-         res.status(400).send({ err, message: 'Error updating password' });
+         await database.updateUser(req.user.getEmail(), req.user);
+         res.status(200).send(req.user.toAPIObject());
+      } catch (err) {
+         console.log(err);
+         res.status(400).send({ message: err.message, err });
       }
    });
 
    return router;
 };
 
-module.exports = {makeUserRoutes};
+module.exports = { makeUserRoutes };

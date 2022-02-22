@@ -5,6 +5,10 @@ const mongoose = require('mongoose');
 const database = makeDatabase(process.env.DATABASE_URL); //this is test URL and its value is set in setup-tests.js
 const app = makeApp(database);
 
+const create1User = async () => {
+   
+}
+
 const dropAllCollections = async () => {
    const db = mongoose.connection.db;
    const collections = await db.listCollections().toArray();
