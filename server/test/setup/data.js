@@ -6,10 +6,10 @@ const {
    SamuraiGame,
    SamuraiMixedGame,
 } = require('../../src/database/models');
-const {makeUser} = require('/src/entities');
+const { makeUser } = require('/src/entities');
 const { createHash } = require('/src/service/passwordManager');
 
-const user1 = makeUser({
+const user1WithoutPassword = makeUser({
    email: 'jmeno@gmail.com',
    firstName: 'firstName',
    lastName: 'lastName',
@@ -17,13 +17,25 @@ const user1 = makeUser({
 });
 
 const user1Password = 'StrongPassword123*';
-const user1NewPassword = 'StrongPassword123*New'
+const user1NewPassword = 'StrongPassword123*New';
+
+const user1RegisterRequestData = {
+   email: user1WithoutPassword.getEmail(),
+   firstName: user1WithoutPassword.getFirstName(),
+   lastName: user1WithoutPassword.getLastName(),
+   password: user1Password,
+};
+
+const user1LoginRequestData = {
+   email: user1WithoutPassword.getEmail(),
+   password: user1Password,
+};
 
 const createUserWithPassword = async () => {
    return makeUser({
-      email: user1.getEmail(),
-      firstName: user1.getFirstName(),
-      lastName: user1.getLastName(),
+      email: user1WithoutPassword.getEmail(),
+      firstName: user1WithoutPassword.getFirstName(),
+      lastName: user1WithoutPassword.getLastName(),
       auth: {
          google: { id: '' },
          local: {
@@ -208,15 +220,17 @@ const classicXGames = [
 ];
 
 module.exports = {
-   user1,
+   user1WithoutPassword,
    user1Password,
    user1NewPassword,
    createUserWithPassword,
+   user1RegisterRequestData,
+   user1LoginRequestData,
    classicGames,
    unsolvable4x4Seed,
    classic4x4,
    classic6x6,
    ambiguousClassicSolution,
    jigsaw9x9,
-   classicXGames
+   classicXGames,
 };
