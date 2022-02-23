@@ -1,42 +1,48 @@
 const _ = require('lodash');
 const { writeGrid } = require('./variationCreator');
 
-const startSolvingDiagonal = (grid, boxRowCount, boxColCount, results) => {
+const startSolvingDiagonal = (game) => {
    const conditions = [
       rowContainsNumber,
       colContainsNumber,
-      boxContainsNumber.bind(this, boxRowCount, boxColCount),
+      boxContainsNumber.bind(
+         this,
+         game.getBoxRowCount(),
+         game.getBoxColCount()
+      ),
       mainDiagContainsNumber,
       secDiagContainsNumber,
    ];
-   solveGeneral(conditions, grid, 0, -1, results);
+   game.setSolutions([]);
+   solveGeneral(conditions, game.getSeed(), 0, -1, game.getSolutions());
 };
 
-const startSolvingJigsaw = (grid, areaPointersGrid, results) => {
-   const areasLists = [];
-   for (let i = 0; i < grid.length; i++) {
-      areasLists.push([]);
-   }
-   for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid[i].length; j++) {
-         areasLists[areaPointersGrid[i][j]].push({ row: i, col: j });
-      }
-   }
+const startSolvingJigsaw = (game) => {
    const conditions = [
       rowContainsNumber,
       colContainsNumber,
-      jigsawAreaContainsNumber.bind(this, areaPointersGrid, areasLists),
+      jigsawAreaContainsNumber.bind(
+         this,
+         game.getAreaPointersGrid(),
+         game.getAreasLists()
+      ),
    ];
-   solveGeneral(conditions, grid, 0, -1, results);
+   game.setSolutions([]);
+   solveGeneral(conditions, game.getSeed(), 0, -1, game.getSolutions());
 };
 
-const startSolvingClassic = (grid, boxRowCount, boxColCount, results) => {
+const startSolvingClassic = (game) => {
    const conditions = [
       rowContainsNumber,
       colContainsNumber,
-      boxContainsNumber.bind(this, boxRowCount, boxColCount),
+      boxContainsNumber.bind(
+         this,
+         game.getBoxRowCount(),
+         game.getBoxColCount()
+      ),
    ];
-   solveGeneral(conditions, grid, 0, -1, results);
+   game.setSolutions([]);
+   solveGeneral(conditions, game.getSeed(), 0, -1, game.getSolutions());
 };
 
 const solveGeneral = (

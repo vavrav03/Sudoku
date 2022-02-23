@@ -10,49 +10,48 @@ const createSamuraiVariant = (game) => {
 
 const createVariant = (
    game,
-   sameBoxRowsCols = true,
 ) => {
    const clonedGame = _.cloneDeep(game);
-   const clonedSeedGrid = clonedGame.seed;
-   const clonedSolutionGrid = clonedGame.solution;
+   const clonedSeedGrid = clonedGame.getSeed();
+   const clonedSolutionGrid = clonedGame.getSolution();
    const size = clonedSeedGrid.length;
    const numbers = createShuffledNumbers(size);
 
    changeNumbers(clonedSeedGrid, size, numbers);
    changeNumbers(clonedSolutionGrid, size, numbers);
 
-   let rotateCounter = Math.floor(Math.random() * 4);
-   let transposeNumber = Math.floor(Math.random() * 5);
-   if (!sameBoxRowsCols) {
-      rotateCounter = Math.floor(Math.random() * 2) * 2;
-      transposeNumber = Math.floor(Math.random() * 3);
+   let rotationsCount = Math.floor(Math.random() * 4);
+   let transpositionType = Math.floor(Math.random() * 5);
+   if (game.getBoxRowCount() !== game.getBoxColCount()) {
+      rotationsCount = Math.floor(Math.random() * 2) * 2;
+      transpositionType = Math.floor(Math.random() * 3);
    }
-   for (let i = 0; i < rotateCounter; i++) {
-      rotate90counterClockwise(clonedSeedGrid);
-      rotate90counterClockwise(clonedSolutionGrid);
+   rotateAndTranspose(clonedSeedGrid, rotationsCount, transpositionType);
+   rotateAndTranspose(clonedSolutionGrid, rotationsCount, transpositionType);
+   return clonedGame;
+};
+
+const rotateAndTranspose = (grid, rotationsCount, transpositionType) => {
+   for (let i = 0; i < rotationsCount; i++) {
+      rotate90counterClockwise(grid);
    }
-   switch (transposeNumber) {
+   switch (transpositionType) {
       case 0:
          break;
       case 1:
-         transposeX(clonedSeedGrid);
-         transposeX(clonedSolutionGrid);
+         transposeX(grid);
          break;
       case 2:
-         transposeY(clonedSeedGrid);
-         transposeY(clonedSolutionGrid);
+         transposeY(grid);
          break;
       case 3:
-         transposeMDiag(clonedSeedGrid);
-         transposeMDiag(clonedSolutionGrid);
+         transposeMDiag(grid);
          break;
       case 4:
-         transposeSDiag(clonedSeedGrid);
-         transposeSDiag(clonedSolutionGrid);
+         transposeSDiag(grid);
          break;
    }
-   return clonedGame;
-};
+}
 
 const createShuffledNumbers = (size) => {
    const numbers = [];

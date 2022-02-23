@@ -1,8 +1,11 @@
 const { createHash } = require('/src/service/passwordManager');
 const {buildMakeUser} = require('./user');
 const {validator} = require('/src/helpers');
+const solvers = require('/src/service/solvers');
+const { buildMakeGames } = require('./games');
+const _ = require('lodash');
 
 module.exports = {
-   // games: {...require('./games')},
+   ...buildMakeGames(validator, solvers, _.cloneDeep),
    makeUser: buildMakeUser(validator, createHash),
 }
