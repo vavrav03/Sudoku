@@ -1,29 +1,63 @@
 const request = require('supertest');
 
+const { database, testDBClient, apiClient, data } = require('/test/setup');
+const {
+   makeClassicGame,
+   makeClassicResizedGame,
+   makeClassicXGame,
+   makeJigsawGame,
+   makeSamuraiGame,
+   makeSamuraiMixedGame,
+} = require('/src/entities');
 // const games = require('../data/games');
 // const { app, database } = require('./testApp');
 
 describe('games API test', () => {
-
-   it('sends get to /api/get for all game types', async () => {
-      // const classicEasyGame = await request(app).get('/api/games').query({
-      //    type: 'classic',
-      //    difficulty: 'easy',
-      // });
-      // console.log(classicEasyGame, 'ffff')
-      // expect(classicEasyGame.data.seed.length === 9);
-      // const classicNotPresentGame = await request(app).get('/games', { type: 'h' });
-      // expect(classicNotPresentGame.status === 500);
-      // const classicResized = await axios.get('/games', {
-      //    type: 'classicResized',
-      //    size: 4,
-      // });
-      // const classicXGame = await axios.get('/games', {
-      //    type: 'classicX',
-      //    size: 9,
-      // });
-      // const jigsawGame = await axios.get('/games', { type: 'jigsaw', size: 9 });
-      // const samuraiGame = await axios.get('/games', { type: 'samurai', size: 9 });
-      // const samuraiMixedGame = await axios.get('/games', { type: 'samuraiMixed', size: 9 }); TODO
+   beforeEach(async () => {
+      await testDBClient.insert1FromEachGame();
    });
+
+   afterEach(async () => {
+      await testDBClient.dropAllCollections();
+   });
+
+   it('gets /classic game', async () => {
+      const response = await apiClient.getClassicGame(9, 'normal');
+      expect(response.statusCode).toEqual(200);
+      makeClassicGame(response.body);
+      expect(true).toEqual(true);
+   });
+
+   it('gets /classicResized game', async () => {
+      const response = await apiClient.getClassicResizedGame(4);
+      expect(response.statusCode).toEqual(200);
+      makeClassicResizedGame(response.body);
+      expect(true).toEqual(true);
+   });
+
+   it('gets /classicX game', async () => {
+      const response = await apiClient.getClassicXGame(9);
+      expect(response.statusCode).toEqual(200);
+      makeClassicXGame(response.body);
+      expect(true).toEqual(true);
+   });
+
+   it('gets /jigsaw game', async () => {
+      const response = await apiClient.getJigsawGame(9);
+      expect(response.statusCode).toEqual(200);
+      makeJigsawGame(response.body);
+      expect(true).toEqual(true);
+   });
+
+   // it('gets /samurai game', async () => {
+   //    const response = await apiClient.getClassicGame();
+   // expect(response.statusCode).toEqual(200);
+   // expect(true).toEqual(true);
+   // });
+
+   // it('gets /samuraiMixed game', async () => {
+   //    const response = await apiClient.getClassicGame();
+   // expect(response.statusCode).toEqual(200);
+   // expect(true).toEqual(true);
+   // });
 });

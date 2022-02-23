@@ -6,6 +6,14 @@ const {
    SamuraiGame,
    SamuraiMixedGame,
 } = require('/src/database/models');
+const {
+   makeClassicGame,
+   makeClassicResizedGame,
+   makeClassicXGame,
+   makeJigsawGame,
+   makeSamuraiGame,
+   makeSamuraiMixedGame,
+} = require('/src/entities');
 
 /**
  * @param {*} size size of seed
@@ -19,31 +27,77 @@ const sudokuSizeQuery = (size, extra) => {
    };
 };
 
+const convertToEntity = (dbObject, entityCreator) => {
+   console.log(dbObject, entityCreator)
+   return dbObject ? entityCreator(dbObject) : null;
+};
+
 const findRandomClassicGame = async (size, difficulty) => {
-   return await ClassicGame.find(
-      sudokuSizeQuery(size, { difficulty: difficulty })
+   return convertToEntity(
+      await ClassicGame.findOne(
+         sudokuSizeQuery(size, { difficulty: difficulty })
+      ),
+      makeClassicGame
    );
 };
 
 const findRandomClassicResizedGame = async (size) => {
-   return await ClassicResizedGame.find(sudokuSizeQuery(size));
+   return convertToEntity(
+      await ClassicResizedGame.findOne(sudokuSizeQuery(size)),
+      makeClassicResizedGame
+   );
 };
 
 const findRandomClassicXGame = async (size) => {
-   return await ClassicXGame.find(sudokuSizeQuery(size));
-}
+   return convertToEntity(
+      await ClassicXGame.findOne(sudokuSizeQuery(size)),
+      makeClassicXGame
+   );
+};
 
 const findRandomJigsawGame = async (size) => {
-   return await JigsawGame.find(sudokuSizeQuery(size));
-}
+   return convertToEntity(
+      await JigsawGame.findOne(sudokuSizeQuery(size)),
+      makeJigsawGame
+   );
+};
 
 const findRandomSamuraiGame = async (size) => {
-   return await SamuraiGame.find(sudokuSizeQuery(size));
-}
+   return convertToEntity(
+      await SamuraiGame.findOne(sudokuSizeQuery(size), makeSamuraiGame)
+   );
+};
 
 const findRandomSamuraiMixedGame = async (size) => {
-   await SamuraiMixed.find(SamuraiMixedGame(size));
-}
+   return convertToEntity(
+      await SamuraiMixed.findOne(SamuraiMixedGame(size)),
+      makeSamuraiMixedGame
+   );
+};
+
+const saveClassicGame = async (game) => {
+   await new ClassicGame(game.toAPIObject()).save();
+};
+
+const saveClassicResizedGame = async (game) => {
+   await new ClassicResizedGame(game.toAPIObject()).save();
+};
+
+const saveClassicXGame = async (game) => {
+   await new ClassicXGame(game.toAPIObject()).save();
+};
+
+const saveJigsawGame = async (game) => {
+   await new JigsawGame(game.toAPIObject()).save();
+};
+
+const saveSamuraiGame = async (game) => {
+   await new SamuraiGame(game.toAPIObject()).save();
+};
+
+const saveSamuraiMixedGame = async (game) => {
+   await new SamuraiMixedGame(game.toAPIObject()).save();
+};
 
 module.exports = {
    findRandomClassicGame,
@@ -52,5 +106,11 @@ module.exports = {
    findRandomClassicXGame,
    findRandomJigsawGame,
    findRandomSamuraiGame,
-   findRandomSamuraiMixedGame
-}
+   findRandomSamuraiMixedGame,
+   saveClassicGame,
+   saveClassicResizedGame,
+   saveClassicXGame,
+   saveJigsawGame,
+   saveSamuraiGame,
+   saveSamuraiMixedGame,
+};

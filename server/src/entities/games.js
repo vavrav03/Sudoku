@@ -19,9 +19,13 @@ const boxSizesList = {
 };
 
 const buildMakeGames = ({ validator, solvers, deepClone }) => {
-   const makeDefaultGame = ({ seed, solutions }) => {
+   const makeDefaultGame = ({ seed, solutions, solution }) => {
       if (!seed) {
          throw Error('Seed is not defined');
+      }
+      if (solution) {
+         solutions = [];
+         solutions.push(solution);
       }
       return {
          getSeed: () => seed,
@@ -31,11 +35,18 @@ const buildMakeGames = ({ validator, solvers, deepClone }) => {
             solutions = s;
          },
          hasMultipleSolutions: () => solutions.length > 1,
+         toAPIObject: () => {
+            return {
+               seed,
+               solutions,
+               solution: solutions[0],
+            };
+         },
       };
    };
 
-   const makeClassicResizedGame = ({ seed, solutions }) => {
-      const dg = makeDefaultGame({ seed, solutions });
+   const makeClassicResizedGame = ({ seed, solutions, solution }) => {
+      const dg = makeDefaultGame({ seed, solutions, solution });
       const boxSizesWrapper = boxSizesList[`${seed.length}`];
       if (!boxSizesWrapper) {
          throw Error('Invalid box size (seed and solution size)');
@@ -44,29 +55,41 @@ const buildMakeGames = ({ validator, solvers, deepClone }) => {
          ...dg,
          getBoxRowCount: () => boxSizesWrapper.boxRowCount,
          getBoxColCount: () => boxSizesWrapper.boxColCount,
+         toAPIObject: () =>
+            Object.freeze({
+               ...dg.toAPIObject(),
+               boxRowCount: boxSizesWrapper.boxRowCount,
+               boxColCount: boxSizesWrapper.boxColCount,
+            }),
       });
    };
 
-   const makeClassicGame = ({ seed, solutions, difficulty }) => {
+   const makeClassicGame = ({ seed, solutions, solution, difficulty }) => {
       if (!['easy', 'normal', 'hard'].includes(difficulty)) {
          throw Error('difficulty format is wrong');
       }
-      const dg = makeClassicResizedGame({ seed, solutions });
+      const dg = makeClassicResizedGame({ seed, solutions, solution });
       return Object.freeze({
          ...dg,
          getDifficulty: () => difficulty,
+         toAPIObject: () =>
+            Object.freeze({
+               ...dg.toAPIObject(),
+               difficulty,
+            }),
       });
    };
 
-   const makeClassicXGame = ({ seed, solutions }) => {
-      const dg = makeClassicResizedGame({ seed, solutions });
+   const makeClassicXGame = ({ seed, solutions, solution }) => {
+      const dg = makeClassicResizedGame({ seed, solutions, solution });
       return Object.freeze({
          ...dg,
+         toAPIObject: () => Object.freeze({ ...dg.toAPIObject() }),
       });
    };
 
-   const makeJigsawGame = ({ seed, solutions, areaPointersGrid }) => {
-      const dg = makeDefaultGame({ seed, solutions });
+   const makeJigsawGame = ({ seed, solutions, solution, areaPointersGrid }) => {
+      const dg = makeDefaultGame({ seed, solutions, solution });
       const areasLists = [];
       for (let i = 0; i < areaPointersGrid.length; i++) {
          areasLists.push([]);
@@ -80,6 +103,12 @@ const buildMakeGames = ({ validator, solvers, deepClone }) => {
          ...dg,
          getAreaPointersGrid: () => areaPointersGrid,
          getAreasLists: () => areasLists,
+         toAPIObject: () =>
+            Object.freeze({
+               ...dg.toAPIObject(),
+               areaPointersGrid,
+               areasLists,
+            }),
       });
    };
 

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { makeDBUser } = require('/src/database/models');
-const { createUserWithPassword, user1WithoutPassword } = require('./data');
+const { createUserWithPassword, user1WithoutPassword, jigsaw9x9, classicXGames, classic4x4, classicGames } = require('./data');
 
 const makeTestDBClient = (database) => {
 
@@ -14,6 +14,15 @@ const makeTestDBClient = (database) => {
       const dbUser = makeDBUser(user1WithoutPassword);
       await dbUser.save();
    };
+
+   const insert1FromEachGame = async () => {
+      await database.saveClassicGame(classicGames[0]);
+      await database.saveClassicResizedGame(classic4x4[0]);
+      await database.saveClassicXGame(classicXGames[0]);
+      await database.saveJigsawGame(jigsaw9x9[0]);
+      // await database.saveSamuraiGame();
+      // await database.saveSamuraiMixedGame();
+   }
    
    const dropAllCollections = async () => {
       const db = mongoose.connection.db;
@@ -26,9 +35,11 @@ const makeTestDBClient = (database) => {
             db.dropCollection(collectionName);
          });
    };
+
    return {
       insertUser1InDatabase,
       insertUser1WithoutPasswordInDatabase,
+      insert1FromEachGame,
       dropAllCollections
    }
 }
