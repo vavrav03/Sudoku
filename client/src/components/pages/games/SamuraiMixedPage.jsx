@@ -1,11 +1,11 @@
-import NormalPage from 'components/templates/NormalPage';
+import GameTemplate from 'components/templates/GameTemplate';
 import React from 'react';
 
 function SamuraiMixedPage() {
    return (
-      <NormalPage>
+      <GameTemplate>
 			
-      </NormalPage>
+      </GameTemplate>
    );
 }
 

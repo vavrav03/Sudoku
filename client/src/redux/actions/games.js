@@ -3,6 +3,7 @@ import { push } from 'connected-react-router';
 import routes from 'routes';
 import d from 'entities/index';
 import { responseError } from './error';
+import games from 'games';
 
 export const REPLACE_GAME = 'REPLACE_GAME';
 export const START_LOADING_GAME = 'START_LOADING_GAME';
@@ -81,5 +82,27 @@ export const replaceGame = (gameType, gameSubtype, gameData) => {
    return {
       type: REPLACE_GAME,
       payload: { gameType, gameSubtype, gameData },
+   };
+};
+
+export const checkGameRoute = () => {
+   return async (dispatch, getState) => {
+      let gameObject;
+      for(const game in games){
+         if(games[game].route === window.location.pathname){
+            console.log(games[game].route, window.location.pathname)
+            gameObject = games[game];
+         }
+      }
+      let defaultGameSubtype
+      if(gameObject.gameType === games.classic.gameType){
+         defaultGameSubtype = 'easy';
+      } else {
+         defaultGameSubtype = 9;
+      }
+      console.log(getState().games.currentlyPlayed.gameType)
+      if (gameObject.gameType !== getState().games.currentlyPlayed.gameType) {
+         dispatch(setCurrentlyPlayedGame(gameObject.gameType, defaultGameSubtype));
+      }
    };
 };

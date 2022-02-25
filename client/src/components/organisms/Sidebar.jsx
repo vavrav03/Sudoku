@@ -79,7 +79,6 @@ const SidebarCollapsibleItem = ({ sizesData, name, ImageIconComponent }) => {
          </ListItem>
          <Collapse className='collapse-block' in={open}>
             {sizesData.map((value) => {
-               console.log(value.reduxAction)
                return (
                   <div
                      className={'collaped-item'}

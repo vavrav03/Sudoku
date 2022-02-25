@@ -31,7 +31,7 @@ const games = {
       api.getClassicGame
    ),
    classicResized: new Game(
-      routes.classic,
+      routes.classicResized,
       'Classic Resized',
       'classicResized',
       [4, 6, 8, 9, 10, 12, 14, 16],
@@ -72,17 +72,4 @@ const games = {
    ),
 };
 
-const getOpenedGame = (route) => {
-   for (const gameCategory in games) {
-      const gameCategoryObject = games[gameCategory];
-      for (const game in gameCategoryObject) {
-         const gameObject = gameCategoryObject[game];
-         if (gameObject.route === route) {
-            return gameObject;
-         }
-      }
-   }
-};
-
-export { getOpenedGame };
 export default games;

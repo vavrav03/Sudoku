@@ -1,12 +1,12 @@
-import NormalPage from 'components/templates/NormalPage';
+import GameTemplate from 'components/templates/GameTemplate';
 import React from 'react';
 
-function DiagonalPage() {
+function ClassicXPage() {
    return (
-      <NormalPage>
+      <GameTemplate>
 			
-      </NormalPage>
+      </GameTemplate>
    );
 }
 
-export default DiagonalPage;
+export default ClassicXPage;

@@ -24,6 +24,7 @@ import {
    ShopPage,
 } from 'components/pages/index';
 import UserProfilePage from 'components/pages/UserProfilePage';
+import ClassicResizedPage from 'components/pages/games/ClassicResizedPage';
 
 function App({ history, attemptUpdateUser, store, notifications }) {
    useEffect(() => {
@@ -40,6 +41,11 @@ function App({ history, attemptUpdateUser, store, notifications }) {
                      path={routes.classic}
                      exact
                      component={ClassicPage}
+                  ></Route>
+                  <Route
+                     path={routes.classicResized}
+                     exact
+                     component={ClassicResizedPage}
                   ></Route>
                   <Route
                      path={routes.classicX}
