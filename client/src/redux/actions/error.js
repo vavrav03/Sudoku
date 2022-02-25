@@ -1,4 +1,4 @@
-import { logout } from "./auth";
+import { logout } from "./user";
 import { error } from "react-notification-system-redux";
 import {push} from 'connected-react-router';
 import routes from 'routes';

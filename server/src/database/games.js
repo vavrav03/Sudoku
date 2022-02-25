@@ -1,8 +1,12 @@
 const {
    ClassicGame,
+   makeClassicDBGame,
    ClassicResizedGame,
+   makeClassicResizedDBGame,
    ClassicXGame,
+   makeClassicXDBGame,
    JigsawGame,
+   makeJigsawDBGame,
    SamuraiGame,
    SamuraiMixedGame,
 } = require('/src/database/models');
@@ -17,25 +21,22 @@ const {
 
 /**
  * @param {*} size size of seed
- * @param {*} extra other queries that must be met by the collections in record to be returned (e.g. difficulty for classic games)
  * @returns mongo query used for finding games with seed length of given size
  */
-const sudokuSizeQuery = (size, extra) => {
+const sudokuSizeQuery = (size) => {
    return {
       $expr: { $eq: [{ $size: '$seed' }, size] },
-      ...extra,
    };
 };
 
 const convertToEntity = (dbObject, entityCreator) => {
-   console.log(dbObject, entityCreator)
    return dbObject ? entityCreator(dbObject) : null;
 };
 
-const findRandomClassicGame = async (size, difficulty) => {
+const findRandomClassicGame = async (difficulty) => {
    return convertToEntity(
       await ClassicGame.findOne(
-         sudokuSizeQuery(size, { difficulty: difficulty })
+         { difficulty: difficulty }
       ),
       makeClassicGame
    );
@@ -76,27 +77,28 @@ const findRandomSamuraiMixedGame = async (size) => {
 };
 
 const saveClassicGame = async (game) => {
-   await new ClassicGame(game.toAPIObject()).save();
+   await makeClassicDBGame(game).save();
 };
 
 const saveClassicResizedGame = async (game) => {
-   await new ClassicResizedGame(game.toAPIObject()).save();
+   await makeClassicResizedDBGame(game).save();
 };
 
 const saveClassicXGame = async (game) => {
-   await new ClassicXGame(game.toAPIObject()).save();
+   await makeClassicXDBGame(game).save();
 };
 
 const saveJigsawGame = async (game) => {
-   await new JigsawGame(game.toAPIObject()).save();
+   console.log(makeJigsawDBGame(game));
+   await makeJigsawDBGame(game).save();
 };
 
 const saveSamuraiGame = async (game) => {
-   await new SamuraiGame(game.toAPIObject()).save();
+   await makeSamuraiDBGame(game).save();
 };
 
 const saveSamuraiMixedGame = async (game) => {
-   await new SamuraiMixedGame(game.toAPIObject()).save();
+   await makeSamuraiMixedDBGame(game).save();
 };
 
 module.exports = {

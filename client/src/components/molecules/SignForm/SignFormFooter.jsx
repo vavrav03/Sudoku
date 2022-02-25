@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { notImplementedYet } from "redux/actions/error";
+import { notImplementedYet } from "redux/actions";
 
 function SignFormFooter({ children }) {
    return <div className={"sign-footer-container"}>{children}</div>;

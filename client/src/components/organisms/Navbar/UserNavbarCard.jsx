@@ -7,12 +7,10 @@ import {
    Login as LoginIcon,
    AppRegistration as AppRegistrationIcon,
 } from '@mui/icons-material';
-import { attemptLogout } from 'redux/actions/auth';
-import { notImplementedYet } from 'redux/actions/error';
+import { attemptLogout, attemptUpdateUser, notImplementedYet } from 'redux/actions';
 import { connect } from 'react-redux';
 import { getUser, isUserLoading } from 'redux/reducers/user';
 import { CoinIcon } from 'components/atoms/Icons';
-import { attemptUpdateUser } from 'redux/actions/user';
 import {push} from 'connected-react-router';
 import routes from 'routes';
 import ClipLoader from 'react-spinners/ClipLoader';

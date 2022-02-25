@@ -7,7 +7,7 @@ import Notifications from 'react-notification-system-redux';
 import ReactTooltip from 'react-tooltip';
 
 import { getNotifications } from 'redux/selectors';
-import { attemptUpdateUser } from 'redux/actions/user';
+import { attemptUpdateUser } from 'redux/actions';
 
 import routes from 'routes';
 

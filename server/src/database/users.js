@@ -17,7 +17,6 @@ const saveUser = async (user) => {
 
 const updateUser = async (email, newUser) => {
    const dbUser = makeDBUser(newUser);
-   console.log(dbUser);
    await DBUser.findOneAndUpdate({ email: email }, dbUser);
 };
 

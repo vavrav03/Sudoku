@@ -6,7 +6,7 @@ import classicHardImage from 'assets/img/icons/classicHard.png';
 import size2x2Image from 'assets/img/icons/size2x2.png';
 import size2x3Image from 'assets/img/icons/size2x3.png';
 import size4x4Image from 'assets/img/icons/size4x4.png';
-import diagonalImage from 'assets/img/icons/diagonal.png';
+import classicXlImage from 'assets/img/icons/classicX.png';
 import jigsawImage from 'assets/img/icons/jigsaw.png';
 import samuraiImage from 'assets/img/icons/samurai.png';
 import samuraiMixedImage from 'assets/img/icons/samuraiMixed.png';
@@ -72,12 +72,12 @@ export function Size4x4SudokuIcon({ width, height }) {
    );
 }
 
-export function DiagonalSudokuIcon({ width, height }) {
+export function ClassicXSudokuIcon({ width, height }) {
    return (
       <ImageIcon
          width={width}
          height={height}
-         image={diagonalImage}
+         image={classicXlImage}
       ></ImageIcon>
    );
 }

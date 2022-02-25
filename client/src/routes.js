@@ -4,7 +4,6 @@ export const routes = {
    classic: `${gamesString}/classic`,
    classicX: `${gamesString}/classicX`,
    jigsaw: `${gamesString}/jigsaw`,
-   jigsawX: `${gamesString}/jigsawX`,
    samurai: `${gamesString}/samurai`,
    samuraiMixed: `${gamesString}/samuraiMixed`,
    home: '/',

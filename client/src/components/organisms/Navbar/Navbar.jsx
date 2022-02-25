@@ -9,14 +9,14 @@ import {
 
 import UserNavbarCard from 'components/organisms/Navbar/UserNavbarCard';
 import { connect } from 'react-redux';
-import { notImplementedYet } from 'redux/actions/error';
+import { notImplementedYet } from 'redux/actions';
 import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
-import { getOpenedGame } from 'games';
+// import { getOpenedGame } from 'games';
 
 function Navbar({ isSidebarOpen, menuButtonAction }) {
    const location = useLocation();
-   const game = getOpenedGame(location.pathname);
+   // const game = getOpenedGame(location.pathname);
    return (
       <header className={`navbar ${isSidebarOpen ? 'open' : ''}`}>
          <nav className='nav-left'>
@@ -28,7 +28,7 @@ function Navbar({ isSidebarOpen, menuButtonAction }) {
                      className={'nav-item brand-button'}
                   >
                      <MenuIcon className={'brand-icon'} />
-                     <span>{game?.name}</span>
+                     {/* <span>{game?.name}</span> */}
                   </IconButton>
                   <Divider className={'divider'} orientation='vertical' />
                </>

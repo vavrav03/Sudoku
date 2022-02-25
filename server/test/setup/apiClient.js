@@ -19,23 +19,23 @@ const makeApiClient = (app) => {
       const response = await api.get('/api/user').send();
       return response;
    };
-   const getClassicGame = async (size, difficulty) => {
-      return await api.get('/api/games/classic').send({size, difficulty});
+   const getClassicGame = async (difficulty) => {
+      return await api.get('/api/games/classic').query({difficulty});
    }
    const getClassicResizedGame = async (size) => {
-      return await api.get('/api/games/classicResized').send({size});
+      return await api.get('/api/games/classicResized').query({size});
    }
    const getClassicXGame = async (size) => {
-      return await api.get('/api/games/classicX').send({size});
+      return await api.get('/api/games/classicX').query({size});
    }
    const getJigsawGame = async (size) => {
-      return await api.get('/api/games/jigsaw').send({size});
+      return await api.get('/api/games/jigsaw').query({size});
    }
    const getSamuraiGame = async (size) => {
-      return await api.get('/api/games/samurai').send({size});
+      return await api.get('/api/games/samurai').query({size});
    }
    const getSamuraiMixedGame = async (size) => {
-      return await api.get('/api/games/samuraiMixed').send({size});
+      return await api.get('/api/games/samuraiMixed').query({size});
    }
    return {
       registerUser,

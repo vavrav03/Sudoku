@@ -1,8 +1,9 @@
 const getGameStatusHandler = (req, res, next) => {
-   console.log(res.locals.game);
    try {
       if (res.locals.game) {
-         return res.status(200).send(res.locals.game.toAPIObject());
+         return res
+            .status(200)
+            .send(res.locals.createVariant(res.locals.game).toAPIObject());
       } else {
          return res
             .status(500)

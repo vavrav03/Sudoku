@@ -8,7 +8,7 @@ import { ConnectedSignInFormFooter } from 'components/molecules/SignForm/SignFor
 import { ConnectedSocialMedia } from 'components/molecules/SignForm/SignFormSocialMedia';
 
 import { Formik, Form, FastField } from 'formik';
-import { attemptLogin } from 'redux/actions/auth';
+import { attemptLogin } from 'redux/actions';
 import { connect } from 'react-redux';
 
 function SignInPage({ onSubmit }) {

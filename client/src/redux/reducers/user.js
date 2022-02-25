@@ -1,7 +1,6 @@
-import { LOGIN_USER, LOGOUT_USER } from "../actions/auth";
-import { UPDATE_USER, START_LOADING_USER, STOP_LOADING_USER} from "../actions/user";
+import { LOGIN_USER, LOGOUT_USER, UPDATE_USER, START_LOADING_USER, STOP_LOADING_USER } from "../actions";
 
-export default function user(user = {isUserLoading: false}, action) {
+export function userReducer(user = {isUserLoading: false}, action) {
    switch (action.type) {
       case START_LOADING_USER:
          return { ...user, isUserLoading: true };
@@ -31,8 +30,5 @@ export const isUserLoading = (state) => {
 };
 
 export const isLoadingForTheFirstTime = (state) => {
-   console.log(state);
    return isUserLoading(state) && !state.user.email
 }
-
-export { user };

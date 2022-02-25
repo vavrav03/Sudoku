@@ -15,6 +15,7 @@ const {
 describe('games API test', () => {
    beforeEach(async () => {
       await testDBClient.insert1FromEachGame();
+      console.log('inserted')
    });
 
    afterEach(async () => {
@@ -22,7 +23,7 @@ describe('games API test', () => {
    });
 
    it('gets /classic game', async () => {
-      const response = await apiClient.getClassicGame(9, 'normal');
+      const response = await apiClient.getClassicGame('normal');
       expect(response.statusCode).toEqual(200);
       makeClassicGame(response.body);
       expect(true).toEqual(true);
@@ -37,6 +38,7 @@ describe('games API test', () => {
 
    it('gets /classicX game', async () => {
       const response = await apiClient.getClassicXGame(9);
+      console.log('run')
       expect(response.statusCode).toEqual(200);
       makeClassicXGame(response.body);
       expect(true).toEqual(true);

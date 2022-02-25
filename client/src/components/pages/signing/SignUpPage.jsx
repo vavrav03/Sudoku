@@ -9,7 +9,7 @@ import { ConnectedSocialMedia } from 'components/molecules/SignForm/SignFormSoci
 
 import { Formik, Form, FastField } from 'formik';
 import * as Yup from 'yup';
-import { attemptRegister } from 'redux/actions/auth';
+import { attemptRegister } from 'redux/actions';
 import { connect } from 'react-redux';
 
 function SignUpPage({ onSubmit }) {

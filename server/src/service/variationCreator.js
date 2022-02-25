@@ -1,13 +1,14 @@
 const _ = require('lodash');
 
 const createJigsawVariant = (game) => {
-   
+   return game; // TODO
 }
 
 const createSamuraiVariant = (game) => {
-
+   //TODO
 }
 
+//create variant clone
 const createVariant = (
    game,
 ) => {

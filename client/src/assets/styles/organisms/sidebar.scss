@@ -1,4 +1,5 @@
 .sidebar {
+   width: $sidebar-width;
    & .sidebar-header {
       height: $navbar-height;
       display: flex;
@@ -17,14 +18,29 @@
          background-color: rgba(0, 0, 0, 0.1);
       }
 
-      & .icon-container {
+      & .game-icon-container {
          min-width: 26px;
          min-height: 26px;
          display: flex;
          align-items: center;
          justify-content: center;
+         margin-right: 10px;
+      }
+
+      & .chevron-icon-container {
       }
    }
 
-   width: $sidebar-width;
+   & .collapse-block {
+      padding-left: 16px;
+      padding-right: 16px;
+
+      & .collaped-item {
+         padding-left: 10px;
+         &:hover {
+            cursor: pointer;
+            text-decoration: underline;
+         }
+      }
+   }
 }
