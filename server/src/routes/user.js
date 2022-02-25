@@ -5,10 +5,10 @@ const makeUserRoutes = ({ database }) => {
    const router = express.Router();
 
    router.get('/', requireAuth, (req, res) => {
-      res.send({
-         message: 'User info successfully retreived',
-         user: req.user.toAPIObject(),
-      });
+      console.log(req.user.getProfilePictureLink())
+      res.send(
+         req.user.toAPIObject(),
+      );
    });
 
    router.put('/password', requireAuth, async (req, res) => {

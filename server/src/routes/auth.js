@@ -28,15 +28,15 @@ const makeAuthRoutes = ({ database, validator, createHash }) => {
             throw Error('User with this email already exists');
          }
          await database.saveUser(user);
-         res.status(200).send({
-            message: 'User created successfully',
-            user: user,
-         });
+         res.status(200).send(
+            user.toAPIObject(),
+         );
       } catch (error) {
          res.status(400).send({ message: error.message, error });
       }
    });
 
+   //email and password body params
    router.post('/login', (req, res, next) => {
       passport.authenticate('local', (err, user, info) => {
          if (err) {
@@ -49,10 +49,9 @@ const makeAuthRoutes = ({ database, validator, createHash }) => {
                res.status(400).send({ message: 'Login failed', err });
                return;
             }
-            res.send({
-               message: 'Logged in successfully',
-               user: req.user,
-            });
+            res.send(
+               req.user.toAPIObject(),
+            );
          });
       })(req, res, next);
    });

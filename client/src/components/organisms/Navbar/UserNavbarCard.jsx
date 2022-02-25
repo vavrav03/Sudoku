@@ -7,7 +7,7 @@ import {
    Login as LoginIcon,
    AppRegistration as AppRegistrationIcon,
 } from '@mui/icons-material';
-import { attemptLogout, attemptUpdateUser, notImplementedYet } from 'redux/actions';
+import { attemptLogout, notImplementedYet } from 'redux/actions';
 import { connect } from 'react-redux';
 import { getUser, isUserLoading } from 'redux/reducers/user';
 import { CoinIcon } from 'components/atoms/Icons';
@@ -16,19 +16,12 @@ import routes from 'routes';
 import ClipLoader from 'react-spinners/ClipLoader';
 
 function UserNavbarCard({
-   fullName,
-   coinsCount,
    isUserLoading,
-   attemptUpdateUser,
-   profilePicture,
+   user,
    attemptLogout,
    push,
-   showNotImplementedYet,
 }) {
    const [anchorEl, setAnchorEl] = React.useState(null);
-   useEffect(() => {
-      attemptUpdateUser();
-   }, []);
    const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
    };
@@ -37,13 +30,13 @@ function UserNavbarCard({
       setAnchorEl(null);
    };
 
-   if (isUserLoading && !fullName) {
+   if (isUserLoading) {
       return (
          <div className='nav-item' data-tip={'Loading user'}>
             <ClipLoader color={'white'} loading={true} size={38} />
          </div>
       );
-   } else if (fullName == undefined) {
+   } else if (!user?.getFullName) {
       return (
          <>
             <IconButton className='nav-item' onClick={handleClick}>
@@ -75,13 +68,13 @@ function UserNavbarCard({
       <div className='nav-item user-navbar-card'>
          <Button onClick={handleClick}>
             <div className='user-info-container'>
-               <div className='user-name'>{`${fullName}`}</div>
+               <div className='user-name'>{`${user.getFullName()}`}</div>
                <div className='user-coins-container'>
-                  <span className='coins-count'>{coinsCount}</span>
+                  <span className='coins-count'>{user.getCoinsCount()}</span>
                   <CoinIcon height={14} width={14} />
                </div>
             </div>
-            <Avatar alt='Remy Sharp' src={profilePicture} />
+            <Avatar alt='Remy Sharp' src={user.getProfilePictureLink()} />
          </Button>
          <Menu
             className='user-card-menu'
@@ -109,17 +102,14 @@ function UserNavbarCard({
 const mapStateToProps = (state) => {
    const user = getUser(state);
    return {
-      fullName: user?.full_name,
       isUserLoading: isUserLoading(state),
-      coinsCount: user?.coinsCount,
-      profilePicture: user?.profile_picture,
+      user
    };
 };
 
 const mapDispatchToProps = (dispatch) => {
    return {
       showNotImplementedYet: () => dispatch(notImplementedYet()),
-      attemptUpdateUser: () => dispatch(attemptUpdateUser()),
       attemptLogout: () => dispatch(attemptLogout()),
       push: (url) => dispatch(push(url)),
    };

@@ -53,6 +53,7 @@ describe('authentication and profile change routes testing', () => {
             data.user1LoginRequestData
          );
          expect(loginResponse.statusCode).toEqual(200);
+         expect(loginResponse.body.user.email).toEqual(data.user1RegisterRequestData.email)
 
          const getUserResponse = await apiClient.getUser();
          expect(getUserResponse.statusCode).toEqual(200);

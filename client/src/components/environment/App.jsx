@@ -12,13 +12,8 @@ import { attemptUpdateUser } from 'redux/actions';
 import routes from 'routes';
 
 import {
-   ClassicEasyPage,
-   ClassicNormalPage,
-   ClassicHardPage,
-   Size2x2Page,
-   Size2x3Page,
-   Size4x4Page,
-   DiagonalPage,
+   ClassicPage,
+   ClassicXPage,
    JigsawPage,
    SamuraiPage,
    SamuraiMixedPage,
@@ -30,7 +25,10 @@ import {
 } from 'components/pages/index';
 import UserProfilePage from 'components/pages/UserProfilePage';
 
-function App({ history, store, notifications }) {
+function App({ history, attemptUpdateUser, store, notifications }) {
+   useEffect(() => {
+      attemptUpdateUser();
+   }, []);
    return (
       <Provider store={store}>
          <ReactTooltip />
@@ -38,35 +36,15 @@ function App({ history, store, notifications }) {
          <ConnectedRouter history={history}>
             <div className='main'>
                <Switch>
-                  {/* <Route
-                     path={routes.classicEasy}
+                  <Route
+                     path={routes.classic}
                      exact
-                     component={ClassicEasyPage}
+                     component={ClassicPage}
                   ></Route>
                   <Route
-                     path={routes.classicNormal}
+                     path={routes.classicX}
                      exact
-                     component={ClassicNormalPage}
-                  ></Route>
-                  <Route
-                     path={routes.classicHard}
-                     exact
-                     component={ClassicHardPage}
-                  ></Route>
-                  <Route
-                     path={routes.size2x2}
-                     exact
-                     component={Size2x2Page}
-                  ></Route>
-                  <Route
-                     path={routes.size2x3}
-                     exact
-                     component={Size2x3Page}
-                  ></Route>
-                  <Route
-                     path={routes.size4x4}
-                     exact
-                     component={Size4x4Page}
+                     component={ClassicXPage}
                   ></Route>
                   <Route
                      path={routes.jigsaw}
@@ -82,7 +60,7 @@ function App({ history, store, notifications }) {
                      path={routes.samuraiMixed}
                      exact
                      component={SamuraiMixedPage}
-                  ></Route> */}
+                  ></Route>
                   <Route path={routes.home} exact component={HomePage}></Route> 
                   <Route
                      path={routes.singIn}

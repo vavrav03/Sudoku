@@ -20,11 +20,9 @@ export const startGame = (
       try {
          dispatch(push(route));
          dispatch(setCurrentlyPlayedGame(gameType, gameSubtype));
-         console.log(route, makeMethod, apiCall, gameType, gameSubtype)
          let obj = getState().games[gameType][gameSubtype];
          if (obj === 'loading' || obj) {
             //do nothing
-            console.log('doing nothing')
          } else {
             dispatch(loadNewGame(makeMethod, apiCall, gameType, gameSubtype));
          }
@@ -40,7 +38,6 @@ export const loadNewGame = (makeMethod, apiCall, gameType, gameSubtype) => {
       try {
          dispatch(startLoadingGame(gameType, gameSubtype));
          const res = await apiCall(gameSubtype);
-         console.log(res);
          const game = makeMethod(res.data);
          dispatch(replaceGame(gameType, gameSubtype, game));
       } catch (error) {

@@ -2,6 +2,8 @@ import { responseError } from './error';
 import api from 'api';
 import { push } from 'connected-react-router';
 import routes from 'routes';
+import d from 'entities/index';
+const {makeUser} = d;
 
 export const UPDATE_USER = 'UPDATE_USER';
 export const START_LOADING_USER = 'START_LOADING_USER';
@@ -16,34 +18,34 @@ export const updateUser = (user) => {
    };
 };
 
-export const startLoading = () => {
+export const startLoadingUser = () => {
    return {
       type: START_LOADING_USER,
    };
 };
 
-export const stopLoading = () => {
+export const stopLoadingUser = () => {
    return {
       type: STOP_LOADING_USER,
    };
 };
 
-export const attemptUpdateUser =
-   (showNotificationError = false) =>
-   (dispatch) => {
-      dispatch(startLoading());
-      api.getUser()
-         .then((response) => {
-            const { data } = response;
-            dispatch(updateUser(data.user));
-         })
-         .catch((err) => {
-            if (showNotificationError) {
-               dispatch(responseError(err.response, err.response.data.message));
-            }
-            dispatch(stopLoading());
-         });
+export const attemptUpdateUser = (showNotificationError = false) => {
+   return async (dispatch, getState) => {
+      try {
+         dispatch(startLoadingUser());
+         const res = await api.getUser();
+         const user = makeUser(res.data);
+         dispatch(updateUser(user));
+      } catch (error) {
+         console.log(error);
+         if (showNotificationError) {
+            dispatch(responseError(error.response, error.response.data.message));
+         }
+         dispatch(stopLoadingUser());
+      }
    };
+};
 
 export const login = (user) => {
    return {
@@ -58,34 +60,44 @@ export const logout = () => {
    };
 };
 
-export const attemptLogin = (user) => (dispatch) =>
-   api
-      .postLogin(user)
-      .then((response) => {
-         const { data } = response;
-         dispatch(login(data.user));
+export const attemptLogin = (userData) => {
+   return async (dispatch, getState) => {
+      try {
+         const res = await api.postLogin(userData);
+         const user = makeUser(res.data);
+         console.log(user);
+         dispatch(login(user));
          dispatch(push(routes.home));
-      })
-      .catch((err) =>
-         dispatch(responseError(err.response, err.response.data.message))
-      );
+      } catch (error) {
 
-export const attemptRegister = (newUser) => (dispatch) =>
-   api
-      .postRegister(newUser)
-      .then((response) => {
-         dispatch(attemptLogin(newUser));
-      })
-      .then(() => dispatch(push(routes.home)))
-      .catch((err) =>
-         dispatch(responseError(err.response, err.response.data.message))
-      );
+         dispatch(responseError(error.response, error.response.data.message));
+      }
+   };
+};
 
-export const attemptLogout = () => (dispatch) =>
-   api
-      .postLogout()
-      .then((response) => {
+export const attemptRegister = (userData) => {
+   return async (dispatch, getState) => {
+      try {
+         const res = await api.postRegister(userData);
+         const user = makeUser(res.data);
+         console.log(userData);
+         dispatch(attemptLogin(userData));
+         dispatch(push(routes.home));
+         // dispatch(attemptUpdateUser());
+      } catch (error) {
+         dispatch(responseError(error.response, error.response.data.message));
+      }
+   };
+};
+
+export const attemptLogout = () => {
+   return async (dispatch, getState) => {
+      try {
+         const res = await api.postLogout();
          dispatch(logout());
          dispatch(push(routes.singIn));
-      })
-      .catch((res) => dispatch(responseError(res)));
+      } catch (error) {
+         dispatch(responseError(error.response, error.response.data.message));
+      }
+   };
+};

@@ -23,7 +23,6 @@ const makeGameRoutes = ({ database }) => {
 
    router.get('/classicResized', async (req, res, next) => {
       try {
-         console.log(req.query.size)
          res.locals.game = await database.findRandomClassicResizedGame(
             parseInt(req.query.size)
          );
