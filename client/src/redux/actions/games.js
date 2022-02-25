@@ -22,8 +22,10 @@ export const startGame = (
          dispatch(push(route));
          dispatch(setCurrentlyPlayedGame(gameType, gameSubtype));
          let obj = getState().games[gameType][gameSubtype];
-         if (obj === 'loading' || obj) {
+         console.log(obj)
+         if (obj === 'loading' || obj?.getSolution) { // || veci pro samurai TODO
             //do nothing
+            console.log('doing nothing')
          } else {
             dispatch(loadNewGame(makeMethod, apiCall, gameType, gameSubtype));
          }
@@ -43,7 +45,7 @@ export const loadNewGame = (makeMethod, apiCall, gameType, gameSubtype) => {
          dispatch(replaceGame(gameType, gameSubtype, game));
       } catch (error) {
          console.log(error);
-         stopLoadingGame(gameType, gameSubtype);
+         dispatch(stopLoadingGame(gameType, gameSubtype));
       }
    };
 };
@@ -90,7 +92,6 @@ export const checkGameRoute = () => {
       let gameObject;
       for(const game in games){
          if(games[game].route === window.location.pathname){
-            console.log(games[game].route, window.location.pathname)
             gameObject = games[game];
          }
       }
@@ -100,7 +101,6 @@ export const checkGameRoute = () => {
       } else {
          defaultGameSubtype = 9;
       }
-      console.log(getState().games.currentlyPlayed.gameType)
       if (gameObject.gameType !== getState().games.currentlyPlayed.gameType) {
          dispatch(setCurrentlyPlayedGame(gameObject.gameType, defaultGameSubtype));
       }

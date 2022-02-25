@@ -15,11 +15,12 @@ const gamesStructure = {
 };
 
 for (const game in games) {
-   gamesStructure[game.gameType] = {};
+   gamesStructure[games[game].gameType] = {};
    for (const subType of games[game].subTypes) {
-      gamesStructure[game.gameType][subType] = null;
+      gamesStructure[games[game].gameType][subType] = null;
    }
 }
+console.log(gamesStructure)
 
 export function gamesReducer(games = gamesStructure, action) {
    const state = _.cloneDeep(games);
@@ -31,6 +32,7 @@ export function gamesReducer(games = gamesStructure, action) {
       }
       case STOP_LOADING_GAME: {
          const { gameType, gameSubtype } = action.payload;
+         console.log(gameType, gameSubtype)
          state[gameType][gameSubtype] = null;
          return state;
       }

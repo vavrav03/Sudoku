@@ -130,6 +130,7 @@ function Sidebar({ startGame, open, closeSidebar }) {
                <IconButton onClick={closeSidebar}>
                   <ChevronLeft />
                </IconButton>
+               {}
             </header>
             <Divider />
             <List>

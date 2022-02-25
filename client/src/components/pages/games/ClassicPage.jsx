@@ -15,14 +15,17 @@ function ClassicPage({ game, checkGameRoute }) {
    // }
    return (
       <GameTemplate>
-         <div className='container9x9 game-container'></div>
+         {game === "loading" ? <div className='container9x9 game-container'></div> : null}
       </GameTemplate>
    );
 }
 
 const mapStateToProps = (state) => {
+   const currentlyPlayedGame = state.games.currentlyPlayed;
    return {
-      game: state.games.classic,
+      game: state.games[currentlyPlayedGame.gameType][
+         currentlyPlayedGame.gameSubtype
+      ],
    };
 };
 

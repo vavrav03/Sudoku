@@ -8,12 +8,12 @@ import {checkGameRoute} from 'redux/actions'
 
 function GameTemplate({ checkGameRoute, children }) {
    useEffect(() => {
-      console.log('fff');
       checkGameRoute()
    })
    return (
       <NormalPage>
          <div className='game-everything-container'>
+            
             <GameControls
                rowCount={3}
                colCount={3}
