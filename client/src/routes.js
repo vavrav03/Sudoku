@@ -1,12 +1,6 @@
-const gamesString = '/games';
 
 export const routes = {
-   classic: `${gamesString}/classic`,
-   classicResized: `${gamesString}/classicResized`,
-   classicX: `${gamesString}/classicX`,
-   jigsaw: `${gamesString}/jigsaw`,
-   samurai: `${gamesString}/samurai`,
-   samuraiMixed: `${gamesString}/samuraiMixed`,
+   games: `/games`,
    home: '/',
    singIn: '/login',
    signUp: '/register',

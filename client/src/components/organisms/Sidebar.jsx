@@ -108,7 +108,6 @@ const SidebarCollapsibleGameItem = ({
                name: `${value}x${value}`,
                reduxAction: (e) => {
                   startGame(
-                     game.route,
                      game.makeMethod,
                      game.apiCall,
                      game.gameType,
@@ -140,7 +139,6 @@ function Sidebar({ startGame, open, closeSidebar }) {
                   ImageIconComponent={ClassicEasySudokuIcon}
                   reduxAction={(e) =>
                      startGame(
-                        games.classic.route,
                         games.classic.makeMethod,
                         games.classic.apiCall,
                         'classic',
@@ -153,7 +151,6 @@ function Sidebar({ startGame, open, closeSidebar }) {
                   ImageIconComponent={ClassicNormalSudokuIcon}
                   reduxAction={(e) =>
                      startGame(
-                        games.classic.route,
                         games.classic.makeMethod,
                         games.classic.apiCall,
                         'classic',
@@ -166,7 +163,6 @@ function Sidebar({ startGame, open, closeSidebar }) {
                   ImageIconComponent={ClassicHardSudokuIcon}
                   reduxAction={(e) =>
                      startGame(
-                        games.classic.route,
                         games.classic.makeMethod,
                         games.classic.apiCall,
                         'classic',
@@ -214,8 +210,8 @@ const mapDispatchToProps = (dispatch) => {
       showNotImplementedYet: () => {
          dispatch(notImplementedYet());
       },
-      startGame: (route, makeMethod, apiCall, gameType, gameSubtype) => {
-         dispatch(startGame(route, makeMethod, apiCall, gameType, gameSubtype));
+      startGame: (makeMethod, apiCall, gameType, gameSubtype) => {
+         dispatch(startGame(makeMethod, apiCall, gameType, gameSubtype));
       },
    };
 };

@@ -12,11 +12,7 @@ import { attemptUpdateUser } from 'redux/actions';
 import routes from 'routes';
 
 import {
-   ClassicPage,
-   ClassicXPage,
-   JigsawPage,
-   SamuraiPage,
-   SamuraiMixedPage,
+   GamePage,
    HomePage,
    SignInPage,
    SignUpPage,
@@ -24,7 +20,6 @@ import {
    ShopPage,
 } from 'components/pages/index';
 import UserProfilePage from 'components/pages/UserProfilePage';
-import ClassicResizedPage from 'components/pages/games/ClassicResizedPage';
 
 function App({ history, attemptUpdateUser, store, notifications }) {
    useEffect(() => {
@@ -38,34 +33,9 @@ function App({ history, attemptUpdateUser, store, notifications }) {
             <div className='main'>
                <Switch>
                   <Route
-                     path={routes.classic}
+                     path={routes.games}
                      exact
-                     component={ClassicPage}
-                  ></Route>
-                  <Route
-                     path={routes.classicResized}
-                     exact
-                     component={ClassicResizedPage}
-                  ></Route>
-                  <Route
-                     path={routes.classicX}
-                     exact
-                     component={ClassicXPage}
-                  ></Route>
-                  <Route
-                     path={routes.jigsaw}
-                     exact
-                     component={JigsawPage}
-                  ></Route>
-                  <Route
-                     path={routes.samurai}
-                     exact
-                     component={SamuraiPage}
-                  ></Route>
-                  <Route
-                     path={routes.samuraiMixed}
-                     exact
-                     component={SamuraiMixedPage}
+                     component={GamePage}
                   ></Route>
                   <Route path={routes.home} exact component={HomePage}></Route> 
                   <Route

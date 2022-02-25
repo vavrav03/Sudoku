@@ -11,8 +11,7 @@ const {
 } = d;
 
 class Game {
-   constructor(route, name, gameType, subTypes, makeMethod, apiCall) {
-      this.route = route;
+   constructor(name, gameType, subTypes, makeMethod, apiCall) {
       this.name = name;
       this.gameType = gameType;
       this.subTypes = subTypes;
@@ -23,7 +22,6 @@ class Game {
 
 const games = {
    classic: new Game(
-      routes.classic,
       'Classic',
       'classic',
       ['easy', 'normal', 'hard'],
@@ -31,7 +29,6 @@ const games = {
       api.getClassicGame
    ),
    classicResized: new Game(
-      routes.classicResized,
       'Classic Resized',
       'classicResized',
       [4, 6, 8, 9, 10, 12, 14, 16],
@@ -39,7 +36,6 @@ const games = {
       api.getClassicResizedGame
    ),
    classicX: new Game(
-      routes.classicX,
       'ClassicX',
       'classicX',
       [4, 9, 16],
@@ -47,7 +43,6 @@ const games = {
       api.getClassicXGame
    ),
    jigsaw: new Game(
-      routes.jigsaw,
       'Jigsaw',
       'jigsaw',
       [4, 6, 8, 9, 10, 12, 14, 16],
@@ -55,7 +50,6 @@ const games = {
       api.getJigsawGame
    ),
    samurai: new Game(
-      routes.samurai,
       'Samurai',
       'samurai',
       [4, 6, 8, 9],
@@ -63,7 +57,6 @@ const games = {
       api.getSamuraiGame
    ),
    samuraiMixed: new Game(
-      routes.samuraiMixed,
       'Samurai mixed',
       'samuraiMixed',
       [4, 6, 8, 9],

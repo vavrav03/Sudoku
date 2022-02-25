@@ -11,7 +11,6 @@ export const STOP_LOADING_GAME = 'STOP_LOADING_GAME';
 export const SET_CURRENTLY_PLAYED_GAME = 'SET_CURRENTLY_PLAYED_GAME';
 
 export const startGame = (
-   route,
    makeMethod,
    apiCall,
    gameType,
@@ -19,13 +18,16 @@ export const startGame = (
 ) => {
    return async (dispatch, getState) => {
       try {
-         dispatch(push(route));
+         if (window.location.pathname !== '/games') {
+            dispatch(push('/games'));
+         }
          dispatch(setCurrentlyPlayedGame(gameType, gameSubtype));
          let obj = getState().games[gameType][gameSubtype];
-         console.log(obj)
-         if (obj === 'loading' || obj?.getSolution) { // || veci pro samurai TODO
+         console.log(obj);
+         if (obj === 'loading' || obj?.getSolution) {
+            // || veci pro samurai TODO
             //do nothing
-            console.log('doing nothing')
+            console.log('doing nothing');
          } else {
             dispatch(loadNewGame(makeMethod, apiCall, gameType, gameSubtype));
          }
@@ -87,22 +89,22 @@ export const replaceGame = (gameType, gameSubtype, gameData) => {
    };
 };
 
-export const checkGameRoute = () => {
-   return async (dispatch, getState) => {
-      let gameObject;
-      for(const game in games){
-         if(games[game].route === window.location.pathname){
-            gameObject = games[game];
-         }
-      }
-      let defaultGameSubtype
-      if(gameObject.gameType === games.classic.gameType){
-         defaultGameSubtype = 'easy';
-      } else {
-         defaultGameSubtype = 9;
-      }
-      if (gameObject.gameType !== getState().games.currentlyPlayed.gameType) {
-         dispatch(setCurrentlyPlayedGame(gameObject.gameType, defaultGameSubtype));
-      }
-   };
-};
+// export const checkGameRoute = () => {
+//    return async (dispatch, getState) => {
+//       let gameObject;
+//       for(const game in games){
+//          if(games[game].route === window.location.pathname){
+//             gameObject = games[game];
+//          }
+//       }
+//       let defaultGameSubtype
+//       if(gameObject.gameType === games.classic.gameType){
+//          defaultGameSubtype = 'easy';
+//       } else {
+//          defaultGameSubtype = 9;
+//       }
+//       if (gameObject.gameType !== getState().games.currentlyPlayed.gameType) {
+//          dispatch(setCurrentlyPlayedGame(gameObject.gameType, defaultGameSubtype));
+//       }
+//    };
+// };
