@@ -6,6 +6,6 @@ const { buildMakeGames } = require('./games');
 const _ = require('lodash');
 
 module.exports = {
-   ...buildMakeGames(validator, solvers, _.cloneDeep),
+   ...buildMakeGames({validator, solvers, cloneDeep: _.cloneDeep}),
    makeUser: buildMakeUser(validator, createHash),
 }

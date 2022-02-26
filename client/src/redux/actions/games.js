@@ -10,12 +10,7 @@ export const START_LOADING_GAME = 'START_LOADING_GAME';
 export const STOP_LOADING_GAME = 'STOP_LOADING_GAME';
 export const SET_CURRENTLY_PLAYED_GAME = 'SET_CURRENTLY_PLAYED_GAME';
 
-export const startGame = (
-   makeMethod,
-   apiCall,
-   gameType,
-   gameSubtype
-) => {
+export const startGame = (makeMethod, apiCall, gameType, gameSubtype) => {
    return async (dispatch, getState) => {
       try {
          if (window.location.pathname !== '/games') {
@@ -24,7 +19,7 @@ export const startGame = (
          dispatch(setCurrentlyPlayedGame(gameType, gameSubtype));
          let obj = getState().games[gameType][gameSubtype];
          console.log(obj);
-         if (obj === 'loading' || obj?.getSolution) {
+         if (obj === 'loading' || obj.playedGame) {
             // || veci pro samurai TODO
             //do nothing
             console.log('doing nothing');
@@ -47,6 +42,8 @@ export const loadNewGame = (makeMethod, apiCall, gameType, gameSubtype) => {
          dispatch(replaceGame(gameType, gameSubtype, game));
       } catch (error) {
          console.log(error);
+         dispatch(push(routes.home));
+         dispatch(setCurrentlyPlayedGame(null, null));
          dispatch(stopLoadingGame(gameType, gameSubtype));
       }
    };

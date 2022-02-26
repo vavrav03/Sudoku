@@ -16,14 +16,12 @@ export const buildMakeUser = () => {
          throw Error('Email must be defined');
       }
       return Object.freeze({
-         getFirstName: () => firstName,
-         getLastName: () => lastName,
-         getFullName: () => `${firstName} ${lastName}`,
-         getInitials: () =>
-            `${this.first_name[0].concat(this.last_name[0]).toUpperCase()}`,
-         getEmail: () => email,
-         getCoinsCount: () => coinsCount,
-         getProfilePictureLink: () => profilePictureLink,
+         firstName,
+         lastName,
+         fullName: `${firstName} ${lastName}`,
+         email,
+         coinsCount,
+         profilePictureLink,
       });
    };
    return makeUser;

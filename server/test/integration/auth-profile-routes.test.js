@@ -53,11 +53,11 @@ describe('authentication and profile change routes testing', () => {
             data.user1LoginRequestData
          );
          expect(loginResponse.statusCode).toEqual(200);
-         expect(loginResponse.body.user.email).toEqual(data.user1RegisterRequestData.email)
+         expect(loginResponse.body.email).toEqual(data.user1RegisterRequestData.email)
 
          const getUserResponse = await apiClient.getUser();
          expect(getUserResponse.statusCode).toEqual(200);
-         expect(getUserResponse.body.user.email).toEqual(data.user1RegisterRequestData.email); //getting the user from API after logging in in order to ensure that 
+         expect(getUserResponse.body.email).toEqual(data.user1RegisterRequestData.email); //getting the user from API after logging in in order to ensure that 
       });
 
       it('should return 401 code for getting /api/user', async ()=> {

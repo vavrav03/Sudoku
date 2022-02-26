@@ -18,8 +18,15 @@ const boxSizesList = {
    25: new BoxSize(5, 5),
 };
 
-export const buildMakeGames = () => {
-   const makeDefaultGame = ({ seed, solutions, solution }) => {
+//All entities are based on makeDefaultGame, therefore all properties required by it must also be passed to them. These properties can be easily detected as their absence will trigger an error
+export const buildMakeGames = ({ cloneDeep }) => {
+   const makeDefaultGame = ({
+      seed,
+      solutions,
+      solution,
+      playedBoard,
+      invalidGrid,
+   }) => {
       if (!seed) {
          throw Error('Seed is not defined');
       }
@@ -27,68 +34,64 @@ export const buildMakeGames = () => {
          solutions = [];
          solutions.push(solution);
       }
+      if (!playedBoard) {
+         playedBoard = cloneDeep(seed);
+      }
+      if (!invalidGrid) {
+         invalidGrid = [];
+         for (let i = 0; i < seed.length; i++) {
+            invalidGrid.push([]);
+            for (let j = 0; j < seed.length; j++) {
+               invalidGrid[i][j] = false;
+            }
+         }
+      }
       return {
-         getSeed: () => seed,
-         getSolution: () => solutions[0],
-         getSolutions: () => solutions,
-         setSolutions: (s) => {
-            solutions = s;
-         },
-         hasMultipleSolutions: () => solutions.length > 1,
-         toAPIObject: () => {
-            return {
-               seed,
-               solutions,
-            };
-         },
+         seed,
+         solution: solutions[0],
+         solutions,
+         playedBoard,
+         hasMultipleSolutions: solutions.length > 1,
+         invalidGrid,
       };
    };
 
-   const makeClassicResizedGame = ({ seed, solutions, solution }) => {
-      const dg = makeDefaultGame({ seed, solutions, solution });
+   const makeClassicResizedGame = (props) => {
+      const { seed } = props;
+      const dg = makeDefaultGame(props);
       const boxSizesWrapper = boxSizesList[`${seed.length}`];
       if (!boxSizesWrapper) {
          throw Error('Invalid box size (seed and solution size)');
       }
       return Object.freeze({
          ...dg,
-         getBoxRowCount: () => boxSizesWrapper.boxRowCount,
-         getBoxColCount: () => boxSizesWrapper.boxColCount,
-         toAPIObject: () =>
-            Object.freeze({
-               ...dg.toAPIObject(),
-               boxRowCount: boxSizesWrapper.boxRowCount,
-               boxColCount: boxSizesWrapper.boxColCount,
-            }),
+         boxRowCount: boxSizesWrapper.boxRowCount,
+         boxColCount: boxSizesWrapper.boxColCount,
       });
    };
 
-   const makeClassicGame = ({ seed, solutions, solution, difficulty }) => {
+   const makeClassicGame = (props) => {
+      const { difficulty } = props;
       if (!['easy', 'normal', 'hard'].includes(difficulty)) {
          throw Error('difficulty format is wrong');
       }
-      const dg = makeClassicResizedGame({ seed, solutions, solution });
+      const dg = makeClassicResizedGame(props);
       return Object.freeze({
          ...dg,
-         getDifficulty: () => difficulty,
-         toAPIObject: () =>
-            Object.freeze({
-               ...dg.toAPIObject(),
-               difficulty,
-            }),
+         difficulty,
       });
    };
 
-   const makeClassicXGame = ({ seed, solutions, solution }) => {
-      const dg = makeClassicResizedGame({ seed, solutions, solution });
+   const makeClassicXGame = (props) => {
+      const dg = makeClassicResizedGame(props);
       return Object.freeze({
          ...dg,
-         toAPIObject: () => Object.freeze({ ...dg.toAPIObject() }),
       });
    };
 
-   const makeJigsawGame = ({ seed, solutions, solution, areaPointersGrid }) => {
-      const dg = makeDefaultGame({ seed, solutions, solution });
+   const makeJigsawGame = (props) => {
+      const { areaPointersGrid } = props;
+      const dg = makeDefaultGame(props);
       const areasLists = [];
       for (let i = 0; i < areaPointersGrid.length; i++) {
          areasLists.push([]);
@@ -100,14 +103,8 @@ export const buildMakeGames = () => {
       }
       return Object.freeze({
          ...dg,
-         getAreaPointersGrid: () => areaPointersGrid,
-         getAreasLists: () => areasLists,
-         toAPIObject: () =>
-            Object.freeze({
-               ...dg.toAPIObject(),
-               areaPointersGrid,
-               areasLists,
-            }),
+         areaPointersGrid,
+         areasLists,
       });
    };
 

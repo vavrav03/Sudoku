@@ -36,7 +36,7 @@ function UserNavbarCard({
             <ClipLoader color={'white'} loading={true} size={38} />
          </div>
       );
-   } else if (!user?.getFullName) {
+   } else if (!user?.fullName) {
       return (
          <>
             <IconButton className='nav-item' onClick={handleClick}>
@@ -68,13 +68,13 @@ function UserNavbarCard({
       <div className='nav-item user-navbar-card'>
          <Button onClick={handleClick}>
             <div className='user-info-container'>
-               <div className='user-name'>{`${user.getFullName()}`}</div>
+               <div className='user-name'>{`${user.fullName}`}</div>
                <div className='user-coins-container'>
-                  <span className='coins-count'>{user.getCoinsCount()}</span>
+                  <span className='coins-count'>{user.coinsCount}</span>
                   <CoinIcon height={14} width={14} />
                </div>
             </div>
-            <Avatar alt='Remy Sharp' src={user.getProfilePictureLink()} />
+            <Avatar alt='Remy Sharp' src={user.profilePictureLink} />
          </Button>
          <Menu
             className='user-card-menu'

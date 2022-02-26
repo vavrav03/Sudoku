@@ -4,11 +4,13 @@ import {push} from 'connected-react-router';
 import routes from 'routes';
 
 export const responseError = (res, errorMessage) => (dispatch) => {
+   dispatch(notificationError("", errorMessage));
    if (res.status === 401) {
       dispatch(logout());
       dispatch(push(routes.login));
+   } else {
+      dispatch(push(routes.home));
    }
-   dispatch(notificationError("", errorMessage));
 };
 
 export const notificationError = (title = "", errorMessage = "") => {

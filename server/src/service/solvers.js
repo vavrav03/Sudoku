@@ -14,7 +14,7 @@ const startSolvingDiagonal = (game) => {
       secDiagContainsNumber,
    ];
    game.setSolutions([]);
-   solveGeneral(conditions, game.getSeed(), 0, -1, game.getSolutions());
+   solveGeneral(conditions, game.getPlayedBoard(), 0, -1, game.getSolutions());
 };
 
 const startSolvingJigsaw = (game) => {
@@ -28,7 +28,7 @@ const startSolvingJigsaw = (game) => {
       ),
    ];
    game.setSolutions([]);
-   solveGeneral(conditions, game.getSeed(), 0, -1, game.getSolutions());
+   solveGeneral(conditions, game.getPlayedBoard(), 0, -1, game.getSolutions());
 };
 
 const startSolvingClassic = (game) => {
@@ -42,7 +42,7 @@ const startSolvingClassic = (game) => {
       ),
    ];
    game.setSolutions([]);
-   solveGeneral(conditions, game.getSeed(), 0, -1, game.getSolutions());
+   solveGeneral(conditions, game.getPlayedBoard(), 0, -1, game.getSolutions());
 };
 
 const solveGeneral = (

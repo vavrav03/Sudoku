@@ -49,3 +49,8 @@ export function gamesReducer(games = gamesStructure, action) {
          return games;
    }
 }
+
+export const getCurrentlyPlayedGameInstance = (state) => {
+   const currentlyPlayedData = state.games.currentlyPlayed;
+   return state.games[currentlyPlayedData.gameType][currentlyPlayedData.gameSubtype];
+}
