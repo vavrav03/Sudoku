@@ -6,6 +6,7 @@ import {
 } from '../actions';
 import games from 'games';
 import _ from 'lodash';
+import { SET_CURRENTLY_FOCUSED_CELL } from 'redux/actions/games';
 
 const gamesStructure = {
    currentlyPlayed: {
@@ -20,7 +21,7 @@ for (const game in games) {
       gamesStructure[games[game].gameType][subType] = null;
    }
 }
-console.log(gamesStructure)
+console.log(gamesStructure);
 
 export function gamesReducer(games = gamesStructure, action) {
    const state = _.cloneDeep(games);
@@ -32,7 +33,7 @@ export function gamesReducer(games = gamesStructure, action) {
       }
       case STOP_LOADING_GAME: {
          const { gameType, gameSubtype } = action.payload;
-         console.log(gameType, gameSubtype)
+         console.log(gameType, gameSubtype);
          state[gameType][gameSubtype] = null;
          return state;
       }
@@ -45,6 +46,16 @@ export function gamesReducer(games = gamesStructure, action) {
          state[gameType][gameSubtype] = gameData;
          return state;
       }
+      case SET_CURRENTLY_FOCUSED_CELL: {
+         const { gameType, gameSubtype } = state.currentlyPlayed;
+         const { row, col } = action.payload;
+         console.log(gameType, gameSubtype, state[gameType][gameSubtype])
+         state[gameType][gameSubtype].currentlyFocusedCell = {
+            row,
+            col,
+         };
+         return state;
+      }
       default:
          return games;
    }
@@ -52,5 +63,7 @@ export function gamesReducer(games = gamesStructure, action) {
 
 export const getCurrentlyPlayedGameInstance = (state) => {
    const currentlyPlayedData = state.games.currentlyPlayed;
-   return state.games[currentlyPlayedData.gameType][currentlyPlayedData.gameSubtype];
-}
+   return state.games[currentlyPlayedData.gameType][
+      currentlyPlayedData.gameSubtype
+   ];
+};

@@ -26,6 +26,7 @@ export const buildMakeGames = ({ cloneDeep }) => {
       solution,
       playingBoard,
       invalidGrid,
+      currentlyFocusedCell,
    }) => {
       if (!seed) {
          throw Error('Seed is not defined');
@@ -46,6 +47,12 @@ export const buildMakeGames = ({ cloneDeep }) => {
             }
          }
       }
+      if(!currentlyFocusedCell){
+         currentlyFocusedCell = {
+            row: null,
+            col: null,
+         }
+      }
       return {
          seed,
          solution: solutions[0],
@@ -53,6 +60,7 @@ export const buildMakeGames = ({ cloneDeep }) => {
          playingBoard,
          hasMultipleSolutions: solutions.length > 1,
          invalidGrid,
+         currentlyFocusedCell
       };
    };
 

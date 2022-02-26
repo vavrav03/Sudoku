@@ -9,21 +9,21 @@ export const REPLACE_GAME = 'REPLACE_GAME';
 export const START_LOADING_GAME = 'START_LOADING_GAME';
 export const STOP_LOADING_GAME = 'STOP_LOADING_GAME';
 export const SET_CURRENTLY_PLAYED_GAME = 'SET_CURRENTLY_PLAYED_GAME';
+export const SET_CURRENTLY_FOCUSED_CELL = 'SET_CURRENTLY_FOCUSED_CELL';
 
 export const startGame = (makeMethod, apiCall, gameType, gameSubtype) => {
    return async (dispatch, getState) => {
       try {
-         if (window.location.pathname !== '/games') {
-            dispatch(push('/games'));
-         }
          let obj = getState().games[gameType][gameSubtype];
          console.log(obj);
          if (obj === 'loading' || obj?.playingBoard) {
-            // || veci pro samurai TODO
-            //do nothing
             console.log('doing nothing');
          } else {
             dispatch(loadNewGame(makeMethod, apiCall, gameType, gameSubtype));
+         }
+         dispatch(setCurrentlyPlayedGame(gameType, gameSubtype));
+         if (window.location.pathname !== routes.games) {
+            dispatch(push(routes.games));
          }
       } catch (error) {
          console.log(error);
@@ -37,7 +37,6 @@ export const loadNewGame = (makeMethod, apiCall, gameType, gameSubtype) => {
       try {
          dispatch(startLoadingGame(gameType, gameSubtype));
          const res = await apiCall(gameSubtype);
-         dispatch(setCurrentlyPlayedGame(gameType, gameSubtype));
          const game = makeMethod(res.data);
          dispatch(replaceGame(gameType, gameSubtype, game));
       } catch (error) {
@@ -83,6 +82,16 @@ export const replaceGame = (gameType, gameSubtype, gameData) => {
    return {
       type: REPLACE_GAME,
       payload: { gameType, gameSubtype, gameData },
+   };
+};
+
+export const setCurrentlyFocusedCell = (row, col) => {
+   return {
+      type: SET_CURRENTLY_FOCUSED_CELL,
+      payload: {
+         row,
+         col,
+      },
    };
 };
 
