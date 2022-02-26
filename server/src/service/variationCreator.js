@@ -15,13 +15,13 @@ const createVariant = (
    const clonedGame = _.cloneDeep(game);
    const clonedSeed = clonedGame.getSeed();
    const clonedSolution = clonedGame.getSolution();
-   const playedBoard = clonedGame.getPlayedBoard();
+   const playingBoard = clonedGame.getPlayingBoard();
    const size = clonedSeed.length;
    const numbers = createShuffledNumbers(size);
 
    changeNumbers(clonedSeed, size, numbers);
    changeNumbers(clonedSolution, size, numbers);
-   changeNumbers(playedBoard, size, numbers);
+   changeNumbers(playingBoard, size, numbers);
 
    let rotationsCount = Math.floor(Math.random() * 4);
    let transpositionType = Math.floor(Math.random() * 5);
@@ -31,7 +31,7 @@ const createVariant = (
    }
    rotateAndTranspose(clonedSeed, rotationsCount, transpositionType);
    rotateAndTranspose(clonedSolution, rotationsCount, transpositionType);
-   rotateAndTranspose(playedBoard, rotationsCount, transpositionType);
+   rotateAndTranspose(playingBoard, rotationsCount, transpositionType);
    return clonedGame;
 };
 

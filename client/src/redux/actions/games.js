@@ -16,10 +16,9 @@ export const startGame = (makeMethod, apiCall, gameType, gameSubtype) => {
          if (window.location.pathname !== '/games') {
             dispatch(push('/games'));
          }
-         dispatch(setCurrentlyPlayedGame(gameType, gameSubtype));
          let obj = getState().games[gameType][gameSubtype];
          console.log(obj);
-         if (obj === 'loading' || obj.playedGame) {
+         if (obj === 'loading' || obj?.playingBoard) {
             // || veci pro samurai TODO
             //do nothing
             console.log('doing nothing');
@@ -38,12 +37,13 @@ export const loadNewGame = (makeMethod, apiCall, gameType, gameSubtype) => {
       try {
          dispatch(startLoadingGame(gameType, gameSubtype));
          const res = await apiCall(gameSubtype);
+         dispatch(setCurrentlyPlayedGame(gameType, gameSubtype));
          const game = makeMethod(res.data);
          dispatch(replaceGame(gameType, gameSubtype, game));
       } catch (error) {
          console.log(error);
-         dispatch(push(routes.home));
-         dispatch(setCurrentlyPlayedGame(null, null));
+         // dispatch(push(routes.home));
+         // dispatch(setCurrentlyPlayedGame(null, null));
          dispatch(stopLoadingGame(gameType, gameSubtype));
       }
    };

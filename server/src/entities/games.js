@@ -19,7 +19,7 @@ const boxSizesList = {
 };
 
 const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
-   const makeDefaultGame = ({ seed, solutions, solution, playedBoard }) => {
+   const makeDefaultGame = ({ seed, solutions, solution, playingBoard }) => {
       if (!seed) {
          throw Error('Seed is not defined');
       }
@@ -27,8 +27,8 @@ const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
          solutions = [];
          solutions.push(solution);
       }
-      if(!playedBoard){
-         playedBoard = cloneDeep(seed);
+      if(!playingBoard){
+         playingBoard = cloneDeep(seed);
       }
       return {
          getSeed: () => seed,
@@ -38,13 +38,13 @@ const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
             solutions = s;
          },
          hasMultipleSolutions: () => solutions.length > 1,
-         getPlayedBoard: () => playedBoard,
+         getPlayingBoard: () => playingBoard,
          toAPIObject: () => {
             return {
                seed,
                solutions,
                solution: solutions[0],
-               playedBoard
+               playingBoard
             };
          },
       };

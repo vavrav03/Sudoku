@@ -24,7 +24,7 @@ export const buildMakeGames = ({ cloneDeep }) => {
       seed,
       solutions,
       solution,
-      playedBoard,
+      playingBoard,
       invalidGrid,
    }) => {
       if (!seed) {
@@ -34,8 +34,8 @@ export const buildMakeGames = ({ cloneDeep }) => {
          solutions = [];
          solutions.push(solution);
       }
-      if (!playedBoard) {
-         playedBoard = cloneDeep(seed);
+      if (!playingBoard) {
+         playingBoard = cloneDeep(seed);
       }
       if (!invalidGrid) {
          invalidGrid = [];
@@ -50,7 +50,7 @@ export const buildMakeGames = ({ cloneDeep }) => {
          seed,
          solution: solutions[0],
          solutions,
-         playedBoard,
+         playingBoard,
          hasMultipleSolutions: solutions.length > 1,
          invalidGrid,
       };
