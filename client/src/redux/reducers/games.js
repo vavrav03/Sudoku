@@ -3,10 +3,10 @@ import {
    START_LOADING_GAME,
    STOP_LOADING_GAME,
    SET_CURRENTLY_PLAYED_GAME,
+   SET_CURRENTLY_FOCUSED_CELL
 } from '../actions';
 import games from 'games';
 import _ from 'lodash';
-import { SET_CURRENTLY_FOCUSED_CELL } from 'redux/actions/games';
 
 const gamesStructure = {
    currentlyPlayed: {
@@ -47,9 +47,8 @@ export function gamesReducer(games = gamesStructure, action) {
          return state;
       }
       case SET_CURRENTLY_FOCUSED_CELL: {
-         const { gameType, gameSubtype } = state.currentlyPlayed;
+         const {gameType, gameSubtype} = state.currentlyPlayed;
          const { row, col } = action.payload;
-         console.log(gameType, gameSubtype, state[gameType][gameSubtype])
          state[gameType][gameSubtype].currentlyFocusedCell = {
             row,
             col,
@@ -61,8 +60,13 @@ export function gamesReducer(games = gamesStructure, action) {
    }
 }
 
+export const getCurrentlyPlayedData = (state) => {
+   return state.games.currentlyPlayed;
+}
+
+
 export const getCurrentlyPlayedGameInstance = (state) => {
-   const currentlyPlayedData = state.games.currentlyPlayed;
+   const currentlyPlayedData = getCurrentlyPlayedData(state)
    return state.games[currentlyPlayedData.gameType][
       currentlyPlayedData.gameSubtype
    ];

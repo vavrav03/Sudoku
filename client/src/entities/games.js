@@ -1,3 +1,5 @@
+import { createInvalidGrid } from "utils/gameValidator";
+
 class BoxSize {
    constructor(boxRowCount, boxColCount) {
       this.boxRowCount = boxRowCount;
@@ -39,13 +41,7 @@ export const buildMakeGames = ({ cloneDeep }) => {
          playingBoard = cloneDeep(seed);
       }
       if (!invalidGrid) {
-         invalidGrid = [];
-         for (let i = 0; i < seed.length; i++) {
-            invalidGrid.push([]);
-            for (let j = 0; j < seed.length; j++) {
-               invalidGrid[i][j] = false;
-            }
-         }
+         invalidGrid = createInvalidGrid(playingBoard.length);
       }
       if(!currentlyFocusedCell){
          currentlyFocusedCell = {
@@ -71,11 +67,11 @@ export const buildMakeGames = ({ cloneDeep }) => {
       if (!boxSizesWrapper) {
          throw Error('Invalid box size (seed and solution size)');
       }
-      return Object.freeze({
+      return {
          ...dg,
          boxRowCount: boxSizesWrapper.boxRowCount,
          boxColCount: boxSizesWrapper.boxColCount,
-      });
+      };
    };
 
    const makeClassicGame = (props) => {
@@ -84,17 +80,17 @@ export const buildMakeGames = ({ cloneDeep }) => {
          throw Error('difficulty format is wrong');
       }
       const dg = makeClassicResizedGame(props);
-      return Object.freeze({
+      return {
          ...dg,
          difficulty,
-      });
+      };
    };
 
    const makeClassicXGame = (props) => {
       const dg = makeClassicResizedGame(props);
-      return Object.freeze({
+      return {
          ...dg,
-      });
+      };
    };
 
    const makeJigsawGame = (props) => {
@@ -109,11 +105,11 @@ export const buildMakeGames = ({ cloneDeep }) => {
             areasLists[areaPointersGrid[i][j]].push({ row: i, col: j });
          }
       }
-      return Object.freeze({
+      return {
          ...dg,
          areaPointersGrid,
          areasLists,
-      });
+      };
    };
 
    const makeSamuraiGame = ({}) => {

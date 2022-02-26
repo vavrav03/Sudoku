@@ -41,8 +41,8 @@ export const loadNewGame = (makeMethod, apiCall, gameType, gameSubtype) => {
          dispatch(replaceGame(gameType, gameSubtype, game));
       } catch (error) {
          console.log(error);
-         // dispatch(push(routes.home));
-         // dispatch(setCurrentlyPlayedGame(null, null));
+         dispatch(push(routes.home));
+         dispatch(setCurrentlyPlayedGame(null, null));
          dispatch(stopLoadingGame(gameType, gameSubtype));
       }
    };
