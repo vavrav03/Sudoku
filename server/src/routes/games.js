@@ -1,7 +1,8 @@
 const express = require('express');
 const { getGameStatusHandler } = require('/src/middleware');
 const {
-   createVariant,
+   createClassicVariant,
+   createClassicXVariant,
    createJigsawVariant,
    createSamuraiVariant
 } = require('/src/service/variationCreator.js');
@@ -15,7 +16,7 @@ const makeGameRoutes = ({ database }) => {
             parseInt(req.query.size),
             req.query.difficulty
          );
-         res.locals.createVariant = createVariant;
+         res.locals.createVariant = createClassicVariant;
       } catch (err) {
          return res.status(400).send(err);
       }
@@ -28,7 +29,7 @@ const makeGameRoutes = ({ database }) => {
             parseInt(req.query.size),
             req.query.difficulty
          );
-         res.locals.createVariant = createVariant;
+         res.locals.createVariant = createClassicXVariant;
       } catch (err) {
          return res.status(400).send(err);
       }

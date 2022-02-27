@@ -1,27 +1,53 @@
 const _ = require('lodash');
 
+const {makeClassicGame, makeJigsawGame, makeClassicXGame, makeSamuraiGame, makeSamuraiMixedGame} = require('/src/entities');
+
 const createJigsawVariant = (game) => {
-   return game; // TODO
-}
-
-const createSamuraiVariant = (game) => {
-   //TODO
-}
-
-//create variant clone
-const createClassicVariant = (
-   game,
-) => {
-   const clonedGame = _.cloneDeep(game);
-   const clonedSeed = clonedGame.getSeed();
-   const clonedSolution = clonedGame.getSolution();
-   const playingBoard = clonedGame.getPlayingBoard();
+   const clonedSeed = _.cloneDeep(game.getSeed());
+   const clonedSolution = _.cloneDeep(game.getSolution());
+   const clonedPlayingBoard = _.cloneDeep(game.getPlayingBoard());
+   const clonedAreaPointersGrid = _.cloneDeep(game.getAreaPointersGrid());
    const size = clonedSeed.length;
    const numbers = createShuffledNumbers(size);
 
    changeNumbers(clonedSeed, size, numbers);
    changeNumbers(clonedSolution, size, numbers);
-   changeNumbers(playingBoard, size, numbers);
+   changeNumbers(clonedPlayingBoard, size, numbers);
+
+   let rotationsCount = Math.floor(Math.random() * 4);
+   let transpositionType = Math.floor(Math.random() * 5);
+   rotateAndTranspose(clonedSeed, rotationsCount, transpositionType);
+   rotateAndTranspose(clonedSolution, rotationsCount, transpositionType);
+   rotateAndTranspose(clonedPlayingBoard, rotationsCount, transpositionType);
+   rotateAndTranspose(
+      clonedAreaPointersGrid,
+      rotationsCount,
+      transpositionType
+   );
+   return makeJigsawGame({
+      seed: clonedSeed,
+      solution: clonedSolution,
+      playingBoard: clonedPlayingBoard,
+      areaPointersGrid: clonedAreaPointersGrid,
+      difficulty: game.getDifficulty()
+   });
+};
+
+const createSamuraiVariant = (game) => {
+   //TODO
+};
+
+//create variant clone
+const createClassicVariant = (game) => {
+   const clonedSeed = _.cloneDeep(game.getSeed());
+   const clonedSolution = _.cloneDeep(game.getSolution());
+   const clonedPlayingBoard = _.cloneDeep(game.getPlayingBoard());
+   const size = clonedSeed.length;
+   const numbers = createShuffledNumbers(size);
+
+   changeNumbers(clonedSeed, size, numbers);
+   changeNumbers(clonedSolution, size, numbers);
+   changeNumbers(clonedPlayingBoard, size, numbers);
 
    let rotationsCount = Math.floor(Math.random() * 4);
    let transpositionType = Math.floor(Math.random() * 5);
@@ -31,8 +57,41 @@ const createClassicVariant = (
    }
    rotateAndTranspose(clonedSeed, rotationsCount, transpositionType);
    rotateAndTranspose(clonedSolution, rotationsCount, transpositionType);
-   rotateAndTranspose(playingBoard, rotationsCount, transpositionType);
-   return clonedGame;
+   rotateAndTranspose(clonedPlayingBoard, rotationsCount, transpositionType);
+   return makeClassicGame({
+      seed: clonedSeed,
+      solution: clonedSolution,
+      playingBoard: clonedPlayingBoard,
+      difficulty: game.getDifficulty()
+   });
+};
+
+const createClassicXVariant = (game) => {
+   const clonedSeed = _.cloneDeep(game.getSeed());
+   const clonedSolution = _.cloneDeep(game.getSolution());
+   const clonedPlayingBoard = _.cloneDeep(game.getPlayingBoard());
+   const size = clonedSeed.length;
+   const numbers = createShuffledNumbers(size);
+
+   changeNumbers(clonedSeed, size, numbers);
+   changeNumbers(clonedSolution, size, numbers);
+   changeNumbers(clonedPlayingBoard, size, numbers);
+
+   let rotationsCount = Math.floor(Math.random() * 4);
+   let transpositionType = Math.floor(Math.random() * 5);
+   if (game.getBoxRowCount() !== game.getBoxColCount()) {
+      rotationsCount = Math.floor(Math.random() * 2) * 2;
+      transpositionType = Math.floor(Math.random() * 3);
+   }
+   rotateAndTranspose(clonedSeed, rotationsCount, transpositionType);
+   rotateAndTranspose(clonedSolution, rotationsCount, transpositionType);
+   rotateAndTranspose(clonedPlayingBoard, rotationsCount, transpositionType);
+   return makeClassicXGame({
+      seed: clonedSeed,
+      solution: clonedSolution,
+      playingBoard: clonedPlayingBoard,
+      difficulty: game.getDifficulty()
+   });
 };
 
 const rotateAndTranspose = (grid, rotationsCount, transpositionType) => {
@@ -55,7 +114,7 @@ const rotateAndTranspose = (grid, rotationsCount, transpositionType) => {
          transposeSDiag(grid);
          break;
    }
-}
+};
 
 const createShuffledNumbers = (size) => {
    const numbers = [];
@@ -139,7 +198,7 @@ const writeGrid = (
    boxRowCount = Math.sqrt(grid.length),
    boxColCount = Math.sqrt(grid.length)
 ) => {
-   console.log(boxRowCount)
+   console.log(boxRowCount);
    const size = grid.length;
    for (let i = 0; i < size; i++) {
       if (i % boxRowCount == 0) {
@@ -163,7 +222,8 @@ const writeGrid = (
 };
 
 module.exports = {
-   createVariant: createClassicVariant,
+   createClassicVariant,
+   createClassicXVariant,
    createJigsawVariant,
    createSamuraiVariant,
    rotate90counterClockwise,
@@ -171,5 +231,5 @@ module.exports = {
    transposeY,
    transposeMDiag,
    transposeSDiag,
-   writeGrid
+   writeGrid,
 };

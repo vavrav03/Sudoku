@@ -91,7 +91,7 @@ const askForDifficulty = async (gameType) => {
 
 const askForCount = async (gameType, size, difficulty) => {
    return await ask(
-      `How many games of type ${gameType} with size ${size} and difficulty ${difficulty} (1-200)`
+      `How many games of type ${gameType} with size ${size} and difficulty ${difficulty} (1-200)\n`
    );
 };
 
