@@ -3,9 +3,14 @@ require('dotenv').config({ path: 'src/config/.env' });
 
 const { makeDatabase } = require('/src/database');
 const readline = require('readline');
-const { generateClassicGame, generateClassicXGame, generateClassicResizedGame, generateJigsawGame } = require('/src/service/generators');
-const {writeGrid} = require('/src/service/variationCreator');
-const {boxSizesList} = require('/src/entities');
+const {
+   generateClassicGame,
+   generateClassicXGame,
+   generateJigsawGame,
+   generateSamuraiGame,
+   generateSamuraiMixedGame,
+} = require('/src/service/generators');
+const { writeGrid } = require('/src/service/variationCreator');
 
 const database = makeDatabase(process.env.DATABASE_URL);
 
@@ -22,39 +27,38 @@ function ask(questionText) {
 }
 
 class Game {
-   constructor(name, sizes, subtypeFormatFunction) {
+   constructor(name, sizes, saveToDBMethod, generateMethod) {
       this.name = name;
       this.sizes = sizes;
-      this.subtypeFormatFunction = subtypeFormatFunction;
+      this.saveToDBMethod = saveToDBMethod;
+      this.generateMethod = generateMethod;
    }
 }
-
-const classicSubtypeFormat = (subtype) => {
-   return subtype;
-};
-
-const sizesSubtypeFormat = (subtype) => {
-   return `${subtype}x${subtype}`;
-};
 
 const games = {
    classic: new Game(
       'Classic',
-      ['easy', 'normal', 'hard'],
-      classicSubtypeFormat
+      [4, 6, 8, 9, 10, 12, 14, 16],
+      database.saveClassicGame,
+      generateClassicGame
    ),
-   classicResized: new Game(
-      'Classic Resized',
-      [4, 6, 8, 10, 12, 14, 16],
-      sizesSubtypeFormat
+   classicX: new Game('ClassicX', [4, 9, 16], database.saveClassicXGame, generateClassicXGame),
+   jigsaw: new Game(
+      'Jigsaw',
+      [4, 6, 8, 9, 10, 12, 14, 16],
+      database.saveJigsawGame,
+      generateJigsawGame
    ),
-   classicX: new Game('ClassicX', [4, 9, 16], sizesSubtypeFormat),
-   jigsaw: new Game('Jigsaw', [4, 6, 8, 9, 10, 12, 14, 16], sizesSubtypeFormat),
-   samurai: new Game('Samurai', [9, 12], sizesSubtypeFormat),
-   samuraiMixed: new Game('Samurai mixed', [9, 12], sizesSubtypeFormat),
+   samurai: new Game('Samurai', [9, 12], database.saveSamuraiGame, generateSamuraiGame),
+   samuraiMixed: new Game(
+      'Samurai mixed',
+      [9, 12],
+      database.saveSamuraiMixedGame,
+      generateSamuraiMixedGame
+   ),
 };
 
-const askFortype = async () => {
+const askForType = async () => {
    return await ask(
       `Which of these game types would you like to generate? Type only the number preceding name. Type only one!\n${Object.keys(
          games
@@ -66,53 +70,81 @@ const askFortype = async () => {
    );
 };
 
-const askForSubtype = async (game) => {
+const askForSize = async (game) => {
    return await ask(
-      `Select subtype of ${game.name}\n${game.sizes
+      `Select size of ${game.name}\n${game.sizes
          .map((value, index) => {
-            return `${index + 1}) ${game.subtypeFormatFunction(value)}\n`;
+            return `${index + 1}) ${value}x${value}\n`;
          })
          .join('')}`
    );
 };
 
-const askForCount = async (selectedGameName, selectedSubtype) => {
+const askForDifficulty = async (gameType) => {
    return await ask(
-      `How many games of type ${selectedGameName} with subtype ${selectedSubtype} (1-200)`
+      `Select difficulty of ${gameType}\n` + 
+      '1) easy\n' +
+      '2) normal\n' +
+      '3) hard\n'
+   );
+};
+
+const askForCount = async (gameType, size, difficulty) => {
+   return await ask(
+      `How many games of type ${gameType} with size ${size} and difficulty ${difficulty} (1-200)`
    );
 };
 
 const startDialogue = async () => {
    // const game = generateClassicGame('hard');
-   const size = 16;
-   const boxSizes = boxSizesList[size];
-   const game = generateClassicResizedGame(boxSizes.boxRowCount, boxSizes.boxColCount, size);
-   writeGrid(game.getSeed(), boxSizes.boxRowCount, boxSizes.boxColCount);
-   // const size = 9;
-   // const boxSizes = boxSizesList[size];
-   // const game = generateClassicXGame(size);
-   // writeGrid(game.getSeed(), boxSizes.boxRowCount, boxSizes.boxColCount);
-   // let gameNumber;
-   // while (true) {
-   //    gameNumber = parseInt(await askFortype());
-   //    if (gameNumber >= 1 && gameNumber <= Object.keys(games).length) {
-   //       break;
-   //    }
-   // }
-   // let selectedGame = games[Object.keys(games)[gameNumber - 1]];
-   // let selectedsize;
-   // while (true) {
-   //    selectedsize = parseInt(await askForSubtype(selectedGame));
-   //    if (gameNumber >= 1 && gameNumber <= selectedGame.sizes.length) {
-   //       break;
-   //    }
-   // }
-   // let count
-   // while (true) {
-   //    count = parseInt(await askForCount(selectedGame.name, selectedGame.sizes[selectedsize - 1]))
-   //    if (count >= 1 && count <= 200) {
-   //       break;
-   //    }
-   // }
+   let gameNumber;
+   while (true) {
+      gameNumber = parseInt(await askForType());
+      if (gameNumber >= 1 && gameNumber <= Object.keys(games).length) {
+         break;
+      }
+   }
+   let selectedGame = games[Object.keys(games)[gameNumber - 1]];
+   let selectedSize;
+   while (true) {
+      selectedSize = parseInt(await askForSize(selectedGame));
+      if (gameNumber >= 1 && gameNumber <= selectedGame.sizes.length) {
+         selectedSize = selectedGame.sizes[selectedSize - 1];
+         break;
+      }
+   }
+   let selectedDifficulty;
+   while (true) {
+      selectedDifficulty = parseInt(await askForDifficulty(selectedGame.name));
+      if (gameNumber >= 1 && gameNumber <= 3) {
+         switch(selectedDifficulty){
+            case 1:
+               selectedDifficulty = 'easy';
+               break;
+            case 2: 
+               selectedDifficulty = 'normal';
+               break;
+            case 3:
+               selectedDifficulty = 'hard';
+               break;
+         }
+         break;
+      }
+   }
+   let count;
+   while (true) {
+      count = parseInt(
+         await askForCount(
+            selectedGame.name,
+            selectedGame.sizes[selectedSize - 1]
+         )
+      );
+      if (count >= 1 && count <= 200) {
+         break;
+      }
+   }
+   for(let i = 0; i < count; i++){
+      selectedGame.saveToDBMethod(selectedGame.generateMethod(selectedSize, selectedDifficulty))
+   }
 };
 startDialogue();

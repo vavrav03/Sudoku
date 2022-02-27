@@ -10,6 +10,7 @@ const startSolvingClassic = (results, playingBoard, boxRowCount, boxColCount) =>
          boxColCount
       ),
    ];
+   results = [];
    solveGeneral(conditions, playingBoard, 0, -1, results);
 };
 
@@ -25,6 +26,7 @@ const startSolvingClassicX = (results, playingBoard, boxRowCount, boxColCount) =
       mainDiagContainsNumber,
       secDiagContainsNumber,
    ];
+   results = [];
    solveGeneral(conditions, playingBoard, 0, -1, results);
 };
 
@@ -38,6 +40,7 @@ const startSolvingJigsaw = (results, playingBoard, areaPointersGrid, areasLists)
          areasLists
       ),
    ];
+   results = [];
    solveGeneral(conditions, playingBoard, 0, -1, results);
 };
 

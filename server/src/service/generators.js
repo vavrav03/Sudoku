@@ -2,15 +2,11 @@ const _ = require('lodash');
 const {
    makeClassicGame,
    makeClassicXGame,
-   makeClassicResizedGame,
    makeJigsawGame,
+   makeSamuraiGame,
+   makeSAmuraiMixedGame,
+   boxSizesList
 } = require('/src/entities');
-const { writeGrid } = require('./variationCreator');
-const {
-   startSolvingClassic,
-   startSolvingClassicX,
-   startSolvingJigsaw,
-} = require('./solvers');
 
 const createEmptyGrid = (size) => {
    const grid = [];
@@ -51,36 +47,6 @@ const generateGridDefault = (crossings, size) => {
    );
    return grid;
 };
-
-const generateGridClassicResized = (boxRowCount, boxColCount, size) => {
-   const crossings = [
-      crossRow,
-      crossCol,
-      crossBox.bind(this, boxRowCount, boxColCount),
-   ];
-   return generateGridDefault(crossings, size);
-};
-
-const generateGridClassicX = (boxRowCount, boxColCount, size) => {
-   const crossings = [
-      crossRow,
-      crossCol,
-      crossBox.bind(this, boxRowCount, boxColCount),
-      crossMainDiag,
-      crossSecDiag,
-   ];
-   return generateGridDefault(crossings, size);
-};
-
-const generateGridJigsaw = (areaPointersGrid, areasList, size) => {
-   const crossings = [
-      crossRow,
-      crossCol,
-      crossJigsawArea.bind(this, areaPointersGrid, areasList),
-   ];
-   return generateGridDefault(crossings, size);
-};
-
 const removeNRandomNumbersFromGrid = (n, grid) => {
    const indexes = [];
    for (let i = 0; i < grid.length * grid.length; i++) {
@@ -216,69 +182,70 @@ const crossSecDiag = (possibleNumbersGrid, row, col, number, difference) => {
    }
 };
 
-const generateClassicGame = (difficulty) => {
-   let removeCount;
+const getRemoveCount = (size, difficulty) => {
    switch (difficulty) {
       case 'easy':
-         removeCount = 35;
-         break;
+         return Math.floor((size * size) / 2.31);
       case 'normal':
-         removeCount = 43;
-         break;
+         return Math.floor((size * size) / 1.88);
       case 'hard':
-         removeCount = 50;
-         break;
+         return Math.floor((size * size) / 1.62);
    }
-   const solution = generateGridClassicResized(3, 3, 9);
+   throw Error('bad parameter');
+};
+
+const generateClassicGame = (size, difficulty) => {
+   const {boxRowCount, boxColCount} = boxSizesList[size];
+   const crossings = [
+      crossRow,
+      crossCol,
+      crossBox.bind(this, boxRowCount, boxColCount),
+   ];
+   const removeCount = getRemoveCount(size, difficulty);
+   const solution = generateGridDefault(crossings, size);
    while (true) {
       const seed = _.cloneDeep(solution);
       removeNRandomNumbersFromGrid(removeCount, seed);
       const game = makeClassicGame({ seed, solution, difficulty });
-      startSolvingClassic(game);
+      game.solve();
+      console.log(game.getSolutions());
       if (!game.hasMultipleSolutions()) {
          return game;
       }
    }
 };
 
-const generateClassicResizedGame = (
-   boxRowCount,
-   boxColCount,
-   size,
-   removeCount
-) => {
-   if (!removeCount) removeCount = Math.floor((size * size) / 1.7);
-   const solution = generateGridClassicResized(boxRowCount, boxColCount, size);
-   while (true) {
-      const seed = _.cloneDeep(solution);
-      removeNRandomNumbersFromGrid(removeCount, seed);
-      const game = makeClassicResizedGame({ seed, solution });
-      startSolvingClassic(game);
-      if (!game.hasMultipleSolutions()) {
-         return game;
-      }
-   }
-};
-
-const generateClassicXGame = (size, removeCount) => {
-   if (!removeCount) removeCount = Math.floor((size * size) / 1.7);
+const generateClassicXGame = (size, difficulty) => {
    const boxRowCount = Math.sqrt(size);
-   const solution = generateGridClassicX(boxRowCount, boxRowCount, size);
+   const crossings = [
+      crossRow,
+      crossCol,
+      crossBox.bind(this, boxRowCount, boxRowCount),
+      crossMainDiag,
+      crossSecDiag,
+   ];
+   const removeCount = getRemoveCount(size, difficulty);
+   const solution = generateGridDefault(crossings, size);
    while (true) {
       const seed = _.cloneDeep(solution);
       removeNRandomNumbersFromGrid(removeCount, seed);
-      const game = makeClassicXGame({ seed, solution });
-      startSolvingClassicX(game);
+      const game = makeClassicXGame({ seed, solution, difficulty });
+      game.solve();
       if (!game.hasMultipleSolutions()) {
          return game;
       }
    }
 };
 
-const generateJigsawGame = (size, removeCount) => {
+const generateJigsawGame = (size, difficulty) => {
    //TODO generate areaPointersGrid
-   if (!removeCount) removeCount = Math.floor((size * size) / 1.7);
-   const solution = generateJigsawGame(boxRowCount, boxRowCount, size);
+   const crossings = [
+      crossRow,
+      crossCol,
+      crossJigsawArea.bind(this, areaPointersGrid, areasList),
+   ];
+   const removeCount = getRemoveCount(size, difficulty);
+   const solution = generateGridDefault(crossings, size);
    while (true) {
       const seed = _.cloneDeep(solution);
       removeNRandomNumbersFromGrid(removeCount, seed);
@@ -287,8 +254,9 @@ const generateJigsawGame = (size, removeCount) => {
          areasList,
          seed,
          solution,
+         difficulty
       });
-      startSolvingJigsaw(game);
+      game.solve();
       if (!game.hasMultipleSolutions()) {
          return game;
       }
@@ -301,7 +269,6 @@ const generateSamuraiMixedGame = (size) => {};
 
 module.exports = {
    generateClassicGame,
-   generateClassicResizedGame,
    generateClassicXGame,
    generateJigsawGame,
    generateSamuraiGame,
