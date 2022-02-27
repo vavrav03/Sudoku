@@ -27,7 +27,7 @@ export const startGame = (makeMethod, apiCall, gameType, gameSubtype) => {
          }
       } catch (error) {
          console.log(error);
-         dispatch(responseError(error.response, error.response.data.message));
+         // dispatch(responseError(error.response, error.response.data.message));
       }
    };
 };
@@ -42,6 +42,7 @@ export const loadNewGame = (makeMethod, apiCall, gameType, gameSubtype) => {
       } catch (error) {
          console.log(error);
          dispatch(push(routes.home));
+         dispatch(responseError(error.response, error.response.data.message));
          dispatch(setCurrentlyPlayedGame(null, null));
          dispatch(stopLoadingGame(gameType, gameSubtype));
       }

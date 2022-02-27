@@ -13,7 +13,7 @@ const options = {
 const makeDatabase = (url) => {
    const database = mongoose
       .connect(url, options)
-      .then(() => console.log('Connected to database.'))
+      // .then(() => console.log('Connected to database.'))
       .catch((err) =>
          console.error('Error connecting to database:', err.message)
       );

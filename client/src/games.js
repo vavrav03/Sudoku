@@ -62,7 +62,7 @@ const games = {
    samurai: new Game(
       'Samurai',
       'samurai',
-      [4, 6, 8, 9],
+      [9, 12],
       makeSamuraiGame,
       api.getSamuraiGame,
       null
@@ -70,7 +70,7 @@ const games = {
    samuraiMixed: new Game(
       'Samurai mixed',
       'samuraiMixed',
-      [4, 6, 8, 9],
+      [9, 12],
       makeSamuraiMixedGame,
       api.getSamuraiMixedGame,
       null
