@@ -19,30 +19,26 @@ const makeApiClient = (app) => {
       const response = await api.get('/api/user').send();
       return response;
    };
-   const getClassicGame = async (difficulty) => {
-      return await api.get('/api/games/classic').query({difficulty});
+   const getClassicGame = async (size, difficulty) => {
+      return await api.get('/api/games/classic').query({size, difficulty});
    }
-   const getClassicResizedGame = async (size) => {
-      return await api.get('/api/games/classicResized').query({size});
+   const getClassicXGame = async (size, difficulty) => {
+      return await api.get('/api/games/classicX').query({size, difficulty});
    }
-   const getClassicXGame = async (size) => {
-      return await api.get('/api/games/classicX').query({size});
+   const getJigsawGame = async (size, difficulty) => {
+      return await api.get('/api/games/jigsaw').query({size, difficulty});
    }
-   const getJigsawGame = async (size) => {
-      return await api.get('/api/games/jigsaw').query({size});
+   const getSamuraiGame = async (size, difficulty) => {
+      return await api.get('/api/games/samurai').query({size, difficulty});
    }
-   const getSamuraiGame = async (size) => {
-      return await api.get('/api/games/samurai').query({size});
-   }
-   const getSamuraiMixedGame = async (size) => {
-      return await api.get('/api/games/samuraiMixed').query({size});
+   const getSamuraiMixedGame = async (size, difficulty) => {
+      return await api.get('/api/games/samuraiMixed').query({size, difficulty});
    }
    return {
       registerUser,
       loginUser,
       getUser,
       getClassicGame,
-      getClassicResizedGame,
       getClassicXGame,
       getJigsawGame,
       getSamuraiGame,

@@ -27,21 +27,86 @@ import {
    ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
 import { connect } from 'react-redux';
-import { notImplementedYet, attemptLogout, startGame } from 'redux/actions';
+import { attemptLogout, startGame } from 'redux/actions';
 import { useEffect, useState } from 'react';
+import {chooseGameType} from 'redux/actions/games';
+
 
 import games from 'games';
+import { useDispatch } from 'react-redux';
 
 const standardIconSize = 23;
 
-const SidebarItem = ({ reduxAction, name, ImageIconComponent }) => {
+// //sizeData format: [{name, reduxAction}]
+// const SidebarCollapsibleItem = ({ sizesData, name, ImageIconComponent }) => {
+//    const [open, setOpen] = useState(false);
+//    return (
+//       <>
+//          <ListItem
+//             className={`list-item`}
+//             button
+//             onClick={(e) => setOpen(!open)}
+//          >
+//             <div className='game-icon-container'>
+//                <ImageIconComponent
+//                   width={standardIconSize}
+//                   height={standardIconSize}
+//                />
+//             </div>
+//             <ListItemText primary={name} />
+//             <div className='chevron-icon-container'>
+//                {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+//             </div>
+//          </ListItem>
+//          <Collapse className='collapse-block' in={open}>
+//             {sizesData.map((value) => {
+//                return (
+//                   <div
+//                      className={'collaped-item'}
+//                      key={value.name}
+//                      onClick={(e) => value.reduxAction()}
+//                   >
+//                      {value.name}
+//                   </div>
+//                );
+//             })}
+//          </Collapse>
+//       </>
+//    );
+// };
+
+// const SidebarCollapsibleGameItem = ({
+//    game,
+//    ImageIconComponent,
+// }) => {
+//    const dispatch = useDispatch();
+//    return (
+//       <SidebarCollapsibleItem
+//          name={game.name}
+//          ImageIconComponent={ImageIconComponent}
+//          sizesData={game.sizes.map((value) => {
+//             return {
+//                name: `${value}x${value}`,
+//                reduxAction: (e) => {
+//                   dispatch(startGame(
+//                      game.makeMethod,
+//                      game.apiCall,
+//                      game.type,
+//                      value
+//                   ));
+//                },
+//             };
+//          })}
+//       ></SidebarCollapsibleItem>
+//    );
+// };
+
+const SidebarItem = ({ onClick, text, ImageIconComponent }) => {
    return (
       <ListItem
          className={`list-item`}
          button
-         onClick={(e) => {
-            reduxAction();
-         }}
+         onClick={onClick}
       >
          <div className='game-icon-container'>
             {
@@ -51,76 +116,16 @@ const SidebarItem = ({ reduxAction, name, ImageIconComponent }) => {
                />
             }
          </div>
-         <ListItemText primary={name} />
+         <ListItemText primary={text} />
       </ListItem>
    );
 };
 
-//sizeData format: [{name, reduxAction}]
-const SidebarCollapsibleItem = ({ sizesData, name, ImageIconComponent }) => {
-   const [open, setOpen] = useState(false);
-   return (
-      <>
-         <ListItem
-            className={`list-item`}
-            button
-            onClick={(e) => setOpen(!open)}
-         >
-            <div className='game-icon-container'>
-               <ImageIconComponent
-                  width={standardIconSize}
-                  height={standardIconSize}
-               />
-            </div>
-            <ListItemText primary={name} />
-            <div className='chevron-icon-container'>
-               {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-            </div>
-         </ListItem>
-         <Collapse className='collapse-block' in={open}>
-            {sizesData.map((value) => {
-               return (
-                  <div
-                     className={'collaped-item'}
-                     key={value.name}
-                     onClick={(e) => value.reduxAction()}
-                  >
-                     {value.name}
-                  </div>
-               );
-            })}
-         </Collapse>
-      </>
-   );
-};
-
-const SidebarCollapsibleGameItem = ({
-   game,
-   ImageIconComponent,
-   startGame,
-}) => {
-   return (
-      <SidebarCollapsibleItem
-         name={game.name}
-         ImageIconComponent={ImageIconComponent}
-         sizesData={game.subTypes.map((value) => {
-            return {
-               name: `${value}x${value}`,
-               reduxAction: (e) => {
-                  startGame(
-                     game.makeMethod,
-                     game.apiCall,
-                     game.gameType,
-                     value
-                  );
-               },
-            };
-         })}
-      ></SidebarCollapsibleItem>
-   );
-};
-
-function Sidebar({ startGame, open, closeSidebar }) {
+function Sidebar({ open, closeSidebar }) {
+   const dispatch = useDispatch();
+   const onClickHandler = (type) => {
+      dispatch(chooseGameType(type));
+   }
    return (
       <Drawer variant='persistent' anchor='left' open={open}>
          <div className={'sidebar'}>
@@ -129,75 +134,34 @@ function Sidebar({ startGame, open, closeSidebar }) {
                <IconButton onClick={closeSidebar}>
                   <ChevronLeft />
                </IconButton>
-               {}
             </header>
             <Divider />
             <List>
-               <ListSubheader>CLASSIC</ListSubheader>
+               <ListSubheader>SUDOKU TYPES</ListSubheader>
                <SidebarItem
-                  name={'Easy'}
-                  ImageIconComponent={ClassicEasySudokuIcon}
-                  reduxAction={(e) =>
-                     startGame(
-                        games.classic.makeMethod,
-                        games.classic.apiCall,
-                        'classic',
-                        'easy'
-                     )
-                  }
-               />
-               <SidebarItem
-                  name={'Normal'}
+                  text={games.classic.name}
+                  onClick={onClickHandler.bind(this, games.classic.type)}
                   ImageIconComponent={ClassicNormalSudokuIcon}
-                  reduxAction={(e) =>
-                     startGame(
-                        games.classic.makeMethod,
-                        games.classic.apiCall,
-                        'classic',
-                        'normal'
-                     )
-                  }
                />
                <SidebarItem
-                  name={'Hard'}
-                  ImageIconComponent={ClassicHardSudokuIcon}
-                  reduxAction={(e) =>
-                     startGame(
-                        games.classic.makeMethod,
-                        games.classic.apiCall,
-                        'classic',
-                        'hard'
-                     )
-                  }
-               />
-            </List>
-            <Divider />
-            <List>
-               <ListSubheader>OTHER MODES</ListSubheader>
-               <SidebarCollapsibleGameItem
-                  game={games.classicResized}
-                  ImageIconComponent={Size4x4SudokuIcon}
-                  startGame={startGame}
-               />
-               <SidebarCollapsibleGameItem
-                  game={games.classicX}
+                  text={games.classicX.name}
+                  onClick={onClickHandler.bind(this, games.classicX.type)}
                   ImageIconComponent={ClassicXSudokuIcon}
-                  startGame={startGame}
                />
-               <SidebarCollapsibleGameItem
-                  game={games.jigsaw}
+               <SidebarItem
+                  text={games.jigsaw.name}
+                  onClick={onClickHandler.bind(this, games.jigsaw.type)}
                   ImageIconComponent={JigsawSudokuIcon}
-                  startGame={startGame}
                />
-               <SidebarCollapsibleGameItem
-                  game={games.samurai}
+               <SidebarItem
+                  text={games.samurai.name}
+                  onClick={onClickHandler.bind(this, games.samurai.type)}
                   ImageIconComponent={SamuraiSudokuIcon}
-                  startGame={startGame}
                />
-               <SidebarCollapsibleGameItem
-                  game={games.samuraiMixed}
+               <SidebarItem
+                  text={games.samuraiMixed.name}
+                  onClick={onClickHandler.bind(this, games.samuraiMixed.type)}
                   ImageIconComponent={SamuraiMixedSudokuIcon}
-                  startGame={startGame}
                />
             </List>
          </div>
@@ -205,18 +169,5 @@ function Sidebar({ startGame, open, closeSidebar }) {
    );
 }
 
-const mapDispatchToProps = (dispatch) => {
-   return {
-      showNotImplementedYet: () => {
-         dispatch(notImplementedYet());
-      },
-      startGame: (makeMethod, apiCall, gameType, gameSubtype) => {
-         dispatch(startGame(makeMethod, apiCall, gameType, gameSubtype));
-      },
-   };
-};
-
-const ConnectedSidebar = connect(null, mapDispatchToProps)(Sidebar);
-
-export default ConnectedSidebar;
-export { ConnectedSidebar };
+export default Sidebar;
+export { Sidebar };

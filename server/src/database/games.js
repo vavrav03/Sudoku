@@ -1,8 +1,6 @@
 const {
    ClassicGame,
    makeClassicDBGame,
-   ClassicResizedGame,
-   makeClassicResizedDBGame,
    ClassicXGame,
    makeClassicXDBGame,
    JigsawGame,
@@ -12,7 +10,6 @@ const {
 } = require('/src/database/models');
 const {
    makeClassicGame,
-   makeClassicResizedGame,
    makeClassicXGame,
    makeJigsawGame,
    makeSamuraiGame,
@@ -21,11 +18,18 @@ const {
 
 /**
  * @param {*} size size of seed
- * @returns mongo query used for finding games with seed length of given size
+ * @returns mongo query used for finding games with seed length of given size (only for square sudokus (no samurai))
  */
-const sudokuSizeQuery = (size) => {
+const squareSudokuQuery = (size, difficulty) => {
    return {
       $expr: { $eq: [{ $size: '$seed' }, size] },
+      difficulty
+   };
+};
+const samuraiQuery = (size, difficulty) => {
+   return {
+      $expr: { $eq: [{ $size: '$seed.m' }, size] },
+      difficulty
    };
 };
 
@@ -33,45 +37,38 @@ const convertToEntity = (dbObject, entityCreator) => {
    return dbObject ? entityCreator(dbObject) : null;
 };
 
-const findRandomClassicGame = async (difficulty) => {
+const findRandomClassicGame = async (size, difficulty) => {
    return convertToEntity(
       await ClassicGame.findOne(
-         { difficulty: difficulty }
+         squareSudokuQuery(size, difficulty)
       ),
       makeClassicGame
    );
 };
 
-const findRandomClassicResizedGame = async (size) => {
+const findRandomClassicXGame = async (size, difficulty) => {
    return convertToEntity(
-      await ClassicResizedGame.findOne(sudokuSizeQuery(size)),
-      makeClassicResizedGame
-   );
-};
-
-const findRandomClassicXGame = async (size) => {
-   return convertToEntity(
-      await ClassicXGame.findOne(sudokuSizeQuery(size)),
+      await ClassicXGame.findOne(squareSudokuQuery(size, difficulty)),
       makeClassicXGame
    );
 };
 
-const findRandomJigsawGame = async (size) => {
+const findRandomJigsawGame = async (size, difficulty) => {
    return convertToEntity(
-      await JigsawGame.findOne(sudokuSizeQuery(size)),
+      await JigsawGame.findOne(squareSudokuQuery(size, difficulty)),
       makeJigsawGame
    );
 };
 
-const findRandomSamuraiGame = async (size) => {
+const findRandomSamuraiGame = async (size, difficulty) => {
    return convertToEntity(
-      await SamuraiGame.findOne(sudokuSizeQuery(size), makeSamuraiGame)
+      await SamuraiGame.findOne(samuraiQuery(size, difficulty), makeSamuraiGame)
    );
 };
 
-const findRandomSamuraiMixedGame = async (size) => {
+const findRandomSamuraiMixedGame = async (size, difficulty) => {
    return convertToEntity(
-      await SamuraiMixed.findOne(SamuraiMixedGame(size)),
+      await SamuraiMixedGame.findOne(samuraiQuery(size, difficulty)),
       makeSamuraiMixedGame
    );
 };
@@ -80,16 +77,11 @@ const saveClassicGame = async (game) => {
    await makeClassicDBGame(game).save();
 };
 
-const saveClassicResizedGame = async (game) => {
-   await makeClassicResizedDBGame(game).save();
-};
-
 const saveClassicXGame = async (game) => {
    await makeClassicXDBGame(game).save();
 };
 
 const saveJigsawGame = async (game) => {
-   console.log(makeJigsawDBGame(game));
    await makeJigsawDBGame(game).save();
 };
 
@@ -103,14 +95,12 @@ const saveSamuraiMixedGame = async (game) => {
 
 module.exports = {
    findRandomClassicGame,
-   findRandomClassicResizedGame,
    findRandomClassicXGame,
    findRandomClassicXGame,
    findRandomJigsawGame,
    findRandomSamuraiGame,
    findRandomSamuraiMixedGame,
    saveClassicGame,
-   saveClassicResizedGame,
    saveClassicXGame,
    saveJigsawGame,
    saveSamuraiGame,

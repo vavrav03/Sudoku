@@ -3,71 +3,59 @@ import {
    START_LOADING_GAME,
    STOP_LOADING_GAME,
    SET_CURRENTLY_PLAYED_GAME,
-   SET_CURRENTLY_FOCUSED_CELL
+   SET_CURRENTLY_FOCUSED_CELL,
 } from '../actions';
 import games from 'games';
 import _ from 'lodash';
 
 const gamesStructure = {
-   currentlyPlayed: {
-      gameType: null,
-      gameSubtype: null,
-   },
+   currentlyPlayedType: null
 };
 
 for (const game in games) {
-   gamesStructure[games[game].gameType] = {};
-   for (const subType of games[game].subTypes) {
-      gamesStructure[games[game].gameType][subType] = null;
-   }
+   gamesStructure[games[game].type] = null;
 }
-console.log(gamesStructure);
 
 export function gamesReducer(games = gamesStructure, action) {
-   const state = _.cloneDeep(games);
+   const gamesClone = _.cloneDeep(games);
    switch (action.type) {
       case START_LOADING_GAME: {
-         const { gameType, gameSubtype } = action.payload;
-         state[gameType][gameSubtype] = 'loading';
-         return state;
+         const { type } = action.payload;
+         gamesClone[type] = 'loading';
+         return gamesClone;
       }
       case STOP_LOADING_GAME: {
-         const { gameType, gameSubtype } = action.payload;
-         console.log(gameType, gameSubtype);
-         state[gameType][gameSubtype] = null;
-         return state;
+         const { type } = action.payload;
+         gamesClone[type] = null;
+         return gamesClone;
       }
       case SET_CURRENTLY_PLAYED_GAME: {
-         state.currentlyPlayed = action.payload;
-         return state;
+         gamesClone.currentlyPlayedType = action.payload.type;
+         return gamesClone;
       }
       case REPLACE_GAME: {
-         const { gameType, gameSubtype, gameData } = action.payload;
-         state[gameType][gameSubtype] = gameData;
-         return state;
+         const { type, gameData } = action.payload;
+         gamesClone[type] = _.cloneDeep(gameData);
+         return gamesClone;
       }
       case SET_CURRENTLY_FOCUSED_CELL: {
-         const {gameType, gameSubtype} = state.currentlyPlayed;
          const { row, col } = action.payload;
-         state[gameType][gameSubtype].currentlyFocusedCell = {
+         gamesClone[gamesClone.currentlyPlayedType].currentlyFocusedCell = {
             row,
             col,
          };
-         return state;
+         return gamesClone;
       }
       default:
          return games;
    }
 }
 
-export const getCurrentlyPlayedData = (state) => {
-   return state.games.currentlyPlayed;
-}
+export const getCurrentlyPlayedType = (state) => {
+   return state.games.currentlyPlayedType;
+};
 
-
-export const getCurrentlyPlayedGameInstance = (state) => {
-   const currentlyPlayedData = getCurrentlyPlayedData(state)
-   return state.games[currentlyPlayedData.gameType][
-      currentlyPlayedData.gameSubtype
-   ];
+export const getCurrentlyPlayedInstance = (state) => {
+   const currentlyPlayedType = getCurrentlyPlayedType(state);
+   return state.games[currentlyPlayedType]
 };

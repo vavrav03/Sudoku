@@ -19,12 +19,14 @@ const boxSizesList = {
 };
 
 const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
-   const makeDefaultGame = ({ seed, solutions, solution, playingBoard }) => {
+   const makeDefaultGame = ({ seed, solutions = [], solution, playingBoard, difficulty }) => {
       if (!seed) {
          throw Error('Seed is not defined');
       }
+      if (!['easy', 'normal', 'hard'].includes(difficulty)) {
+         throw Error('difficulty format is wrong');
+      }
       if (solution) {
-         solutions = [];
          solutions.push(solution);
       }
       if(!playingBoard){
@@ -34,23 +36,21 @@ const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
          getSeed: () => seed,
          getSolution: () => solutions[0],
          getSolutions: () => solutions,
-         setSolutions: (s) => {
-            solutions = s;
-         },
+         getDifficulty: () => difficulty,
          hasMultipleSolutions: () => solutions.length > 1,
          getPlayingBoard: () => playingBoard,
          toAPIObject: () => {
             return {
                seed,
                solutions,
-               solution: solutions[0],
-               playingBoard
+               playingBoard,
+               difficulty
             };
          },
       };
    };
 
-   const makeClassicResizedGame = (props) => {
+   const makeClassicGame = (props) => {
       const { seed } = props
       const dg = makeDefaultGame(props);
       const boxSizesWrapper = boxSizesList[`${seed.length}`];
@@ -61,6 +61,9 @@ const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
          ...dg,
          getBoxRowCount: () => boxSizesWrapper.boxRowCount,
          getBoxColCount: () => boxSizesWrapper.boxColCount,
+         solve: () => {
+            solvers.startSolvingClassic(dg.getSolutions(), dg.getPlayingBoard(), boxSizesWrapper.boxRowCount, boxSizesWrapper.boxColCount)
+         },
          toAPIObject: () =>
             Object.freeze({
                ...dg.toAPIObject(),
@@ -70,47 +73,28 @@ const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
       });
    };
 
-   const makeClassicGame = (props) => {
-      const { difficulty } = props;
-      if (!['easy', 'normal', 'hard'].includes(difficulty)) {
-         throw Error('difficulty format is wrong');
-      }
-      const dg = makeClassicResizedGame(props);
-      return Object.freeze({
-         ...dg,
-         getDifficulty: () => difficulty,
-         toAPIObject: () =>
-            Object.freeze({
-               ...dg.toAPIObject(),
-               difficulty,
-            }),
-      });
-   };
-
-   const makeClassicXGame = (props) => {
-      const dg = makeClassicResizedGame(props);
-      return Object.freeze({
-         ...dg,
-         toAPIObject: () => Object.freeze({ ...dg.toAPIObject() }),
-      });
-   };
-
    const makeJigsawGame = (props) => {
       const { areaPointersGrid } = props;
+      let {areasLists} = props;
       const dg = makeDefaultGame(props);
-      const areasLists = [];
-      for (let i = 0; i < areaPointersGrid.length; i++) {
-         areasLists.push([]);
-      }
-      for (let i = 0; i < areaPointersGrid.length; i++) {
-         for (let j = 0; j < areaPointersGrid[i].length; j++) {
-            areasLists[areaPointersGrid[i][j]].push({ row: i, col: j });
+      if(!areasLists){
+         areasLists = [];
+         for (let i = 0; i < areaPointersGrid.length; i++) {
+            areasLists.push([]);
+         }
+         for (let i = 0; i < areaPointersGrid.length; i++) {
+            for (let j = 0; j < areaPointersGrid[i].length; j++) {
+               areasLists[areaPointersGrid[i][j]].push({ row: i, col: j });
+            }
          }
       }
       return Object.freeze({
          ...dg,
          getAreaPointersGrid: () => areaPointersGrid,
          getAreasLists: () => areasLists,
+         solve: () => {
+            solvers.startSolvingJigsaw(dg.getSolutions(), dg.getPlayingBoard(), areaPointersGrid, areasLists);
+         },
          toAPIObject: () =>
             Object.freeze({
                ...dg.toAPIObject(),
@@ -120,17 +104,29 @@ const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
       });
    };
 
-   const makeSamuraiGame = ({}) => {
+   const makeClassicXGame = (props) => {
+      const dg = makeClassicGame(props);
+      return Object.freeze({
+         ...dg,
+         solve: () => {
+            solvers.startSolvingClassicX(dg.getSolutions(), dg.getPlayingBoard(), dg.getBoxRowCount(), dg.getBoxColCount())
+         }
+      })
+   }
+
+   const makeSamuraiGame = (props) => {
+      const dg = makeDefaultGame(props);
       //TODO
    };
 
-   const makeSamuraiMixedGame = ({}) => {
+   const makeSamuraiMixedGame = (props) => {
+      const dg = makeDefaultGame(props);
       //TODO
    };
 
    return {
+      boxSizesList,
       makeClassicGame,
-      makeClassicResizedGame,
       makeClassicXGame,
       makeJigsawGame,
       makeSamuraiGame,

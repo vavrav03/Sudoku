@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const DefaultGameSchema = new Schema({
+const ClassicGameSchema = new Schema({
    seed: {
       type: [[Number]],
       required: true,
@@ -11,11 +11,15 @@ const DefaultGameSchema = new Schema({
       type: [[Number]],
       required: true,
    },
+   difficulty: {
+      type: String,
+      enum: ['easy', 'normal', 'hard'],
+   },
    createdAt: { type: Date, default: Date.now },
 });
 
 const JigsawSchema = new Schema({
-   ...DefaultGameSchema.obj,
+   ...ClassicGameSchema.obj,
    areaPointersGrid: {
       type: [[Number]], //NxN array with indexes into areasList for each grid item
       required: true,
@@ -23,71 +27,86 @@ const JigsawSchema = new Schema({
 });
 
 const SamuraiSchema = new Schema({
-   gameTL: {
-      type: Object,
-      required: true,
+   seed: {
+      tl: {
+         type: [[Number]],
+         required: true,
+      },
+      tr: {
+         type: [[Number]],
+         required: true,
+      },
+      m: {
+         type: [[Number]],
+         required: true,
+      },
+      bl: {
+         type: [[Number]],
+         required: true,
+      },
+      br: {
+         type: [[Number]],
+         required: true,
+      },
    },
-   gameTR: {
-      type: Object,
-      required: true,
+   solution: {
+      tl: {
+         type: [[Number]],
+         required: true,
+      },
+      tr: {
+         type: [[Number]],
+         required: true,
+      },
+      m: {
+         type: [[Number]],
+         required: true,
+      },
+      bl: {
+         type: [[Number]],
+         required: true,
+      },
+      br: {
+         type: [[Number]],
+         required: true,
+      },
    },
-   gameM: {
-      type: Object,
-      required: true,
-   },
-   gameBL: {
-      type: Object,
-      required: true,
-   },
-   gameBR: {
-      type: Object,
-      required: true,
-   },
-});
-
-const ClassicGameSchema = new Schema({
-   ...DefaultGameSchema.obj,
    difficulty: {
       type: String,
       enum: ['easy', 'normal', 'hard'],
    },
+   createdAt: { type: Date, default: Date.now },
 });
 
 const ClassicGame = mongoose.model('classic_games', ClassicGameSchema);
-const makeDefaultDBGame = (game) => {
-   return {
-      seed: game.getSeed(),
-      solution: game.getSolution(),
-   };
-};
+
 const makeClassicDBGame = (game) => {
    return new ClassicGame({
-      ...makeDefaultDBGame(game),
+      seed: game.getSeed(),
+      solution: game.getSolution(),
       difficulty: game.getDifficulty(),
    });
 };
-const ClassicResizedGame = mongoose.model(
-   'classic_games_resized',
-   DefaultGameSchema
-);
-const makeClassicResizedDBGame = (game) => {
-   return new ClassicResizedGame({
-      ...makeDefaultDBGame(game),
-   });
-};
-const ClassicXGame = mongoose.model('classic_xes', DefaultGameSchema);
+
+const ClassicXGame = mongoose.model('classic_xes', ClassicGameSchema);
 const makeClassicXDBGame = (game) => {
    return new ClassicXGame({
-      ...makeDefaultDBGame(game),
+      seed: game.getSeed(),
+      solution: game.getSolution(),
+      difficulty: game.getDifficulty(),
    });
 };
+
 const JigsawGame = mongoose.model('jigsaw_games', JigsawSchema);
 const makeJigsawDBGame = (game) => {
    return new JigsawGame({
-      ...makeDefaultDBGame(game),
+      seed: game.getSeed(),
+      solution: game.getSolution(),
+      difficulty: game.getDifficulty(),
       areaPointersGrid: game.getAreaPointersGrid(),
    });
 };
+
 const SamuraiGame = mongoose.model('samurai_games', SamuraiSchema);
 const makeSamuraiDBGame = (game) => {
    return new SamuraiGame({
@@ -104,8 +123,6 @@ const makeSamuraiMixedDBGame = (game) => {
 module.exports = {
    ClassicGame,
    makeClassicDBGame,
-   ClassicResizedGame,
-   makeClassicResizedDBGame,
    ClassicXGame,
    makeClassicXDBGame,
    JigsawGame,
@@ -113,5 +130,5 @@ module.exports = {
    SamuraiGame,
    makeSamuraiDBGame,
    SamuraiMixedGame,
-   makeSamuraiMixedDBGame
+   makeSamuraiMixedDBGame,
 };

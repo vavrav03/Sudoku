@@ -9,7 +9,7 @@ const createSamuraiVariant = (game) => {
 }
 
 //create variant clone
-const createVariant = (
+const createClassicVariant = (
    game,
 ) => {
    const clonedGame = _.cloneDeep(game);
@@ -139,6 +139,7 @@ const writeGrid = (
    boxRowCount = Math.sqrt(grid.length),
    boxColCount = Math.sqrt(grid.length)
 ) => {
+   console.log(boxRowCount)
    const size = grid.length;
    for (let i = 0; i < size; i++) {
       if (i % boxRowCount == 0) {
@@ -162,7 +163,7 @@ const writeGrid = (
 };
 
 module.exports = {
-   createVariant,
+   createVariant: createClassicVariant,
    createJigsawVariant,
    createSamuraiVariant,
    rotate90counterClockwise,

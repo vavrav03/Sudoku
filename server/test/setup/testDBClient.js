@@ -17,7 +17,7 @@ const makeTestDBClient = (database) => {
 
    const insert1FromEachGame = async () => {
       await database.saveClassicGame(classicGames[0]);
-      await database.saveClassicResizedGame(classic4x4[0]);
+      await database.saveClassicGame(classic4x4[0]);
       await database.saveClassicXGame(classicXGames[0]);
       await database.saveJigsawGame(jigsaw9x9[0]);
       // await database.saveSamuraiGame();

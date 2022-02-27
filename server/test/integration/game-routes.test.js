@@ -3,7 +3,6 @@ const request = require('supertest');
 const { database, testDBClient, apiClient, data } = require('/test/setup');
 const {
    makeClassicGame,
-   makeClassicResizedGame,
    makeClassicXGame,
    makeJigsawGame,
    makeSamuraiGame,
@@ -15,7 +14,6 @@ const {
 describe('games API test', () => {
    beforeEach(async () => {
       await testDBClient.insert1FromEachGame();
-      console.log('inserted')
    });
 
    afterEach(async () => {
@@ -23,21 +21,21 @@ describe('games API test', () => {
    });
 
    it('gets /classic game', async () => {
-      const response = await apiClient.getClassicGame('normal');
+      const response = await apiClient.getClassicGame(9, 'normal');
       expect(response.statusCode).toEqual(200);
       makeClassicGame(response.body);
       expect(true).toEqual(true);
    });
 
-   it('gets /classicResized game', async () => {
-      const response = await apiClient.getClassicResizedGame(4);
+   it('gets /classic game with size of 4', async () => {
+      const response = await apiClient.getClassicGame(4, 'normal');
       expect(response.statusCode).toEqual(200);
-      makeClassicResizedGame(response.body);
+      makeClassicGame(response.body);
       expect(true).toEqual(true);
    });
 
    it('gets /classicX game', async () => {
-      const response = await apiClient.getClassicXGame(9);
+      const response = await apiClient.getClassicXGame(9, 'normal');
       console.log('run')
       expect(response.statusCode).toEqual(200);
       makeClassicXGame(response.body);
@@ -45,7 +43,7 @@ describe('games API test', () => {
    });
 
    it('gets /jigsaw game', async () => {
-      const response = await apiClient.getJigsawGame(9);
+      const response = await apiClient.getJigsawGame(9, 'normal');
       expect(response.statusCode).toEqual(200);
       makeJigsawGame(response.body);
       expect(true).toEqual(true);

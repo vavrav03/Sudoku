@@ -8,26 +8,25 @@ import {
 } from '@mui/icons-material';
 
 import UserNavbarCard from 'components/organisms/Navbar/UserNavbarCard';
-import { connect } from 'react-redux';
-import { notImplementedYet } from 'redux/actions';
-import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 import games from 'games';
+import { useSelector } from 'react-redux';
+import {
+   getCurrentlyPlayedType,
+   getCurrentlyPlayedInstance,
+} from 'redux/reducers/games';
 // import { getOpenedGame } from 'games';
 
 function Navbar({ currentlyPlayedGame, isSidebarOpen, menuButtonAction }) {
-   let currentlyPlayedGameName;
-   try{
-      currentlyPlayedGameName = <><div className='current-game-name-container'>{`${
-         games[currentlyPlayedGame.gameType].name
-      } - ${
-         typeof currentlyPlayedGame.gameSubtype === 'number'
-            ? `${currentlyPlayedGame.gameSubtype}x${currentlyPlayedGame.gameSubtype}`
-            : currentlyPlayedGame.gameSubtype
-      }`}</div>
-      <Divider className={'divider'} orientation='vertical' /></>
-   } catch(err){
-
+   const cpgName = useSelector(getCurrentlyPlayedType);
+   const cpgInstance = useSelector(getCurrentlyPlayedInstance);
+   let cgNameString = '';
+   let cgSizeString =  '';
+   let cgDifficultyString = ''
+   if(cpgInstance){
+      let cgNameString = cpgInstance;
+      let cgSizeString = `- ${cpgInstance.size}x${cpgInstance.size}`;
+      let cgDifficultyString = ` - ${cpgInstance.difficulty}`;
    }
    // const game = getOpenedGame(location.pathname);
    return (
@@ -46,8 +45,15 @@ function Navbar({ currentlyPlayedGame, isSidebarOpen, menuButtonAction }) {
                   <Divider className={'divider'} orientation='vertical' />
                </>
             ) : null}
-            {currentlyPlayedGameName}
-            
+            {cgNameString ? (
+               <>
+                  <div className='current-game-name-container'>
+                     {`${cgNameString} ${cgSizeString} ${cgDifficultyString}`}
+                  </div>
+                  <Divider className={'divider'} orientation='vertical' />
+               </>
+            ) : null}
+
             <Link className='nav-item' to='/'>
                Home
             </Link>
@@ -75,19 +81,5 @@ function Navbar({ currentlyPlayedGame, isSidebarOpen, menuButtonAction }) {
    );
 }
 
-const mapStateToProps = (state) => {
-   return {
-      currentlyPlayedGame: state.games.currentlyPlayed,
-   };
-};
-
-const mapDispatchToProps = (dispatch) => {
-   return {
-      showNotImplementedYet: () => dispatch(notImplementedYet()),
-   };
-};
-
-const ConnectedNavbar = connect(mapStateToProps, mapDispatchToProps)(Navbar);
-
-export default ConnectedNavbar;
-export { ConnectedNavbar, Navbar };
+export default Navbar;
+export { Navbar };

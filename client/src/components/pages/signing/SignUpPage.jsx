@@ -1,7 +1,6 @@
 import React from 'react';
 import {} from '@mui/material';
-import { Grid, Divider, Typography } from '@mui/material';
-import { SignButton } from 'components/atoms/Button';
+import { Grid, Divider, Typography, Button } from '@mui/material';
 import { PasswordFormInput, SignFormInput } from 'components/atoms/Input';
 import { SignUpFormFooter } from 'components/molecules/SignForm/SignFormFooter';
 import { LockIcon } from 'components/atoms/Icons';
@@ -144,7 +143,14 @@ function SignUpPage({ onSubmit }) {
                         </FastField>
                      </Grid>
                      <Grid item xs={12}>
-                        <SignButton text={'Sign up'} />
+                        <Button
+                           fullWidth
+                           variant={'contained'}
+                           color={'primary'}
+                           type='submit'
+                        >
+                           Sign Up
+                        </Button>
                      </Grid>
                   </Grid>
                </Form>

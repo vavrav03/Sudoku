@@ -1,6 +1,5 @@
 const {
    makeClassicGame,
-   makeClassicResizedGame,
    makeClassicXGame,
    makeJigsawGame,
    makeSamuraiGame,
@@ -129,7 +128,7 @@ const classicGames = [
    }),
 ];
 
-const unsolvable4x4Game = makeClassicResizedGame({
+const unsolvable4x4Game = makeClassicGame({
    seed: [
       [1, -1, -1, 4],
       [-1, 4, -1, -1],
@@ -137,10 +136,11 @@ const unsolvable4x4Game = makeClassicResizedGame({
       [4, -1, -1, 1],
    ],
    solutions: [],
+   difficulty: 'normal',
 });
 
 const classic4x4 = [
-   makeClassicResizedGame({
+   makeClassicGame({
       seed: [
          [1, -1, -1, 3],
          [-1, 4, -1, -1],
@@ -155,11 +155,12 @@ const classic4x4 = [
             [4, 3, 2, 1],
          ],
       ],
+      difficulty: 'normal',
    }),
 ];
 
 const classic6x6 = [
-   makeClassicResizedGame({
+   makeClassicGame({
       seed: [
          [-1, 5, -1, -1, -1, -1],
          [2, -1, -1, 5, 1, -1],
@@ -178,6 +179,7 @@ const classic6x6 = [
             [1, 2, 5, 3, 4, 6],
          ],
       ],
+      difficulty: 'normal',
    }),
 ];
 
@@ -218,6 +220,7 @@ const ambiguousClassicSolution = makeClassicGame({
          [4, 9, 5, 6, 1, 2, 7, 3, 8],
       ],
    ],
+   difficulty: 'normal',
 });
 
 const jigsaw9x9 = [
@@ -257,6 +260,7 @@ const jigsaw9x9 = [
          [7, 7, 7, 7, 8, 4, 4, 4, 1],
          [7, 8, 8, 8, 8, 8, 8, 8, 8],
       ],
+      difficulty: 'normal',
    }),
 ];
 
@@ -286,6 +290,7 @@ const classicXGames = [
             [4, 9, 6, 3, 8, 7, 5, 1, 2],
          ],
       ],
+      difficulty: 'normal',
    }),
 ];
 

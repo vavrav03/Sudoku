@@ -1,9 +1,6 @@
-import api from 'api';
 import { push } from 'connected-react-router';
 import routes from 'routes';
-import d from 'entities/index';
 import { responseError } from './error';
-import games from 'games';
 
 export const REPLACE_GAME = 'REPLACE_GAME';
 export const START_LOADING_GAME = 'START_LOADING_GAME';
@@ -11,78 +8,84 @@ export const STOP_LOADING_GAME = 'STOP_LOADING_GAME';
 export const SET_CURRENTLY_PLAYED_GAME = 'SET_CURRENTLY_PLAYED_GAME';
 export const SET_CURRENTLY_FOCUSED_CELL = 'SET_CURRENTLY_FOCUSED_CELL';
 
-export const startGame = (makeMethod, apiCall, gameType, gameSubtype) => {
-   return async (dispatch, getState) => {
-      try {
-         let obj = getState().games[gameType][gameSubtype];
-         console.log(obj);
-         if (obj === 'loading' || obj?.playingBoard) {
-            console.log('doing nothing');
-         } else {
-            dispatch(loadNewGame(makeMethod, apiCall, gameType, gameSubtype));
-         }
-         dispatch(setCurrentlyPlayedGame(gameType, gameSubtype));
-         if (window.location.pathname !== routes.games) {
-            dispatch(push(routes.games));
-         }
-      } catch (error) {
-         console.log(error);
-         // dispatch(responseError(error.response, error.response.data.message));
-      }
-   };
-};
+// export const startGame = (makeMethod, apiCall, type) => {
+//    return async (dispatch, getState) => {
+//       try {
+//          let obj = getState().games[type][size];
+//          console.log(obj);
+//          if (obj === 'loading' || obj?.playingBoard) {
+//             console.log('doing nothing');
+//          } else {
+//             dispatch(loadNewGame(makeMethod, apiCall, type));
+//          }
+//          dispatch(setCurrentlyPlayedGame(type));
+// if (window.location.pathname !== routes.games) {
+//    dispatch(push(routes.games));
+// }
+//       } catch (error) {
+//          console.log(error);
+//          // dispatch(responseError(error.response, error.response.data.message));
+//       }
+//    };
+// };
 
-export const loadNewGame = (makeMethod, apiCall, gameType, gameSubtype) => {
+export const loadNewGame = (makeMethod, apiCall, type, size, difficulty) => {
    return async (dispatch, getState) => {
       try {
-         dispatch(startLoadingGame(gameType, gameSubtype));
-         const res = await apiCall(gameSubtype);
+         dispatch(startLoadingGame(type));
+         const res = await apiCall(size, difficulty);
          const game = makeMethod(res.data);
-         dispatch(replaceGame(gameType, gameSubtype, game));
+         dispatch(replaceGame(type, game));
       } catch (error) {
          console.log(error);
          dispatch(push(routes.home));
          dispatch(responseError(error.response, error.response.data.message));
-         dispatch(setCurrentlyPlayedGame(null, null));
-         dispatch(stopLoadingGame(gameType, gameSubtype));
+         dispatch(setCurrentlyPlayedGame(null, null, null));
+         dispatch(stopLoadingGame(type));
       }
    };
 };
 
-const startLoadingGame = (gameType, gameSubtype) => {
+const startLoadingGame = (type) => {
    return {
       type: START_LOADING_GAME,
       payload: {
-         gameType,
-         gameSubtype,
+         type,
       },
    };
 };
 
-const stopLoadingGame = (gameType, gameSubtype) => {
+const stopLoadingGame = (type) => {
    return {
       type: STOP_LOADING_GAME,
       payload: {
-         gameType,
-         gameSubtype,
+         type,
       },
    };
 };
 
-const setCurrentlyPlayedGame = (gameType, gameSubtype) => {
+export const setCurrentlyPlayedGame = (type) => {
    return {
       type: SET_CURRENTLY_PLAYED_GAME,
       payload: {
-         gameType,
-         gameSubtype,
+         type,
       },
    };
 };
 
-export const replaceGame = (gameType, gameSubtype, gameData) => {
+export const replaceGame = (type, gameData) => {
    return {
       type: REPLACE_GAME,
-      payload: { gameType, gameSubtype, gameData },
+      payload: { type, gameData },
+   };
+};
+
+export const chooseGameType = (type) => {
+   return async (dispatch, getState) => {
+      if (window.location.pathname !== routes.games) {
+         dispatch(push(routes.games));
+      }
+      dispatch(setCurrentlyPlayedGame(type))
    };
 };
 
@@ -95,7 +98,6 @@ export const setCurrentlyFocusedCell = (row, col) => {
       },
    };
 };
-
 // export const checkGameRoute = () => {
 //    return async (dispatch, getState) => {
 //       let gameObject;
@@ -104,14 +106,14 @@ export const setCurrentlyFocusedCell = (row, col) => {
 //             gameObject = games[game];
 //          }
 //       }
-//       let defaultGameSubtype
-//       if(gameObject.gameType === games.classic.gameType){
-//          defaultGameSubtype = 'easy';
+//       let defaultsize
+//       if(gameObject.type === games.classic.type){
+//          defaultsize = 'easy';
 //       } else {
-//          defaultGameSubtype = 9;
+//          defaultsize = 9;
 //       }
-//       if (gameObject.gameType !== getState().games.currentlyPlayed.gameType) {
-//          dispatch(setCurrentlyPlayedGame(gameObject.gameType, defaultGameSubtype));
+//       if (gameObject.type !== getState().games.currentlyPlayed.type) {
+//          dispatch(setCurrentlyPlayedGame(gameObject.type, defaultsize));
 //       }
 //    };
 // };

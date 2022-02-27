@@ -28,10 +28,14 @@ export const buildMakeGames = ({ cloneDeep }) => {
       solution,
       playingBoard,
       invalidGrid,
+      difficulty,
       currentlyFocusedCell,
    }) => {
       if (!seed) {
          throw Error('Seed is not defined');
+      }
+      if (!['easy', 'normal', 'hard'].includes(difficulty)) {
+         throw Error('difficulty format is wrong');
       }
       if (solution) {
          solutions = [];
@@ -56,11 +60,12 @@ export const buildMakeGames = ({ cloneDeep }) => {
          playingBoard,
          hasMultipleSolutions: solutions.length > 1,
          invalidGrid,
-         currentlyFocusedCell
+         currentlyFocusedCell,
+         difficulty
       };
    };
 
-   const makeClassicResizedGame = (props) => {
+   const makeClassicGame = (props) => {
       const { seed } = props;
       const dg = makeDefaultGame(props);
       const boxSizesWrapper = boxSizesList[`${seed.length}`];
@@ -74,20 +79,8 @@ export const buildMakeGames = ({ cloneDeep }) => {
       };
    };
 
-   const makeClassicGame = (props) => {
-      const { difficulty } = props;
-      if (!['easy', 'normal', 'hard'].includes(difficulty)) {
-         throw Error('difficulty format is wrong');
-      }
-      const dg = makeClassicResizedGame(props);
-      return {
-         ...dg,
-         difficulty,
-      };
-   };
-
    const makeClassicXGame = (props) => {
-      const dg = makeClassicResizedGame(props);
+      const dg = makeClassicGame(props);
       return {
          ...dg,
       };
@@ -122,7 +115,6 @@ export const buildMakeGames = ({ cloneDeep }) => {
 
    return {
       makeClassicGame,
-      makeClassicResizedGame,
       makeClassicXGame,
       makeJigsawGame,
       makeSamuraiGame,

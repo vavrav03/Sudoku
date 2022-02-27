@@ -1,8 +1,14 @@
 import React from 'react';
 
-import { Checkbox, FormControlLabel, Grid, Divider, Typography } from '@mui/material';
-import { SignButton } from 'components/atoms/Button';
-import { LockIcon } from "components/atoms/Icons";
+import {
+   Checkbox,
+   FormControlLabel,
+   Grid,
+   Divider,
+   Typography,
+   Button
+} from '@mui/material';
+import { LockIcon } from 'components/atoms/Icons';
 import { PasswordFormInput, SignFormInput } from 'components/atoms/Input';
 import { ConnectedSignInFormFooter } from 'components/molecules/SignForm/SignFormFooter';
 import { ConnectedSocialMedia } from 'components/molecules/SignForm/SignFormSocialMedia';
@@ -80,7 +86,14 @@ function SignInPage({ onSubmit }) {
                         </FastField>
                      </Grid>
                      <Grid item xs={12}>
-                        <SignButton text={"Sign in"} />
+                        <Button
+                           fullWidth
+                           variant={'contained'}
+                           color={'primary'}
+                           type='submit'
+                        >
+                           Sign in
+                        </Button>
                      </Grid>
                   </Grid>
                </Form>

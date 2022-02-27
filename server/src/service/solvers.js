@@ -1,49 +1,46 @@
 const _ = require('lodash');
-const { writeGrid } = require('./variationCreator');
 
-const startSolvingDiagonal = (game) => {
+const startSolvingClassic = (results, playingBoard, boxRowCount, boxColCount) => {
    const conditions = [
       rowContainsNumber,
       colContainsNumber,
       boxContainsNumber.bind(
          this,
-         game.getBoxRowCount(),
-         game.getBoxColCount()
+         boxRowCount,
+         boxColCount
+      ),
+   ];
+   solveGeneral(conditions, playingBoard, 0, -1, results);
+};
+
+const startSolvingClassicX = (results, playingBoard, boxRowCount, boxColCount) => {
+   const conditions = [
+      rowContainsNumber,
+      colContainsNumber,
+      boxContainsNumber.bind(
+         this,
+         boxRowCount,
+         boxColCount,
       ),
       mainDiagContainsNumber,
       secDiagContainsNumber,
    ];
-   game.setSolutions([]);
-   solveGeneral(conditions, game.getPlayingBoard(), 0, -1, game.getSolutions());
+   solveGeneral(conditions, playingBoard, 0, -1, results);
 };
 
-const startSolvingJigsaw = (game) => {
+const startSolvingJigsaw = (results, playingBoard, areaPointersGrid, areasLists) => {
    const conditions = [
       rowContainsNumber,
       colContainsNumber,
       jigsawAreaContainsNumber.bind(
          this,
-         game.getAreaPointersGrid(),
-         game.getAreasLists()
+         areaPointersGrid,
+         areasLists
       ),
    ];
-   game.setSolutions([]);
-   solveGeneral(conditions, game.getPlayingBoard(), 0, -1, game.getSolutions());
+   solveGeneral(conditions, playingBoard, 0, -1, results);
 };
 
-const startSolvingClassic = (game) => {
-   const conditions = [
-      rowContainsNumber,
-      colContainsNumber,
-      boxContainsNumber.bind(
-         this,
-         game.getBoxRowCount(),
-         game.getBoxColCount()
-      ),
-   ];
-   game.setSolutions([]);
-   solveGeneral(conditions, game.getPlayingBoard(), 0, -1, game.getSolutions());
-};
 
 const solveGeneral = (
    conditions /* conditinos must only take arguments: grid, row, col, number -- everything else must be bound*/,
@@ -164,5 +161,5 @@ const secDiagContainsNumber = (grid, row, col, number) => {
 module.exports = {
    startSolvingClassic,
    startSolvingJigsaw,
-   startSolvingDiagonal,
+   startSolvingClassicX,
 };

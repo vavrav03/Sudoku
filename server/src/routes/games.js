@@ -12,6 +12,7 @@ const makeGameRoutes = ({ database }) => {
    router.get('/classic', async (req, res, next) => {
       try {
          res.locals.game = await database.findRandomClassicGame(
+            parseInt(req.query.size),
             req.query.difficulty
          );
          res.locals.createVariant = createVariant;
@@ -21,23 +22,11 @@ const makeGameRoutes = ({ database }) => {
       next();
    });
 
-   router.get('/classicResized', async (req, res, next) => {
-      try {
-         res.locals.game = await database.findRandomClassicResizedGame(
-            parseInt(req.query.size)
-         );
-         res.locals.createVariant = createVariant;
-      } catch (err) {
-         console.log(err);
-         return res.status(400).send(err);
-      }
-      next();
-   });
-
    router.get('/classicX', async (req, res, next) => {
       try {
          res.locals.game = await database.findRandomClassicXGame(
-            parseInt(req.query.size)
+            parseInt(req.query.size),
+            req.query.difficulty
          );
          res.locals.createVariant = createVariant;
       } catch (err) {
@@ -49,7 +38,8 @@ const makeGameRoutes = ({ database }) => {
    router.get('/jigsaw', async (req, res, next) => {
       try {
          res.locals.game = await database.findRandomJigsawGame(
-            parseInt(req.query.size)
+            parseInt(req.query.size),
+            req.query.difficulty
          );
          res.locals.createVariant = createJigsawVariant;
       } catch (err) {
@@ -61,7 +51,8 @@ const makeGameRoutes = ({ database }) => {
    router.get('/samurai', async (req, res, next) => {
       try {
          res.locals.game = await database.findRandomSamuraiGame(
-            parseInt(req.query.size)
+            parseInt(req.query.size),
+            req.query.difficulty
          );
          res.locals.createVariant = createSamuraiVariant;
       } catch (err) {
@@ -73,7 +64,8 @@ const makeGameRoutes = ({ database }) => {
    router.get('/samuraiMixed', async (req, res, next) => {
       try {
          res.locals.game = await database.findRandomSamuraiMixedGame(
-            parseInt(req.query.size)
+            parseInt(req.query.size),
+            req.query.difficulty
          );
          res.locals.createVariant = createSamuraiVariant;
       } catch (err) {

@@ -43,3 +43,21 @@
       }
    }
 }
+
+.game-creator-container {
+   width: 500px;
+   display: flex;
+   flex-direction: column;
+   h1 {
+      margin-bottom: 20px;
+   }
+   
+   .form-item {
+      margin-top: 5px;
+      margin-bottom: 5px;
+   }
+
+   button {
+      margin-top: 10px;
+   }
+}

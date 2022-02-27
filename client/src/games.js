@@ -1,4 +1,3 @@
-import routes from 'routes';
 import api from 'api';
 import d from 'entities/index';
 import {
@@ -8,7 +7,6 @@ import {
 } from 'utils/gameValidator';
 const {
    makeClassicGame,
-   makeClassicResizedGame,
    makeClassicXGame,
    makeJigsawGame,
    makeSamuraiGame,
@@ -16,10 +14,10 @@ const {
 } = d;
 
 class Game {
-   constructor(name, gameType, subTypes, makeMethod, apiCall, fillInvalidGrid) {
+   constructor(name, type, sizes, makeMethod, apiCall, fillInvalidGrid) {
       this.name = name;
-      this.gameType = gameType;
-      this.subTypes = subTypes;
+      this.type = type;
+      this.sizes = sizes;
       this.makeMethod = makeMethod;
       this.apiCall = apiCall;
       this.fillInvalidGrid = fillInvalidGrid;
@@ -30,17 +28,9 @@ const games = {
    classic: new Game(
       'Classic',
       'classic',
-      ['easy', 'normal', 'hard'],
+      [4, 6, 8, 9, 10, 12, 14, 16],
       makeClassicGame,
       api.getClassicGame,
-      fillInvalidGridClassic
-   ),
-   classicResized: new Game(
-      'Classic Resized',
-      'classicResized',
-      [4, 6, 8, 9, 10, 12, 14, 16],
-      makeClassicResizedGame,
-      api.getClassicResizedGame,
       fillInvalidGridClassic
    ),
    classicX: new Game(
@@ -68,7 +58,7 @@ const games = {
       null
    ),
    samuraiMixed: new Game(
-      'Samurai mixed',
+      'Samurai Mixed',
       'samuraiMixed',
       [9, 12],
       makeSamuraiMixedGame,

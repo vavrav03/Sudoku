@@ -3,6 +3,9 @@ require('dotenv').config({ path: 'src/config/.env' });
 
 const { makeDatabase } = require('/src/database');
 const readline = require('readline');
+const { generateClassicGame, generateClassicXGame, generateClassicResizedGame, generateJigsawGame } = require('/src/service/generators');
+const {writeGrid} = require('/src/service/variationCreator');
+const {boxSizesList} = require('/src/entities');
 
 const database = makeDatabase(process.env.DATABASE_URL);
 
@@ -19,9 +22,9 @@ function ask(questionText) {
 }
 
 class Game {
-   constructor(name, subtypes, subtypeFormatFunction) {
+   constructor(name, sizes, subtypeFormatFunction) {
       this.name = name;
-      this.subtypes = subtypes;
+      this.sizes = sizes;
       this.subtypeFormatFunction = subtypeFormatFunction;
    }
 }
@@ -42,7 +45,7 @@ const games = {
    ),
    classicResized: new Game(
       'Classic Resized',
-      [4, 6, 8, 9, 10, 12, 14, 16],
+      [4, 6, 8, 10, 12, 14, 16],
       sizesSubtypeFormat
    ),
    classicX: new Game('ClassicX', [4, 9, 16], sizesSubtypeFormat),
@@ -51,7 +54,7 @@ const games = {
    samuraiMixed: new Game('Samurai mixed', [9, 12], sizesSubtypeFormat),
 };
 
-const askForGameType = async () => {
+const askFortype = async () => {
    return await ask(
       `Which of these game types would you like to generate? Type only the number preceding name. Type only one!\n${Object.keys(
          games
@@ -65,7 +68,7 @@ const askForGameType = async () => {
 
 const askForSubtype = async (game) => {
    return await ask(
-      `Select subtype of ${game.name}\n${game.subtypes
+      `Select subtype of ${game.name}\n${game.sizes
          .map((value, index) => {
             return `${index + 1}) ${game.subtypeFormatFunction(value)}\n`;
          })
@@ -76,31 +79,40 @@ const askForSubtype = async (game) => {
 const askForCount = async (selectedGameName, selectedSubtype) => {
    return await ask(
       `How many games of type ${selectedGameName} with subtype ${selectedSubtype} (1-200)`
-   )
-}
+   );
+};
 
 const startDialogue = async () => {
-   let gameNumber;
-   while (true) {
-      gameNumber = parseInt(await askForGameType());
-      if (gameNumber >= 1 && gameNumber <= Object.keys(games).length) {
-         break;
-      }
-   }
-   let selectedGame = games[Object.keys(games)[gameNumber - 1]];
-   let selectedGameSubtype;
-   while (true) {
-      selectedGameSubtype = parseInt(await askForSubtype(selectedGame));
-      if (gameNumber >= 1 && gameNumber <= selectedGame.subtypes.length) {
-         break;
-      }
-   }
-   let count
-   while (true) {
-      count = parseInt(await askForCount(selectedGame.name, selectedGame.subtypes[selectedGameSubtype - 1]))
-      if (count >= 1 && count <= 200) {
-         break;
-      }
-   }
+   // const game = generateClassicGame('hard');
+   const size = 16;
+   const boxSizes = boxSizesList[size];
+   const game = generateClassicResizedGame(boxSizes.boxRowCount, boxSizes.boxColCount, size);
+   writeGrid(game.getSeed(), boxSizes.boxRowCount, boxSizes.boxColCount);
+   // const size = 9;
+   // const boxSizes = boxSizesList[size];
+   // const game = generateClassicXGame(size);
+   // writeGrid(game.getSeed(), boxSizes.boxRowCount, boxSizes.boxColCount);
+   // let gameNumber;
+   // while (true) {
+   //    gameNumber = parseInt(await askFortype());
+   //    if (gameNumber >= 1 && gameNumber <= Object.keys(games).length) {
+   //       break;
+   //    }
+   // }
+   // let selectedGame = games[Object.keys(games)[gameNumber - 1]];
+   // let selectedsize;
+   // while (true) {
+   //    selectedsize = parseInt(await askForSubtype(selectedGame));
+   //    if (gameNumber >= 1 && gameNumber <= selectedGame.sizes.length) {
+   //       break;
+   //    }
+   // }
+   // let count
+   // while (true) {
+   //    count = parseInt(await askForCount(selectedGame.name, selectedGame.sizes[selectedsize - 1]))
+   //    if (count >= 1 && count <= 200) {
+   //       break;
+   //    }
+   // }
 };
 startDialogue();
