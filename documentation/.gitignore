@@ -1,0 +1,15 @@
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.xmpi
+_minted*
+*.gz
+*.fls
+*.fdb_latexmk
+*.vscode
+*.nav
+*.snm
+*.vrb
