@@ -66,7 +66,6 @@ const generateGeneral = (
    previousCol,
    results //must be array because it is a reference to outer object and it can be determined in recursion that it has been populated
 ) => {
-   // console.log(grid);
    if (results.length === 1) {
       return results[0];
    }
@@ -208,7 +207,6 @@ const generateClassicGame = (size, difficulty) => {
       removeNRandomNumbersFromGrid(removeCount, seed);
       const game = makeClassicGame({ seed, solution, difficulty });
       game.solve();
-      console.log(game.getSolutions());
       if (!game.hasMultipleSolutions()) {
          return game;
       }
@@ -216,7 +214,7 @@ const generateClassicGame = (size, difficulty) => {
 };
 
 const generateClassicXGame = (size, difficulty) => {
-   const boxRowCount = Math.sqrt(size);
+   const {boxRowCount, boxColCount} = boxSizesList[size];
    const crossings = [
       crossRow,
       crossCol,

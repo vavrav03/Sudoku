@@ -36,7 +36,7 @@ const games = {
    classicX: new Game(
       'ClassicX',
       'classicX',
-      [4, 9, 16],
+      [4, 6, 8, 9, 10, 12, 14, 16],
       makeClassicXGame,
       api.getClassicXGame,
       fillInvalidGridClassicX
