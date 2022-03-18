@@ -1,0 +1,63 @@
+.sign-form-container {
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   max-width: 400px;
+
+   .sign-form-headding {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      & .lock-icon {
+         margin-bottom: 5px;
+      }
+   }   
+
+   .sign-footer-container {
+      display: flex;
+      justify-content: space-between;
+      & a {
+         text-decoration: none;
+         color: $blue-theme-primary;
+      }
+   }
+
+   .social-media {
+      display: grid;
+      justify-content: center;
+      width: 100%;
+      font-size: 2rem;
+      grid-auto-flow: column;
+      grid-gap: 14px;
+   }
+
+   & form {
+      padding: 25px 30px 30px 30px;
+      box-shadow: 0 0 2px 2px #d4d4d4;
+      border-radius: 4px;
+      margin-bottom: 30px;
+      & .remember-me-container {
+         padding-top: 5px;
+         padding-bottom: 5px;
+      }
+   }
+}
+
+.game-creator-container {
+   width: 500px;
+   display: flex;
+   flex-direction: column;
+   h1 {
+      margin-bottom: 20px;
+   }
+   
+   .form-item {
+      margin-top: 5px;
+      margin-bottom: 5px;
+   }
+
+   button {
+      margin-top: 10px;
+   }
+}

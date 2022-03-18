@@ -1,0 +1,46 @@
+.sidebar {
+   width: $sidebar-width;
+   & .sidebar-header {
+      height: $navbar-height;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-left: 16px;
+      // padding-right: 16px;
+   }
+
+   & .list-item {
+      color: inherit;
+      text-decoration: inherit;
+      min-width: 35px;
+
+      &.active {
+         background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      & .game-icon-container {
+         min-width: 26px;
+         min-height: 26px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         margin-right: 10px;
+      }
+
+      & .chevron-icon-container {
+      }
+   }
+
+   & .collapse-block {
+      padding-left: 16px;
+      padding-right: 16px;
+
+      & .collaped-item {
+         padding-left: 10px;
+         &:hover {
+            cursor: pointer;
+            text-decoration: underline;
+         }
+      }
+   }
+}
