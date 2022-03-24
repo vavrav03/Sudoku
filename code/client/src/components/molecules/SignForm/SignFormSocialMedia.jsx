@@ -3,7 +3,6 @@ import {
    FacebookSocialIcon,
    GoogleSocialIcon,
 } from "components/atoms/Icons";
-import { connect } from "react-redux";
 
 function SocialMedia() {
    return (
@@ -17,7 +16,5 @@ function SocialMedia() {
       </div>
    );
 }
-const ConnectedSocialMedia = connect(null)(SocialMedia);
-
-export default ConnectedSocialMedia;
-export { ConnectedSocialMedia, SocialMedia };
+export default SocialMedia;
+export { SocialMedia };

@@ -1,4 +1,6 @@
 import React from 'react';
+import { Formik, Form, FastField } from 'formik';
+import { useDispatch } from 'react-redux';
 
 import {
    Checkbox,
@@ -8,16 +10,12 @@ import {
    Typography,
    Button
 } from '@mui/material';
-import { LockIcon } from 'components/atoms/Icons';
-import { PasswordFormInput, SignFormInput } from 'components/atoms/Input';
-import { ConnectedSignInFormFooter } from 'components/molecules/SignForm/SignFormFooter';
-import { ConnectedSocialMedia } from 'components/molecules/SignForm/SignFormSocialMedia';
-
-import { Formik, Form, FastField } from 'formik';
+import { LockIcon, PasswordFormInput, SignFormInput } from 'components/atoms';
+import { SignInFormFooter, SocialMedia } from 'components/molecules';
 import { attemptLogin } from 'redux/actions';
-import { connect } from 'react-redux';
 
 function SignInPage({ onSubmit }) {
+   const dispatch = useDispatch();
    return (
       <div className={'center-in-viewport'}>
          <div className={'sign-form-container sign-in'}>
@@ -27,7 +25,7 @@ function SignInPage({ onSubmit }) {
                   password: '',
                   rememberMe: false,
                }}
-               onSubmit={onSubmit}
+               onSubmit={e => dispatch(attemptLogin(e))}
             >
                <Form>
                   <Grid container spacing={3}>
@@ -38,7 +36,7 @@ function SignInPage({ onSubmit }) {
                         </div>
                      </Grid>
                      <Grid item xs={12}>
-                        <ConnectedSocialMedia />
+                        <SocialMedia />
                      </Grid>
                      <Grid item xs={12}>
                         <Divider>or</Divider>
@@ -98,22 +96,11 @@ function SignInPage({ onSubmit }) {
                   </Grid>
                </Form>
             </Formik>
-            <ConnectedSignInFormFooter />
+            <SignInFormFooter />
          </div>
       </div>
    );
 }
 
-const mapStateToProps = () => {
-   return {};
-};
-
-const mapDispatchToProps = (dispatch) => {
-   return {
-      onSubmit: (formData, { setSubmitting }) => {
-         dispatch(attemptLogin(formData));
-      },
-   };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);
+export default SignInPage
+export {SignInPage}

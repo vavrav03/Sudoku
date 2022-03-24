@@ -4,7 +4,7 @@
    padding-top: $navbar-height;
 }
 
-.content-container {
+.content-positioner {
    width: 100%;
    height: 100%;
    position: relative;
@@ -13,4 +13,10 @@
       // width: calc(100% - $sidebar-width);
       padding-left: $sidebar-width;
    }
+}
+
+.content-container {
+   padding: 8px;
+   width: 100%;
+   height: 100%;
 }

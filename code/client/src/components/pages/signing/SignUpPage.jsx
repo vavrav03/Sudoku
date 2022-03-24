@@ -1,17 +1,16 @@
 import React from 'react';
 import {} from '@mui/material';
 import { Grid, Divider, Typography, Button } from '@mui/material';
-import { PasswordFormInput, SignFormInput } from 'components/atoms/Input';
-import { SignUpFormFooter } from 'components/molecules/SignForm/SignFormFooter';
-import { LockIcon } from 'components/atoms/Icons';
-import { ConnectedSocialMedia } from 'components/molecules/SignForm/SignFormSocialMedia';
+import { PasswordFormInput, SignFormInput, LockIcon } from 'components/atoms';
+import { SignUpFormFooter, SocialMedia } from 'components/molecules/';
 
 import { Formik, Form, FastField } from 'formik';
 import * as Yup from 'yup';
 import { attemptRegister } from 'redux/actions';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-function SignUpPage({ onSubmit }) {
+function SignUpPage({ }) {
+   const dispatch = useDispatch();
    return (
       <div className={'center-in-viewport'}>
          <div className={'sign-form-container sign-up'}>
@@ -35,7 +34,7 @@ function SignUpPage({ onSubmit }) {
                         'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
                      ),
                })}
-               onSubmit={onSubmit}
+               onSubmit={e => dispatch(attemptRegister(e))}
             >
                <Form>
                   <Grid container spacing={3}>
@@ -48,7 +47,7 @@ function SignUpPage({ onSubmit }) {
                         </div>
                      </Grid>
                      <Grid item xs={12}>
-                        <ConnectedSocialMedia />
+                        <SocialMedia />
                      </Grid>
                      <Grid item xs={12}>
                         <Divider>or</Divider>
@@ -161,16 +160,5 @@ function SignUpPage({ onSubmit }) {
    );
 }
 
-const mapStateToProps = () => {
-   return {};
-};
-
-const mapDispatchToProps = (dispatch) => {
-   return {
-      onSubmit: (data) => {
-         dispatch(attemptRegister(data));
-      },
-   };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpPage);
+export default SignUpPage;
+export {SignUpPage}

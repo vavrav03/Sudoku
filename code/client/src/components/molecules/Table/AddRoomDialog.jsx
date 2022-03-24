@@ -1,15 +1,6 @@
 import React from "react";
-
-import AddIcon from "@mui/icons-material/Add";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import IconButton from "@mui/material/IconButton";
-import TextField from "@mui/material/TextField";
-import Tooltip from "@mui/material/Tooltip";
-import { connect } from "react-redux";
+import {Add as AddIcon} from "@mui/icons-material";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField, Tooltip} from "@mui/material";
 
 const AddRoomDialog = ({attemptPostRoom}) => {
    const [meetingTime, setMeetingTime] = React.useState();
@@ -71,11 +62,4 @@ AddRoomDialog.propTypes = {
    // addUserHandler: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = (dispatch) => {
-   // return {
-   //    attemptPostRoom: (textDateValue) =>
-   //       dispatch(attemptPostRoom(new Date(textDateValue))),
-   // };
-};
-
-export default connect(null, mapDispatchToProps)(AddRoomDialog);
+export default AddRoomDialog;

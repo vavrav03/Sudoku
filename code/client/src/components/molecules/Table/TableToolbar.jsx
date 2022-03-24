@@ -1,14 +1,11 @@
 import React from "react";
-
-import clsx from "clsx";
-import DeleteIcon from "@mui/icons-material/Delete";
-import GlobalFilter from "./GlobalFilter";
-import IconButton from "@mui/material/IconButton";
-import { lighten, makeStyles } from "@mui/styles";
 import PropTypes from "prop-types";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Tooltip from "@mui/material/Tooltip";
+import clsx from "clsx";
+import {Delete as DeleteIcon} from "@mui/icons-material";
+import {IconButton, Toolbar, Typography, Tooltip} from "@mui/material";
+import { lighten, makeStyles } from "@mui/styles";
+
+import GlobalFilter from "./GlobalFilter";
 import AddRoomDialog from "./AddRoomDialog";
 
 const useToolbarStyles = makeStyles((theme) => ({
@@ -87,3 +84,4 @@ TableToolbar.propTypes = {
 };
 
 export default TableToolbar;
+export {TableToolbar}

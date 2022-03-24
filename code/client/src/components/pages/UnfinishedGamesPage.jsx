@@ -5,3 +5,4 @@ function UnfinishedGamesPage() {
 }
 
 export default UnfinishedGamesPage;
+export {UnfinishedGamesPage}

@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import NormalPage from "components/templates/NormalPage";
-import OfferTable from "components/organisms/Table/OfferTable";
-import { connect } from "react-redux";
+import React from "react";
+
+import {NormalPage} from "components/templates";
+import {OfferTable} from "components/organisms";
 
 function ShopPage() {
    return (
@@ -14,3 +14,4 @@ function ShopPage() {
 }
 
 export default ShopPage;
+export {ShopPage}

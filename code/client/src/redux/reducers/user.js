@@ -23,10 +23,10 @@ export function userReducer(user = { isUserLoading: false }, action) {
    }
 }
 
-export const getUser = (state) => {
+export const getUserSelector = (state) => {
    return state.user;
 };
 
-export const isUserLoading = (state) => {
+export const isUserLoadingSelector = (state) => {
    return state?.user?.isUserLoading;
 };

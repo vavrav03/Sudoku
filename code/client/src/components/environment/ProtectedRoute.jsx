@@ -1,22 +1,18 @@
 import React from "react";
-import { Redirect, Route } from "react-router-dom";
-import { connect } from "react-redux";
-import { getUser } from "redux/reducers/user";
+import { Route } from "react-router-dom";
+import { getUserSelector } from "redux/selectors";
+import { useSelector, useDispatch } from "react-redux";
+import routes from "routes";
 
-const ProtectedRoute = ({ component: Comp, user, path, ...rest }) => {
+const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
+   const user = useSelector(getUserSelector);
+   const dispatch = useDispatch();
    if (user) {
       return <Route path={path} component={Comp} {...rest}/>;
    } else {
-      window.location.href = "/login";
+      dispatch(push(routes.singIn));
       return null;
    }
 };
 
-const mapStateToProps = (state) => {
-   const user = getUser(state);
-   return {
-      user: user,
-   };
-};
-
-export default connect(mapStateToProps)(ProtectedRoute);
+export default ProtectedRoute;

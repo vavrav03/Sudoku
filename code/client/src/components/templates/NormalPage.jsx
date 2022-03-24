@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Hidden from '@mui/material/Hidden';
-import Navbar from 'components/organisms/Navbar/Navbar';
-import Sidebar from 'components/organisms/Sidebar';
+
+import {Navbar, Sidebar} from 'components/organisms';
 
 function NormalPage(props) {
    const { children } = props;
@@ -24,11 +24,13 @@ function NormalPage(props) {
          </nav>
          <Navbar isSidebarOpen={isSidebarOpen} menuButtonAction={openSidebar} />
          <div
-            className={`content-container ${
+            className={`content-positioner ${
                isSidebarOpen ? 'sidebar-open' : ''
             }`}
          >
+            <div className="content-container">
             {children}
+            </div>
          </div>
       </div>
    );

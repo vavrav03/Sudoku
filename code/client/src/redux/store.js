@@ -44,5 +44,4 @@ export const store = configureStore(history);
 //    return saveToLocalStorage(store.getState());
 // });
 
-export const dispatch = store.dispatch;;
 export default store;

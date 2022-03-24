@@ -1,32 +1,33 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Badge, IconButton, Divider } from '@mui/material';
-
 import {
    Menu as MenuIcon,
    Notifications as NotificationsIcon,
    LocalGroceryStore as LocalGroceryStoreIcon,
 } from '@mui/icons-material';
-
-import UserNavbarCard from 'components/organisms/Navbar/UserNavbarCard';
 import { Link } from 'react-router-dom';
-import games from 'games';
-import { useSelector } from 'react-redux';
+
+import routes from 'routes';
 import {
-   getCurrentlyPlayedType,
-   getCurrentlyPlayedInstance,
-} from 'redux/reducers/games';
+   getCurrentlyPlayedTypeSelector,
+   getCurrentlyPlayedInstanceSelector,
+} from 'redux/selectors';
+import { push } from 'redux/actions';
+import {UserNavbarCard} from 'components/organisms';
 // import { getOpenedGame } from 'games';
 
-function Navbar({ currentlyPlayedGame, isSidebarOpen, menuButtonAction }) {
-   const cpgName = useSelector(getCurrentlyPlayedType);
-   const cpgInstance = useSelector(getCurrentlyPlayedInstance);
+function Navbar({ isSidebarOpen, menuButtonAction }) {
+   const dispatch = useDispatch();
+   const cpgName = useSelector(getCurrentlyPlayedTypeSelector);
+   const cpgInstance = useSelector(getCurrentlyPlayedInstanceSelector);
    let cgNameString = '';
    let cgSizeString =  '';
    let cgDifficultyString = ''
    if(cpgInstance){
-      let cgNameString = cpgInstance;
-      let cgSizeString = `- ${cpgInstance.size}x${cpgInstance.size}`;
-      let cgDifficultyString = ` - ${cpgInstance.difficulty}`;
+      cgNameString = cpgName;
+      cgSizeString = `- ${cpgInstance.size}x${cpgInstance.size}`;
+      cgDifficultyString = ` - ${cpgInstance.difficulty}`;
    }
    // const game = getOpenedGame(location.pathname);
    return (
@@ -62,7 +63,7 @@ function Navbar({ currentlyPlayedGame, isSidebarOpen, menuButtonAction }) {
             <IconButton
                className='nav-item'
                data-tip={'Shop'}
-               onClick={() => {}}
+               onClick={(e) => {dispatch(push(routes.shop))}}
             >
                <LocalGroceryStoreIcon />
             </IconButton>

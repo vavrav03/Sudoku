@@ -51,11 +51,11 @@ export function gamesReducer(games = gamesStructure, action) {
    }
 }
 
-export const getCurrentlyPlayedType = (state) => {
+export const getCurrentlyPlayedTypeSelector = (state) => {
    return state.games.currentlyPlayedType;
 };
 
-export const getCurrentlyPlayedInstance = (state) => {
-   const currentlyPlayedType = getCurrentlyPlayedType(state);
+export const getCurrentlyPlayedInstanceSelector = (state) => {
+   const currentlyPlayedType = getCurrentlyPlayedTypeSelector(state);
    return state.games[currentlyPlayedType]
 };

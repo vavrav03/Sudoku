@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { InputLabel, MenuItem, Select, Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCurrentlyPlayedType } from 'redux/reducers/games';
-import games from 'games';
-import { push } from 'connected-react-router';
-import routes from 'routes';
 import { Redirect } from 'react-router';
-import { loadNewGame } from 'redux/actions/games';
+
+import { getCurrentlyPlayedTypeSelector } from 'redux/selectors';
+import { loadNewGame, push } from 'redux/actions';
+import games from 'games';
+import routes from 'routes';
 
 function GameChooserForm() {
    const [size, setSize] = useState('');
    const [difficulty, setDifficulty] = useState('');
    const dispatch = useDispatch();
-   const currentlyPlayedType = useSelector(getCurrentlyPlayedType);
+   const currentlyPlayedType = useSelector(getCurrentlyPlayedTypeSelector);
    if (!currentlyPlayedType) {
       return <Redirect to={routes.home} />;
    }
@@ -72,3 +72,4 @@ function GameChooserForm() {
 }
 
 export default GameChooserForm;
+export {GameChooserForm}

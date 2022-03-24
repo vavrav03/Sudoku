@@ -1,46 +1,49 @@
-import React from "react";
-
-import Checkbox from "@mui/material/Checkbox";
-import MaUTable from "@mui/material/Table";
-import PropTypes from "prop-types";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableFooter from "@mui/material/TableFooter";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TablePaginationActions from "components/molecules/Table/TablePaginationActions";
-import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import TableToolbar from "components/molecules/Table/TableToolbar";
+import React from 'react';
+import PropTypes from 'prop-types';
 import {
    useGlobalFilter,
    usePagination,
    useRowSelect,
    useSortBy,
    useTable,
-} from "react-table";
+} from 'react-table';
 
-const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
-   const defaultRef = React.useRef();
-   const resolvedRef = ref || defaultRef;
+import {
+   Checkbox,
+   Table,
+   TableBody,
+   TableCell,
+   TableContainer,
+   TableFooter,
+   TableHead,
+   TablePagination,
+   TableRow,
+   TableSortLabel,
+} from '@mui/material';
+import { TableToolbar, TablePaginationActions } from 'components/molecules';
 
-   React.useEffect(() => {
-      resolvedRef.current.indeterminate = indeterminate;
-   }, [resolvedRef, indeterminate]);
+const IndeterminateCheckbox = React.forwardRef(
+   ({ indeterminate, ...rest }, ref) => {
+      const defaultRef = React.useRef();
+      const resolvedRef = ref || defaultRef;
 
-   return (
-      <>
-         <Checkbox ref={resolvedRef} {...rest} />
-      </>
-   );
-});
+      React.useEffect(() => {
+         resolvedRef.current.indeterminate = indeterminate;
+      }, [resolvedRef, indeterminate]);
+
+      return (
+         <>
+            <Checkbox ref={resolvedRef} {...rest} />
+         </>
+      );
+   }
+);
 
 const inputStyle = {
    padding: 0,
    margin: 0,
    border: 0,
-   background: "transparent",
+   background: 'transparent',
 };
 
 // Create an editable cell renderer
@@ -67,7 +70,14 @@ const EditableCell = ({
       setValue(initialValue);
    }, [initialValue]);
 
-   return <input style={inputStyle} value={value} onChange={onChange} onBlur={onBlur} />;
+   return (
+      <input
+         style={inputStyle}
+         value={value}
+         onChange={onChange}
+         onBlur={onBlur}
+      />
+   );
 };
 
 EditableCell.propTypes = {
@@ -129,7 +139,7 @@ const EnhancedTable = ({
             hooks.allColumns.push((columns) => [
                // Let's make a column for selection
                {
-                  id: "selection",
+                  id: 'selection',
                   // The header can use the table's getToggleAllRowsSelectedProps method
                   // to render a checkbox.  Pagination is a problem since this will select all
                   // rows even though not all rows are on the current page.  The solution should
@@ -138,14 +148,18 @@ const EnhancedTable = ({
                   // In that case, getToggleAllRowsSelectedProps works fine.
                   Header: ({ getToggleAllRowsSelectedProps }) => (
                      <div>
-                        <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+                        <IndeterminateCheckbox
+                           {...getToggleAllRowsSelectedProps()}
+                        />
                      </div>
                   ),
                   // The cell can use the individual row's getToggleRowSelectedProps method
                   // to the render a checkbox
                   Cell: ({ row }) => (
                      <div>
-                        <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+                        <IndeterminateCheckbox
+                           {...row.getToggleRowSelectedProps()}
+                        />
                      </div>
                   ),
                },
@@ -163,7 +177,8 @@ const EnhancedTable = ({
       setPageSize(Number(event.target.value));
    };
 
-   const removeByIndexs = (array, indexs) => array.filter((_, i) => !indexs.includes(i));
+   const removeByIndexs = (array, indexs) =>
+      array.filter((_, i) => !indexs.includes(i));
 
    const deleteUserHandler = (event) => {
       const newData = removeByIndexs(
@@ -191,22 +206,26 @@ const EnhancedTable = ({
             headding={headding}
             addButton={addButton}
          />
-         <MaUTable {...getTableProps()}>
+         <Table {...getTableProps()}>
             <TableHead>
                {headerGroups.map((headerGroup) => (
                   <TableRow {...headerGroup.getHeaderGroupProps()}>
                      {headerGroup.headers.map((column) => (
                         <TableCell
-                           {...(column.id === "selection"
+                           {...(column.id === 'selection'
                               ? column.getHeaderProps()
-                              : column.getHeaderProps(column.getSortByToggleProps()))}
+                              : column.getHeaderProps(
+                                   column.getSortByToggleProps()
+                                ))}
                         >
-                           {column.render("Header")}
-                           {column.id !== "selection" ? (
+                           {column.render('Header')}
+                           {column.id !== 'selection' ? (
                               <TableSortLabel
                                  active={column.isSorted}
                                  // react-table has a unsorted state which is not treated here
-                                 direction={column.isSortedDesc ? "desc" : "asc"}
+                                 direction={
+                                    column.isSortedDesc ? 'desc' : 'asc'
+                                 }
                               />
                            ) : null}
                         </TableCell>
@@ -222,7 +241,7 @@ const EnhancedTable = ({
                         {row.cells.map((cell) => {
                            return (
                               <TableCell {...cell.getCellProps()}>
-                                 {cell.render("Cell")}
+                                 {cell.render('Cell')}
                               </TableCell>
                            );
                         })}
@@ -238,14 +257,14 @@ const EnhancedTable = ({
                         5,
                         10,
                         25,
-                        { label: "All", value: data.length },
+                        { label: 'All', value: data.length },
                      ]}
                      colSpan={999}
                      count={data.length}
                      rowsPerPage={pageSize}
                      page={pageIndex}
                      SelectProps={{
-                        inputProps: { "aria-label": "rows per page" },
+                        inputProps: { 'aria-label': 'rows per page' },
                         native: true,
                      }}
                      onChangePage={handleChangePage}
@@ -254,7 +273,7 @@ const EnhancedTable = ({
                   />
                </TableRow>
             </TableFooter>
-         </MaUTable>
+         </Table>
       </TableContainer>
    );
 };

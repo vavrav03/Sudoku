@@ -1,8 +1,7 @@
 import React from 'react';
 
-import CssBaseline from '@mui/material/CssBaseline';
+import {CssBaseline} from '@mui/material';
 import EnhancedTable from './EnhancedTable';
-import { connect } from 'react-redux';
 // import makeData from "./makeData";
 
 const OfferTable = ({ roomsOfOthers }) => {
@@ -57,10 +56,5 @@ const OfferTable = ({ roomsOfOthers }) => {
    );
 };
 
-const mapStateToProps = (state) => {
-   // return {
-   //    roomsOfOthers: getRoomsOfOthers(state),
-   // };
-};
-
-export default connect(mapStateToProps, null)(OfferTable);
+export default OfferTable;
+export {OfferTable}

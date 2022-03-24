@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector  } from 'react-redux';
 import { Menu, MenuItem, Avatar, IconButton, Button } from '@mui/material';
 import {
    ExitToApp,
@@ -7,20 +8,17 @@ import {
    Login as LoginIcon,
    AppRegistration as AppRegistrationIcon,
 } from '@mui/icons-material';
-import { attemptLogout, notImplementedYet } from 'redux/actions';
-import { connect } from 'react-redux';
-import { getUser, isUserLoading } from 'redux/reducers/user';
-import { CoinIcon } from 'components/atoms/Icons';
-import {push} from 'connected-react-router';
-import routes from 'routes';
 import ClipLoader from 'react-spinners/ClipLoader';
 
-function UserNavbarCard({
-   isUserLoading,
-   user,
-   attemptLogout,
-   push,
-}) {
+import routes from 'routes';
+import { attemptLogout, push } from 'redux/actions';
+import { getUserSelector, isUserLoadingSelector } from 'redux/selectors';
+import { CoinIcon } from 'components/atoms';
+
+function UserNavbarCard({}) {
+   const user = useSelector(getUserSelector);
+   const dispatch = useDispatch();
+   const isUserLoading = useSelector(isUserLoadingSelector);
    const [anchorEl, setAnchorEl] = React.useState(null);
    const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -52,11 +50,11 @@ function UserNavbarCard({
                transformOrigin={{ vertical: 'top', horizontal: 'center' }}
                onClose={handleClose}
             >
-               <MenuItem onClick={e => push(routes.singIn)}>
+               <MenuItem onClick={e => dispatch(push(routes.singIn))}>
                   <LoginIcon className="icon" fontSize='small' />
                   <span>Sign in</span>
                </MenuItem>
-               <MenuItem onClick={e => push(routes.signUp)}>
+               <MenuItem onClick={e => dispatch(push(routes.signUp))}>
                   <AppRegistrationIcon className="icon" fontSize='small' />
                   <span>Sign up</span>
                </MenuItem>
@@ -86,11 +84,11 @@ function UserNavbarCard({
             transformOrigin={{ vertical: 'top', horizontal: 'center' }}
             onClose={handleClose}
          >
-            <MenuItem onClick={e => push(routes.userProfilePage)}>
+            <MenuItem onClick={e => dispatch(push(routes.userProfilePage))}>
                <PersonOutline className="icon" fontSize='small' />
                <span>Your profile</span>
             </MenuItem>
-            <MenuItem onClick={attemptLogout}>
+            <MenuItem onClick={e => dispatch(attemptLogout())}>
                <ExitToApp className="icon" fontSize='small' />
                <span>Log out</span>
             </MenuItem>
@@ -99,26 +97,5 @@ function UserNavbarCard({
    );
 }
 
-const mapStateToProps = (state) => {
-   const user = getUser(state);
-   return {
-      isUserLoading: isUserLoading(state),
-      user
-   };
-};
-
-const mapDispatchToProps = (dispatch) => {
-   return {
-      showNotImplementedYet: () => dispatch(notImplementedYet()),
-      attemptLogout: () => dispatch(attemptLogout()),
-      push: (url) => dispatch(push(url)),
-   };
-};
-
-const ConnectedUserNavbarCard = connect(
-   mapStateToProps,
-   mapDispatchToProps
-)(UserNavbarCard);
-
-export default ConnectedUserNavbarCard;
-export { UserNavbarCard, ConnectedUserNavbarCard };
+export default UserNavbarCard;
+export { UserNavbarCard };

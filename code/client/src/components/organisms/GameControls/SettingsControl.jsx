@@ -1,15 +1,15 @@
 import React from 'react';
-import { InputLabel, MenuItem, Select, Button } from '@mui/material';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { getCurrentlyPlayedInstance, getCurrentlyPlayedType } from 'redux/reducers/games';
-import { replaceGame } from 'redux/actions/games';
+import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
+import { Button } from '@mui/material';
+
+import { getCurrentlyPlayedInstanceSelector, getCurrentlyPlayedTypeSelector } from 'redux/selectors';
+import { replaceGame } from 'redux/actions';
 
 function SettingsControl() {
    const dispatch = useDispatch();
-   const cpgType = useSelector(getCurrentlyPlayedType);
-   const cpgInstance = useSelector(getCurrentlyPlayedInstance);
+   const cpgType = useSelector(getCurrentlyPlayedTypeSelector);
+   const cpgInstance = useSelector(getCurrentlyPlayedInstanceSelector);
    const handleResetOnClick = () => {
       cpgInstance.playingBoard = _.cloneDeep(cpgInstance.seed);
       dispatch(replaceGame(cpgType, cpgInstance));
@@ -31,3 +31,4 @@ function SettingsControl() {
 }
 
 export default SettingsControl;
+export {SettingsControl}

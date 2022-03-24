@@ -1,24 +1,24 @@
 import React from 'react';
-import NormalPage from '../templates/NormalPage';
-import GameControls from 'components/organisms/GameControls/GameControls';
-import SettingsControl from 'components/organisms/GameControls/SettingsControl';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ClipLoader from 'react-spinners/ClipLoader';
+
+import games from 'games';
+import { NormalPage } from 'components/templates';
 import {
+   SettingsControl,
    ClassicGameBoard,
    ClassicXGameBoard,
    JigsawGameBoard,
-} from 'components/organisms/GameBoards/GameBoards';
-import games from 'games';
-import { getCurrentlyPlayedInstance, getCurrentlyPlayedType } from 'redux/reducers/games';
-import { Redirect } from 'react-router';
-import routes from 'routes';
-import GameChooserForm from 'components/organisms/GameControls/GameChooserForm';
-import { useSelector } from 'react-redux';
+   GameChooserForm
+} from 'components/organisms';
+import {
+   getCurrentlyPlayedInstanceSelector,
+   getCurrentlyPlayedTypeSelector,
+} from 'redux/selectors';
 
 function GamePage() {
-   const game = useSelector(getCurrentlyPlayedInstance);
-   const currentlyPlayedType = useSelector(getCurrentlyPlayedType)
+   const game = useSelector(getCurrentlyPlayedInstanceSelector);
+   const currentlyPlayedType = useSelector(getCurrentlyPlayedTypeSelector);
    if (game === 'loading') {
       return (
          <NormalPage>
@@ -33,7 +33,7 @@ function GamePage() {
       return (
          <NormalPage>
             <div className='game-everything-container'>
-               <GameChooserForm/>
+               <GameChooserForm />
             </div>
          </NormalPage>
       );
@@ -75,4 +75,5 @@ function GamePage() {
    );
 }
 
-export default GamePage
+export default GamePage;
+export {GamePage}

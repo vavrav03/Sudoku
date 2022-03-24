@@ -1,12 +1,8 @@
 import React from "react";
-
-import FirstPageIcon from "@mui/icons-material/FirstPage";
-import IconButton from "@mui/material/IconButton";
-import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import LastPageIcon from "@mui/icons-material/LastPage";
-import { makeStyles, useTheme } from "@mui/styles";
 import PropTypes from "prop-types";
+import { makeStyles, useTheme } from "@mui/styles";
+import {FirstPage as FirstPageIcon, KeyboardArrowLeft, KeyboardArrowRight, LastPage as LastPageIcon} from "@mui/icons-material";
+import {IconButton} from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -78,3 +74,4 @@ TablePaginationActions.propTypes = {
 };
 
 export default TablePaginationActions;
+export {TablePaginationActions}

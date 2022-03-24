@@ -76,3 +76,4 @@ function GameCell({
 }
 
 export default GameCell;
+export {GameCell}

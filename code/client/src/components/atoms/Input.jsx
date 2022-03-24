@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { TextField, InputAdornment, IconButton } from "@mui/material";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 function SignFormInput(props) {
    return <TextField variant="outlined" fullWidth {...props} />;

@@ -1,16 +1,12 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect, Provider } from 'react-redux';
+import { Provider, useSelector, useDispatch } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { Switch, Route } from 'react-router';
 import Notifications from 'react-notification-system-redux';
 import ReactTooltip from 'react-tooltip';
 
-import { getNotifications } from 'redux/selectors';
-import { attemptUpdateUser } from 'redux/actions';
-
 import routes from 'routes';
-
 import {
    GamePage,
    HomePage,
@@ -18,12 +14,16 @@ import {
    SignUpPage,
    UnfinishedGamesPage,
    ShopPage,
-} from 'components/pages/index';
-import UserProfilePage from 'components/pages/UserProfilePage';
+   UserProfilePage
+} from 'components/pages';
+import { getNotificationsSelector } from 'redux/selectors';
+import { attemptUpdateUser } from 'redux/actions';
 
-function App({ history, attemptUpdateUser, store, notifications }) {
+function App({ history, store }) {
+   const notifications = useSelector(getNotificationsSelector);
+   const dispatch = useDispatch();
    useEffect(() => {
-      attemptUpdateUser();
+      dispatch(attemptUpdateUser());
    }, []);
    return (
       <Provider store={store}>
@@ -75,19 +75,5 @@ App.propTypes = {
    history: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => {
-   return {
-      notifications: getNotifications(state),
-   };
-};
-
-const mapDispatchToProps = (dispatch) => {
-   return {
-      attemptUpdateUser: () => dispatch(attemptUpdateUser()),
-   };
-};
-
-const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
-
-export default ConnectedApp;
-export { App, ConnectedApp };
+export default App;
+export { App };

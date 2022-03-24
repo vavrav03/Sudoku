@@ -1,22 +1,22 @@
-import React from 'react';
+import React, { useEffect }  from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentlyFocusedCell, replaceGame } from 'redux/actions/games';
-import {
-   getCurrentlyPlayedType,
-   getCurrentlyPlayedInstance,
-} from 'redux/reducers/games';
-import Cell from 'components/molecules/Game/GameCell';
+
 import games from 'games';
-import { useEffect } from 'react';
+import { setCurrentlyFocusedCell, replaceGame } from 'redux/actions';
+import {
+   getCurrentlyPlayedTypeSelector,
+   getCurrentlyPlayedInstanceSelector,
+} from 'redux/selectors';
+import {GameCell} from 'components/molecules';
 
 function BoxSudokuTypeBoard({
    calculateCellClassnames,
 }) {
-   const game = useSelector(getCurrentlyPlayedInstance);
+   const game = useSelector(getCurrentlyPlayedInstanceSelector);
    useEffect(() => {
       console.log('rerendering')
    }, [game.playingBoard])
-   const currentlyPlayedType = useSelector(getCurrentlyPlayedType);
+   const currentlyPlayedType = useSelector(getCurrentlyPlayedTypeSelector);
    const dispatch = useDispatch();
    const seed = game.seed;
    const playingBoard = game.playingBoard;
@@ -67,7 +67,7 @@ function BoxSudokuTypeBoard({
                <div className='game-row' style={sizeStyles.row}>
                   {rowValue.map((cellValue, col) => {
                      return (
-                        <Cell
+                        <GameCell
                            style={sizeStyles.cell}
                            className={calculateCellClassnames(row, col)}
                            isEditable={seed[row][col] === -1}
@@ -123,7 +123,7 @@ const backgroundHighlight = (row, col, playingBoardLength) => {
 };
 
 export function ClassicGameBoard() {
-   const game = useSelector(getCurrentlyPlayedInstance);
+   const game = useSelector(getCurrentlyPlayedInstanceSelector);
 
    const calculateCellClassnames = (row, col) => {
       return `${boxDownBorderClassName(
@@ -140,7 +140,7 @@ export function ClassicGameBoard() {
 }
 
 export function ClassicXGameBoard() {
-   const game = useSelector(getCurrentlyPlayedInstance);
+   const game = useSelector(getCurrentlyPlayedInstanceSelector);
    const calculateCellClassnames = (row, col) => {
       return `${boxDownBorderClassName(
          game.boxRowCount,
@@ -152,7 +152,7 @@ export function ClassicXGameBoard() {
 }
 
 export function JigsawGameBoard() {
-   const game = useSelector(getCurrentlyPlayedInstance);
+   const game = useSelector(getCurrentlyPlayedInstanceSelector);
    const calculateCellClassnames = (row, col) => {
       return `${jigsawDownBorderClassName(row, col, game.areaPointersGrid, game.playingBoard.length)} ${jigsawRightBorderClassName(row, col, game.areaPointersGrid, game.playingBoard.length)}`;
    };
