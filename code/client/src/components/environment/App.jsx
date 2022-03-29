@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Provider, useSelector, useDispatch } from 'react-redux';
+import { Provider, connect, useSelector, useDispatch } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { Switch, Route } from 'react-router';
 import Notifications from 'react-notification-system-redux';
@@ -19,11 +19,9 @@ import {
 import { getNotificationsSelector } from 'redux/selectors';
 import { attemptUpdateUser } from 'redux/actions';
 
-function App({ history, store }) {
-   const notifications = useSelector(getNotificationsSelector);
-   const dispatch = useDispatch();
+function App({ history, attemptUpdateUser, store, notifications }) {
    useEffect(() => {
-      dispatch(attemptUpdateUser());
+      attemptUpdateUser();
    }, []);
    return (
       <Provider store={store}>
@@ -75,5 +73,20 @@ App.propTypes = {
    history: PropTypes.object.isRequired,
 };
 
-export default App;
-export { App };
+//because of the code reusability, this needs to be connected via connect function instead of hooks (Hooks cannot be used outside of provider component and therefore the wrapping via Provider component would have to be extracted)
+const mapStateToProps = (state) => {
+   return {
+      notifications: getNotificationsSelector(state),
+   };
+};
+
+const mapDispatchToProps = (dispatch) => {
+   return {
+      attemptUpdateUser: () => dispatch(attemptUpdateUser()),
+   };
+};
+
+const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
+
+export default ConnectedApp;
+export { App, ConnectedApp };

@@ -34,6 +34,9 @@ const makeApiClient = (app) => {
    const getSamuraiMixedGame = async (size, difficulty) => {
       return await api.get('/api/games/samuraiMixed').query({size, difficulty});
    }
+   const getShopItems = async () => {
+      return await api.get('/api/shop');
+   }
    return {
       registerUser,
       loginUser,
@@ -42,7 +45,8 @@ const makeApiClient = (app) => {
       getClassicXGame,
       getJigsawGame,
       getSamuraiGame,
-      getSamuraiMixedGame
+      getSamuraiMixedGame,
+      getShopItems,
    };
 };
 

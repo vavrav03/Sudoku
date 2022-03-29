@@ -1,0 +1,40 @@
+$table-padding: 16px;
+
+.enhanced-table {
+   padding: 0;
+   margin: 0;
+   border: 0;
+   background: 'transparent';
+}
+
+.enhanced-table .toolbar {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   min-height: 40px;
+   padding-left: $table-padding;
+   padding-right: $table-padding;
+}
+
+.enhanced-table .toolbar .title {
+   white-space: nowrap;
+   display: flex;
+   align-items: center;
+   margin-right: 20px;
+   font-size: 1.3rem;
+}
+
+.enhanced-table .toolbar .search-bar {
+   width: 35%;
+}
+
+.enhanced-table .footer {
+   display: flex;
+   align-items: center;
+   justify-content: flex-end;
+   width: 100%;
+}
+
+.enhanced-table .footer .table-pagination{
+   display: flex;
+}

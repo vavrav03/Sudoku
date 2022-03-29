@@ -4,6 +4,7 @@ const {
    makeJigsawGame,
    makeSamuraiGame,
    makeSamuraiMixedGame,
+   makeShopItem,
 } = require('/src/entities');
 const { makeUser } = require('/src/entities');
 const { createHash } = require('/src/service/passwordManager');
@@ -294,6 +295,27 @@ const classicXGames = [
    }),
 ];
 
+const shopData = [
+   makeShopItem({
+      name: 'Samurai 9x9 board',
+      description: 'A 9x9 board with Samurai pieces.',
+      price: 100,
+      imageLink: null,
+   }),
+   makeShopItem({
+      name: 'Mixed Samurai 9x9 board',
+      description: 'A 9x9 board with Mixed Samurai pieces.',
+      price: 120,
+      imageLink: null,
+   }),
+   makeShopItem({
+      name: 'Third item',
+      description: 'An extremely long description that will definitely not fit into one row and therefore it will have to be spanned across multiple rows.',
+      price: 1200,
+      imageLink: null,
+   }),
+];
+
 module.exports = {
    user1WithoutPassword,
    user1Password,
@@ -308,4 +330,5 @@ module.exports = {
    ambiguousClassicSolution,
    jigsaw9x9,
    classicXGames,
+   shopData,
 };

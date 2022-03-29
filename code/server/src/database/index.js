@@ -21,6 +21,7 @@ const makeDatabase = (url) => {
       // @index('./*.js', (f, _) => `...require('${f.path}'),`)
       ...require('./games'),
       ...require('./sessions'),
+      ...require('./shop'),
       ...require('./users'),
       // @endindex
    };

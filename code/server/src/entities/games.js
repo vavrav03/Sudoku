@@ -19,7 +19,13 @@ const boxSizesList = {
 };
 
 const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
-   const makeDefaultGame = ({ seed, solutions = [], solution, playingBoard, difficulty }) => {
+   const makeDefaultGame = ({
+      seed,
+      solutions = [],
+      solution,
+      playingBoard,
+      difficulty,
+   }) => {
       if (!seed) {
          throw Error('Seed is not defined');
       }
@@ -29,7 +35,7 @@ const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
       if (solution) {
          solutions.push(solution);
       }
-      if(!playingBoard){
+      if (!playingBoard) {
          playingBoard = cloneDeep(seed);
       }
       return {
@@ -44,14 +50,14 @@ const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
                seed,
                solutions,
                playingBoard,
-               difficulty
+               difficulty,
             };
          },
       };
    };
 
    const makeClassicGame = (props) => {
-      const { seed } = props
+      const { seed } = props;
       const dg = makeDefaultGame(props);
       const boxSizesWrapper = boxSizesList[`${seed.length}`];
       if (!boxSizesWrapper) {
@@ -62,7 +68,12 @@ const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
          getBoxRowCount: () => boxSizesWrapper.boxRowCount,
          getBoxColCount: () => boxSizesWrapper.boxColCount,
          solve: () => {
-            solvers.startSolvingClassic(dg.getSolutions(), dg.getPlayingBoard(), boxSizesWrapper.boxRowCount, boxSizesWrapper.boxColCount)
+            solvers.startSolvingClassic(
+               dg.getSolutions(),
+               dg.getPlayingBoard(),
+               boxSizesWrapper.boxRowCount,
+               boxSizesWrapper.boxColCount
+            );
          },
          toAPIObject: () =>
             Object.freeze({
@@ -75,9 +86,9 @@ const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
 
    const makeJigsawGame = (props) => {
       const { areaPointersGrid } = props;
-      let {areasLists} = props;
+      let { areasLists } = props;
       const dg = makeDefaultGame(props);
-      if(!areasLists){
+      if (!areasLists) {
          areasLists = [];
          for (let i = 0; i < areaPointersGrid.length; i++) {
             areasLists.push([]);
@@ -93,7 +104,12 @@ const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
          getAreaPointersGrid: () => areaPointersGrid,
          getAreasLists: () => areasLists,
          solve: () => {
-            solvers.startSolvingJigsaw(dg.getSolutions(), dg.getPlayingBoard(), areaPointersGrid, areasLists);
+            solvers.startSolvingJigsaw(
+               dg.getSolutions(),
+               dg.getPlayingBoard(),
+               areaPointersGrid,
+               areasLists
+            );
          },
          toAPIObject: () =>
             Object.freeze({
@@ -109,10 +125,15 @@ const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
       return Object.freeze({
          ...dg,
          solve: () => {
-            solvers.startSolvingClassicX(dg.getSolutions(), dg.getPlayingBoard(), dg.getBoxRowCount(), dg.getBoxColCount())
-         }
-      })
-   }
+            solvers.startSolvingClassicX(
+               dg.getSolutions(),
+               dg.getPlayingBoard(),
+               dg.getBoxRowCount(),
+               dg.getBoxColCount()
+            );
+         },
+      });
+   };
 
    const makeSamuraiGame = (props) => {
       const dg = makeDefaultGame(props);

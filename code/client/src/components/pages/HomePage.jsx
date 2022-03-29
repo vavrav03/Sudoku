@@ -11,7 +11,7 @@ function HomePage() {
             <p>Tato webová aplikace slouží jako maturitní práce z předmětu programování </p>
          </Section>
          <Section>
-
+            
          </Section>
       </NormalPage>
    );

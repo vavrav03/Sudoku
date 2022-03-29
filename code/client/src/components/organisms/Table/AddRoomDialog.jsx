@@ -37,7 +37,6 @@ const AddRoomDialog = ({attemptPostRoom}) => {
                   id="datetime-local"
                   label="Next appointment"
                   type="datetime-local"
-                  // className={classes.textField}
                   InputLabelProps={{
                      shrink: true,
                   }}

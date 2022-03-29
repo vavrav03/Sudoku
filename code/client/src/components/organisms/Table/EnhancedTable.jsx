@@ -14,13 +14,11 @@ import {
    TableBody,
    TableCell,
    TableContainer,
-   TableFooter,
    TableHead,
-   TablePagination,
    TableRow,
    TableSortLabel,
 } from '@mui/material';
-import { TableToolbar, TablePaginationActions } from 'components/molecules';
+import { EnhancedTableToolbar, EnhancedTableFooter, EditableCell, NormalCell } from 'components/organisms';
 
 const IndeterminateCheckbox = React.forwardRef(
    ({ indeterminate, ...rest }, ref) => {
@@ -39,89 +37,21 @@ const IndeterminateCheckbox = React.forwardRef(
    }
 );
 
-const inputStyle = {
-   padding: 0,
-   margin: 0,
-   border: 0,
-   background: 'transparent',
-};
-
-// Create an editable cell renderer
-const EditableCell = ({
-   value: initialValue,
-   row: { index },
-   column: { id },
-   updateMyData, // This is a custom function that we supplied to our table instance
-}) => {
-   // We need to keep and update the state of the cell normally
-   const [value, setValue] = React.useState(initialValue);
-
-   const onChange = (e) => {
-      setValue(e.target.value);
-   };
-
-   // We'll only update the external data when the input is blurred
-   const onBlur = () => {
-      updateMyData(index, id, value);
-   };
-
-   // If the initialValue is changed externall, sync it up with our state
-   React.useEffect(() => {
-      setValue(initialValue);
-   }, [initialValue]);
-
-   return (
-      <input
-         style={inputStyle}
-         value={value}
-         onChange={onChange}
-         onBlur={onBlur}
-      />
-   );
-};
-
-EditableCell.propTypes = {
-   cell: PropTypes.shape({
-      value: PropTypes.any.isRequired,
-   }),
-   row: PropTypes.shape({
-      index: PropTypes.number.isRequired,
-   }),
-   column: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-   }),
-   updateMyData: PropTypes.func.isRequired,
-};
-
 // Set our editable cell renderer as the default Cell renderer
-const defaultColumn = {
-   Cell: EditableCell,
-};
 
 const EnhancedTable = ({
    columns,
    data,
    setData,
    updateMyData,
-   skipPageReset,
+   skipPageReset = true,
    addButton,
    headding,
 }) => {
-   const {
-      getTableProps,
-      headerGroups,
-      prepareRow,
-      page,
-      gotoPage,
-      setPageSize,
-      preGlobalFilteredRows,
-      setGlobalFilter,
-      state: { pageIndex, pageSize, selectedRowIds, globalFilter },
-   } = useTable(
+   const tableProps = useTable(
       {
          columns,
          data,
-         defaultColumn,
          autoResetPage: !skipPageReset,
          // updateMyData isn't part of the API, but
          // anything we put into these options will
@@ -169,13 +99,15 @@ const EnhancedTable = ({
       }
    );
 
-   const handleChangePage = (event, newPage) => {
-      gotoPage(newPage);
-   };
-
-   const handleChangeRowsPerPage = (event) => {
-      setPageSize(Number(event.target.value));
-   };
+   const {
+      getTableProps,
+      headerGroups,
+      prepareRow,
+      page,
+      preGlobalFilteredRows,
+      setGlobalFilter,
+      state: { selectedRowIds, globalFilter = "" },
+   } = tableProps;
 
    const removeByIndexs = (array, indexs) =>
       array.filter((_, i) => !indexs.includes(i));
@@ -195,8 +127,8 @@ const EnhancedTable = ({
 
    // Render the UI for your table
    return (
-      <TableContainer>
-         <TableToolbar
+      <TableContainer className="enhanced-table">
+         <EnhancedTableToolbar
             numSelected={Object.keys(selectedRowIds).length}
             deleteUserHandler={deleteUserHandler}
             addUserHandler={addUserHandler}
@@ -249,31 +181,8 @@ const EnhancedTable = ({
                   );
                })}
             </TableBody>
-
-            <TableFooter>
-               <TableRow>
-                  <TablePagination
-                     rowsPerPageOptions={[
-                        5,
-                        10,
-                        25,
-                        { label: 'All', value: data.length },
-                     ]}
-                     colSpan={999}
-                     count={data.length}
-                     rowsPerPage={pageSize}
-                     page={pageIndex}
-                     SelectProps={{
-                        inputProps: { 'aria-label': 'rows per page' },
-                        native: true,
-                     }}
-                     onChangePage={handleChangePage}
-                     onChangeRowsPerPage={handleChangeRowsPerPage}
-                     ActionsComponent={TablePaginationActions}
-                  />
-               </TableRow>
-            </TableFooter>
          </Table>
+         <EnhancedTableFooter tableProps={tableProps}/>
       </TableContainer>
    );
 };
@@ -283,7 +192,7 @@ EnhancedTable.propTypes = {
    data: PropTypes.array.isRequired,
    updateMyData: PropTypes.func.isRequired,
    setData: PropTypes.func.isRequired,
-   skipPageReset: PropTypes.bool.isRequired,
 };
 
 export default EnhancedTable;
+export {EnhancedTable}
