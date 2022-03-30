@@ -95,7 +95,7 @@ export const attemptLogout = () => {
       try {
          const res = await api.postLogout();
          dispatch(logout());
-         dispatch(push(routes.singIn));
+         dispatch(push(routes.signIn));
       } catch (error) {
          dispatch(responseError(error.response, error.response.data.message));
       }

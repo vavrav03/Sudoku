@@ -3,7 +3,7 @@ const buildMakeUser = (validator, createHash) => {
       firstName,
       first_name,
       lastName,
-      last_name,
+      last_name = "",
       email,
       coinsCount = 0,
       profilePictureLink = null,
@@ -15,9 +15,6 @@ const buildMakeUser = (validator, createHash) => {
       profilePictureLink = profile_picture_link ? profile_picture_link : profilePictureLink; // make user from database data
       if (!firstName) {
          throw Error('First name must be defined');
-      }
-      if (!lastName) {
-         throw Error('Last name must be defined');
       }
       if (!email) {
          throw Error('Email must be defined');

@@ -1,49 +1,83 @@
-import React from "react";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { CssBaseline } from '@mui/material';
-import {NormalPage} from "components/templates";
-import {EnhancedTable} from "components/organisms";
+import ClipLoader from 'react-spinners/ClipLoader';
+import { NormalPage } from 'components/templates';
+import { EnhancedTable, BuyItemDialogIcon } from 'components/organisms';
+
+import { attemptUpdateShop } from 'redux/actions';
+import { getShopItemsSelector, isShopLoadingSelector } from 'redux/selectors';
 
 function ShopPage() {
+   const dispatch = useDispatch();
+   React.useEffect(() => {
+      dispatch(attemptUpdateShop());
+   }, []);
+   const data = useSelector(getShopItemsSelector);
+   const isShopLoading = useSelector(isShopLoadingSelector);
+   console.log(isShopLoading);
    const columns = React.useMemo(
       () => [
          {
             Header: 'Name',
             accessor: 'name',
+            maxWidth: 70,
          },
          {
             Header: 'Description',
             accessor: 'description',
+            width: 150,
          },
          {
             Header: 'Price',
             accessor: 'price',
+            width: 30,
+         },
+         {
+            Header: 'Buy',
+            accessor: 'buy',
+            noSortToggle: true,
+            maxWidth: '20px',
+            Cell: ({row}) => {
+               return (
+                  <BuyItemDialogIcon
+                     name={row.original.name}
+                     description={row.original.description}
+                     price={row.original.price}
+                  />
+               );
+            },
          },
       ],
       []
    );
-
-   const [data, setData] = React.useState([]);
+   if (isShopLoading)
+      return (
+         <NormalPage>
+            <ClipLoader color={'white'} loading={true} size={38} />
+         </NormalPage>
+      );
 
    return (
       <NormalPage>
-         <div className="offer-container">
+         <div className='offer-container'>
             <div>
-         <CssBaseline />
-         <EnhancedTable
-            columns={columns}
-            // data={shopData}
-            setData={()=>{}}
-            updateMyData={()=>{}}
-            data={[{name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}, {name: 'test', description: 'test', price: 'test'}]}
-            addButton={false}
-            headding={'Meeting offers'}
-         />
-      </div>
+               <CssBaseline />
+               <EnhancedTable
+                  columns={columns}
+                  // data={shopData}
+                  setData={() => {}}
+                  updateMyData={() => {}}
+                  data={data}
+                  addButton={false}
+                  headding={'Shop page'}
+               />
+            </div>
          </div>
       </NormalPage>
    );
 }
 
 export default ShopPage;
-export {ShopPage}
+export { ShopPage };

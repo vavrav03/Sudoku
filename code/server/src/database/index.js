@@ -1,5 +1,12 @@
 const mongoose = require('mongoose');
 
+// @index('./*.js', (f, _) => `const ${f.name} = require('${f.path}');`)
+const games = require('./games');
+const sessions = require('./sessions');
+const shop = require('./shop');
+const users = require('./users');
+// @endindex
+
 mongoose.Promise = global.Promise;
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
@@ -10,19 +17,19 @@ const options = {
    useUnifiedTopology: true,
 };
 
-const makeDatabase = (url) => {
-   const database = mongoose
-      .connect(url, options)
-      // .then(() => console.log('Connected to database.'))
-      .catch((err) =>
-         console.error('Error connecting to database:', err.message)
-      );
+const makeDatabase = async (url) => {
+   try {
+      const database = await mongoose.connect(url, options);
+      await shop.initShop();
+   } catch (e) {
+      console.error('Error connecting to database:', e.message);
+   }
    return {
-      // @index('./*.js', (f, _) => `...require('${f.path}'),`)
-      ...require('./games'),
-      ...require('./sessions'),
-      ...require('./shop'),
-      ...require('./users'),
+      // @index('./*.js', (f, _) => `...${f.name},`)
+      ...games,
+      ...sessions,
+      ...shop,
+      ...users,
       // @endindex
    };
 };

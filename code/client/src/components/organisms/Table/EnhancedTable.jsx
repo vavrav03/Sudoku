@@ -6,6 +6,7 @@ import {
    useRowSelect,
    useSortBy,
    useTable,
+   useFlexLayout,
 } from 'react-table';
 
 import {
@@ -53,29 +54,19 @@ const EnhancedTable = ({
          columns,
          data,
          autoResetPage: !skipPageReset,
-         // updateMyData isn't part of the API, but
-         // anything we put into these options will
-         // automatically be available on the instance.
-         // That way we can call this function from our
-         // cell renderer!
          updateMyData,
       },
       useGlobalFilter,
       useSortBy,
       usePagination,
       useRowSelect,
+      useFlexLayout,
       (hooks) => {
          if (addButton) {
             hooks.allColumns.push((columns) => [
-               // Let's make a column for selection
                {
                   id: 'selection',
-                  // The header can use the table's getToggleAllRowsSelectedProps method
-                  // to render a checkbox.  Pagination is a problem since this will select all
-                  // rows even though not all rows are on the current page.  The solution should
-                  // be server side pagination.  For one, the clients should not download all
-                  // rows in most cases.  The client should only download data for the current page.
-                  // In that case, getToggleAllRowsSelectedProps works fine.
+                  noSortToggle: true,
                   Header: ({ getToggleAllRowsSelectedProps }) => (
                      <div>
                         <IndeterminateCheckbox
@@ -83,8 +74,7 @@ const EnhancedTable = ({
                         />
                      </div>
                   ),
-                  // The cell can use the individual row's getToggleRowSelectedProps method
-                  // to the render a checkbox
+                  // to the render a checkbox (good for some types of tables)
                   Cell: ({ row }) => (
                      <div>
                         <IndeterminateCheckbox
@@ -144,14 +134,14 @@ const EnhancedTable = ({
                   <TableRow {...headerGroup.getHeaderGroupProps()}>
                      {headerGroup.headers.map((column) => (
                         <TableCell
-                           {...(column.id === 'selection'
+                           {...(column.noSortToggle
                               ? column.getHeaderProps()
                               : column.getHeaderProps(
                                    column.getSortByToggleProps()
                                 ))}
                         >
                            {column.render('Header')}
-                           {column.id !== 'selection' ? (
+                           {column.noSortToggle ? null : (
                               <TableSortLabel
                                  active={column.isSorted}
                                  // react-table has a unsorted state which is not treated here
@@ -159,7 +149,7 @@ const EnhancedTable = ({
                                     column.isSortedDesc ? 'desc' : 'asc'
                                  }
                               />
-                           ) : null}
+                           )}
                         </TableCell>
                      ))}
                   </TableRow>

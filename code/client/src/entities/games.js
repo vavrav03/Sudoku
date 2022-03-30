@@ -61,7 +61,8 @@ export const buildMakeGames = ({ cloneDeep }) => {
          hasMultipleSolutions: solutions.length > 1,
          invalidGrid,
          currentlyFocusedCell,
-         difficulty
+         difficulty,
+         size: playingBoard.length,
       };
    };
 

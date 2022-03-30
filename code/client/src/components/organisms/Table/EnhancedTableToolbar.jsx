@@ -13,12 +13,6 @@ import {
    TextField,
 } from '@mui/material';
 
-import AddRoomDialog from './AddRoomDialog';
-
-// const useToolbarStyles = makeStyles((theme) => ({
-//
-// }));
-
 const EnhancedTableToolbar = (props) => {
    const {
       numSelected,
@@ -32,12 +26,11 @@ const EnhancedTableToolbar = (props) => {
    } = props;
    return (
       <Toolbar className='toolbar'>
-         {addButton ? <AddRoomDialog addUserHandler={addUserHandler} /> : null}
-         {numSelected > 0 ? (
+         {/* {numSelected > 0 ? (
             <div>{numSelected} selected</div>
-         ) : (
+         ) : ( */}
             <div className='title'>{headding}</div>
-         )}
+         {/* )} */}
 
          {numSelected > 0 ? (
             <Tooltip title='Delete'>

@@ -9,6 +9,7 @@ import {
 import { Link } from 'react-router-dom';
 
 import routes from 'routes';
+import games from 'games';
 import {
    getCurrentlyPlayedTypeSelector,
    getCurrentlyPlayedInstanceSelector,
@@ -21,6 +22,7 @@ function Navbar({ isSidebarOpen, menuButtonAction }) {
    const dispatch = useDispatch();
    const cpgName = useSelector(getCurrentlyPlayedTypeSelector);
    const cpgInstance = useSelector(getCurrentlyPlayedInstanceSelector);
+   console.log(cpgInstance)
    let cgNameString = '';
    let cgSizeString =  '';
    let cgDifficultyString = ''

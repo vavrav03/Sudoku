@@ -20,6 +20,7 @@ function UserNavbarCard({}) {
    const dispatch = useDispatch();
    const isUserLoading = useSelector(isUserLoadingSelector);
    const [anchorEl, setAnchorEl] = React.useState(null);
+   
    const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
    };
@@ -50,7 +51,7 @@ function UserNavbarCard({}) {
                transformOrigin={{ vertical: 'top', horizontal: 'center' }}
                onClose={handleClose}
             >
-               <MenuItem onClick={e => dispatch(push(routes.singIn))}>
+               <MenuItem onClick={e => dispatch(push(routes.signIn))}>
                   <LoginIcon className="icon" fontSize='small' />
                   <span>Sign in</span>
                </MenuItem>

@@ -7,7 +7,6 @@ const makeShopRoutes = ({ database }) => {
 
    router.get('/', async (req, res) => {
       const shopEntities = await database.findAllShopItems();
-      console.log(shopEntities);
       res.send(shopEntities.map((item) => item.toAPIObject()));
    });
 

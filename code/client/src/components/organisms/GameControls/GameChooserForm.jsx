@@ -42,7 +42,7 @@ function GameChooserForm() {
             onChange={(e) => setSize(e.target.value)}
          >
             {sizes.map((value) => {
-               return <MenuItem value={value}>{`${value}x${value}`}</MenuItem>;
+               return <MenuItem key={value} value={value}>{`${value}x${value}`}</MenuItem>;
             })}
          </Select>
          <InputLabel id='game-difficulty-label'>Game difficulty</InputLabel>

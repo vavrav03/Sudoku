@@ -21,10 +21,10 @@ const shopItemSchema = new Schema(
          type: String,
       }
    },
-   { versionKey: false, timestamps: true }
+   { versionKey: false}
 );
 
-shopItemSchema.plugin(MongooseAutoIncrementID.plugin, { modelName: 'shop_items' });
+// shopItemSchema.plugin(MongooseAutoIncrementID.plugin, { modelName: 'shop_items' });
 
 const DBShopItem = mongoose.model('shop_items', shopItemSchema);
 const makeDBShopItem = (shopItem) => {

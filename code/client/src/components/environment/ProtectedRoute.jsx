@@ -10,7 +10,7 @@ const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
    if (user) {
       return <Route path={path} component={Comp} {...rest}/>;
    } else {
-      dispatch(push(routes.singIn));
+      dispatch(push(routes.signIn));
       return null;
    }
 };

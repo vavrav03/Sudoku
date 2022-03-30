@@ -8,6 +8,7 @@ const {
    boxSizesList,
 } = require('/src/entities');
 const { writeGrid } = require('/src/service/variationCreator');
+const { createJigsawAreas } = require('./jigsawGenerator');
 
 const createEmptyGrid = (size) => {
    const grid = [];
@@ -69,11 +70,6 @@ const generateGeneral = (
 ) => {
    if (results.length === 1) {
       return results[0];
-   }
-   if (previousRow === 14) {
-      if (previousCol >= 7) {
-         writeGrid(grid);
-      }
    }
    let currentRow = previousRow;
    let currentCol = previousCol + 1;
@@ -164,7 +160,9 @@ const crossJigsawArea = (
 ) => {
    const areaList = areasLists[areaPointersGrid[row][col]];
    for (const areaItem of areaList) {
-      grid[areaItem.row][areaItem.col][number] += difference;
+      // if (areaItem.row > row || (areaItem.row === row && areaItem.col > col)) {
+         grid[areaItem.row][areaItem.col][number] += difference;
+      // }
    }
 };
 
@@ -244,28 +242,33 @@ const generateClassicXGame = (size, difficulty) => {
 };
 
 const generateJigsawGame = (size, difficulty) => {
-   //TODO generate areaPointersGrid
+   const { boxRowCount, boxColCount } = boxSizesList[size];
+   const { areaPointersGrid, areasLists } = createJigsawAreas(
+      size,
+      boxRowCount,
+      boxColCount
+   );
+
    const crossings = [
       crossRow,
       crossCol,
-      crossJigsawArea.bind(this, areaPointersGrid, areasList),
+      crossJigsawArea.bind(this, areaPointersGrid, areasLists),
    ];
    const removeCount = getRemoveCount(size, difficulty);
    const solution = generateGridDefault(crossings, size);
+   console.log(solution);
    while (true) {
       const seed = _.cloneDeep(solution);
       removeNRandomNumbersFromGrid(removeCount, seed);
       const game = makeJigsawGame({
          areaPointersGrid,
-         areasList,
+         areasLists,
          seed,
          solution,
          difficulty,
       });
       game.solve();
-      if (!game.hasMultipleSolutions()) {
-         return game;
-      }
+      return game;
    }
 };
 

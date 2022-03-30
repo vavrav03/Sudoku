@@ -5,7 +5,6 @@ const makeUserRoutes = ({ database }) => {
    const router = express.Router();
 
    router.get('/', requireAuth, (req, res) => {
-      console.log(req.user.getProfilePictureLink())
       res.send(
          req.user.toAPIObject(),
       );

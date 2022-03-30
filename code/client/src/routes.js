@@ -2,7 +2,7 @@
 export const routes = {
    games: `/games`,
    home: '/',
-   singIn: '/login',
+   signIn: '/login',
    signUp: '/register',
    shop: '/shop',
    unfinishedGames: '/unfinishedGames',

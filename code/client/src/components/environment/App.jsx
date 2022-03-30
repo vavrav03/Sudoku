@@ -37,7 +37,7 @@ function App({ history, attemptUpdateUser, store, notifications }) {
                   ></Route>
                   <Route path={routes.home} exact component={HomePage}></Route> 
                   <Route
-                     path={routes.singIn}
+                     path={routes.signIn}
                      exact
                      component={SignInPage}
                   ></Route>

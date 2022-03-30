@@ -38,3 +38,12 @@ $table-padding: 16px;
 .enhanced-table .footer .table-pagination{
    display: flex;
 }
+
+.enhanced-table tr .row-button {
+   // padding: 0px;
+}
+
+.enhanced-table tr td {
+   padding-top: 4px;
+   padding-bottom: 4px;
+}

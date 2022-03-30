@@ -54,7 +54,7 @@ const EnhancedTableFooter = ({ tableProps }) => {
             variant="standard"
          >
             {pageSizePossibilities.map((value) => {
-               return (<MenuItem value={value}>{value}</MenuItem>)
+               return (<MenuItem key={value} value={value}>{value}</MenuItem>)
             })}
          </Select>
          <div className='pagination-counter'>
