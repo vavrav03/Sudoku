@@ -16,7 +16,7 @@ import {
 const EnhancedTableToolbar = (props) => {
    const {
       numSelected,
-      addUserHandler,
+      toolbarRightIcons,
       deleteUserHandler,
       preGlobalFilteredRows,
       setGlobalFilter,
@@ -39,6 +39,8 @@ const EnhancedTableToolbar = (props) => {
                </IconButton>
             </Tooltip>
          ) : (
+            <>
+            {toolbarRightIcons}
             <TextField
                variant='standard'
                value={globalFilter || ''}
@@ -58,7 +60,7 @@ const EnhancedTableToolbar = (props) => {
                   preGlobalFilteredRows.length
                } ${preGlobalFilteredRows.length == 1 ? 'record' : 'records'}`}
                className='search-bar'
-            ></TextField>
+            ></TextField></>
          )}
       </Toolbar>
    );

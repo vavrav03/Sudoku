@@ -9,7 +9,7 @@ $table-padding: 16px;
 
 .enhanced-table .toolbar {
    display: flex;
-   justify-content: space-between;
+   justify-content: flex-start;
    align-items: center;
    min-height: 40px;
    padding-left: $table-padding;
@@ -22,6 +22,7 @@ $table-padding: 16px;
    align-items: center;
    margin-right: 20px;
    font-size: 1.3rem;
+   margin-right: auto;
 }
 
 .enhanced-table .toolbar .search-bar {
@@ -32,7 +33,6 @@ $table-padding: 16px;
    display: flex;
    align-items: center;
    justify-content: flex-end;
-   width: 100%;
 }
 
 .enhanced-table .footer .table-pagination{

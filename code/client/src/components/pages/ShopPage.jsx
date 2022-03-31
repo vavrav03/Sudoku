@@ -7,13 +7,14 @@ import { NormalPage } from 'components/templates';
 import { EnhancedTable, BuyItemDialogIcon } from 'components/organisms';
 
 import { attemptUpdateShop } from 'redux/actions';
-import { getShopItemsSelector, isShopLoadingSelector } from 'redux/selectors';
+import { getShopItemsSelector, isShopLoadingSelector, getCurrentlyBuyingItemsSelector } from 'redux/selectors';
 
 function ShopPage() {
    const dispatch = useDispatch();
    React.useEffect(() => {
       dispatch(attemptUpdateShop());
    }, []);
+   const buyingItems = useSelector(getCurrentlyBuyingItemsSelector);
    const data = useSelector(getShopItemsSelector);
    const isShopLoading = useSelector(isShopLoadingSelector);
    console.log(isShopLoading);
@@ -52,13 +53,20 @@ function ShopPage() {
       ],
       []
    );
-   if (isShopLoading)
+   if (isShopLoading) {
       return (
          <NormalPage>
             <ClipLoader color={'white'} loading={true} size={38} />
          </NormalPage>
       );
+   }
 
+   const buyedItemsComponent = buyingItems.length != 0 ? (
+      <div className='buyed-items-container'>
+         {buyingItems.map(item => <><span>{item}</span><span>, </span> </>)} 
+         <ClipLoader loading={true} size={38} />
+      </div>
+   ) : null;
    return (
       <NormalPage>
          <div className='offer-container'>
@@ -66,6 +74,7 @@ function ShopPage() {
                <CssBaseline />
                <EnhancedTable
                   columns={columns}
+                  toolbarRightIcons={[buyedItemsComponent]}
                   // data={shopData}
                   setData={() => {}}
                   updateMyData={() => {}}

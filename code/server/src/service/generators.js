@@ -3,8 +3,6 @@ const {
    makeClassicGame,
    makeClassicXGame,
    makeJigsawGame,
-   makeSamuraiGame,
-   makeSAmuraiMixedGame,
    boxSizesList,
 } = require('/src/entities');
 const { writeGrid } = require('/src/service/variationCreator');
@@ -212,6 +210,8 @@ const generateClassicGame = (size, difficulty) => {
       removeNRandomNumbersFromGrid(removeCount, seed);
       const game = makeClassicGame({ seed, solution, difficulty });
       game.solve();
+      console.log('fff');
+      console.log(game.getSolutions());
       if (!game.hasMultipleSolutions()) {
          return game;
       }
@@ -272,14 +272,8 @@ const generateJigsawGame = (size, difficulty) => {
    }
 };
 
-const generateSamuraiGame = (size) => {};
-
-const generateSamuraiMixedGame = (size) => {};
-
 module.exports = {
    generateClassicGame,
    generateClassicXGame,
    generateJigsawGame,
-   generateSamuraiGame,
-   generateSamuraiMixedGame,
 };

@@ -8,8 +8,6 @@ import size2x3Image from 'assets/img/icons/size2x3.png';
 import size4x4Image from 'assets/img/icons/size4x4.png';
 import classicXlImage from 'assets/img/icons/classicX.png';
 import jigsawImage from 'assets/img/icons/jigsaw.png';
-import samuraiImage from 'assets/img/icons/samurai.png';
-import samuraiMixedImage from 'assets/img/icons/samuraiMixed.png';
 import coinImage from 'assets/img/coin.png';
 
 export function Icon({ divClassName, iconClassName }) {
@@ -85,22 +83,6 @@ export function ClassicXSudokuIcon({ width, height }) {
 export function JigsawSudokuIcon({ width, height }) {
    return (
       <ImageIcon width={width} height={height} image={jigsawImage}></ImageIcon>
-   );
-}
-
-export function SamuraiSudokuIcon({ width, height }) {
-   return (
-      <ImageIcon width={width} height={height} image={samuraiImage}></ImageIcon>
-   );
-}
-
-export function SamuraiMixedSudokuIcon({ width, height }) {
-   return (
-      <ImageIcon
-         width={width}
-         height={height}
-         image={samuraiMixedImage}
-      ></ImageIcon>
    );
 }
 

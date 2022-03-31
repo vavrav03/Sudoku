@@ -26,58 +26,6 @@ const JigsawSchema = new Schema({
    },
 });
 
-const SamuraiSchema = new Schema({
-   seed: {
-      tl: {
-         type: [[Number]],
-         required: true,
-      },
-      tr: {
-         type: [[Number]],
-         required: true,
-      },
-      m: {
-         type: [[Number]],
-         required: true,
-      },
-      bl: {
-         type: [[Number]],
-         required: true,
-      },
-      br: {
-         type: [[Number]],
-         required: true,
-      },
-   },
-   solution: {
-      tl: {
-         type: [[Number]],
-         required: true,
-      },
-      tr: {
-         type: [[Number]],
-         required: true,
-      },
-      m: {
-         type: [[Number]],
-         required: true,
-      },
-      bl: {
-         type: [[Number]],
-         required: true,
-      },
-      br: {
-         type: [[Number]],
-         required: true,
-      },
-   },
-   difficulty: {
-      type: String,
-      enum: ['easy', 'normal', 'hard'],
-   },
-   createdAt: { type: Date, default: Date.now },
-});
-
 const ClassicGame = mongoose.model('classic_games', ClassicGameSchema);
 
 const makeClassicDBGame = (game) => {
@@ -107,19 +55,6 @@ const makeJigsawDBGame = (game) => {
    });
 };
 
-const SamuraiGame = mongoose.model('samurai_games', SamuraiSchema);
-const makeSamuraiDBGame = (game) => {
-   return new SamuraiGame({
-      //TODO
-   });
-};
-const SamuraiMixedGame = mongoose.model('samurai_mixed_games', SamuraiSchema);
-const makeSamuraiMixedDBGame = (game) => {
-   return new SamuraiMixedGame({
-      //TODO
-   });
-};
-
 module.exports = {
    ClassicGame,
    makeClassicDBGame,
@@ -127,8 +62,4 @@ module.exports = {
    makeClassicXDBGame,
    JigsawGame,
    makeJigsawDBGame,
-   SamuraiGame,
-   makeSamuraiDBGame,
-   SamuraiMixedGame,
-   makeSamuraiMixedDBGame,
 };

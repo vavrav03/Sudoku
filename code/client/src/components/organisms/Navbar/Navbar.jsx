@@ -28,8 +28,8 @@ function Navbar({ isSidebarOpen, menuButtonAction }) {
    let cgDifficultyString = ''
    if(cpgInstance){
       cgNameString = cpgName;
-      cgSizeString = `- ${cpgInstance.size}x${cpgInstance.size}`;
-      cgDifficultyString = ` - ${cpgInstance.difficulty}`;
+      cgSizeString = cpgInstance.size ? `- ${cpgInstance.size}x${cpgInstance.size}`: "";
+      cgDifficultyString = cpgInstance.difficulty ? ` - ${cpgInstance.difficulty}` : "";
    }
    // const game = getOpenedGame(location.pathname);
    return (

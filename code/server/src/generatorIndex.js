@@ -7,8 +7,6 @@ const {
    generateClassicGame,
    generateClassicXGame,
    generateJigsawGame,
-   generateSamuraiGame,
-   generateSamuraiMixedGame,
 } = require('/src/service/generators');
 
 (async () => {
@@ -53,18 +51,6 @@ const {
          [4, 6, 8, 9, 10, 12, 14, 16],
          database.saveJigsawGame,
          generateJigsawGame
-      ),
-      samurai: new Game(
-         'Samurai',
-         [9, 12],
-         database.saveSamuraiGame,
-         generateSamuraiGame
-      ),
-      samuraiMixed: new Game(
-         'Samurai mixed',
-         [9, 12],
-         database.saveSamuraiMixedGame,
-         generateSamuraiMixedGame
       ),
    };
    

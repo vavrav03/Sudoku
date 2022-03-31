@@ -5,14 +5,22 @@ const buildMakeUser = (validator, createHash) => {
       lastName,
       last_name = "",
       email,
+      coins_count,
       coinsCount = 0,
       profilePictureLink = null,
       profile_picture_link,
-      auth
+      auth,
+      bought_items,
+      boughtItems = [],
+      unfinished_games,
+      unfinishedGames = [],
    } = {}) => {
       firstName = first_name ? first_name : firstName;
       lastName = last_name ? last_name : lastName;
       profilePictureLink = profile_picture_link ? profile_picture_link : profilePictureLink; // make user from database data
+      coinsCount = coins_count ? coins_count : coinsCount;
+      boughtItems = bought_items ? bought_items : boughtItems;
+      unfinishedGames = unfinished_games ? unfinished_games : unfinishedGames;
       if (!firstName) {
          throw Error('First name must be defined');
       }
@@ -33,6 +41,9 @@ const buildMakeUser = (validator, createHash) => {
             `${this.first_name[0].concat(this.last_name[0]).toUpperCase()}`,
          getEmail: () => email,
          getCoinsCount: () => coinsCount,
+         setCoinsCount: (newCoinsCount) => {
+            coinsCount = newCoinsCount;
+         },
          getProfilePictureLink: () => profilePictureLink,
          getAuthData: () => auth,
          getPasswordHash: () => auth?.local?.passwordHash,
@@ -63,13 +74,40 @@ const buildMakeUser = (validator, createHash) => {
                id, accessToken
             }
          },
+         getBoughtItems: () => boughtItems,
+         getUnfinishedGames: () => unfinishedGames,
+         addBoughtItem: (name, count) => {
+            const itemInUserInventory= boughtItems.find(i => i.name === name);
+            if(itemInUserInventory){
+               itemInUserInventory.count += count;
+            } else {
+               boughtItems.push({name, count});
+            }
+         },
+         addUnfinishedGame: (game) => {
+            unfinishedGames.push(game);
+         },
+         removeUnfinishedGame: (game) => {
+            unfinishedGames = unfinishedGames.filter(g => g.id !== game.id);
+         },
+         removeBoughtItem: (name) => {
+            const boughtItem = boughtItems.find(i => i.name === name);
+            if(boughtItem.count > 1){
+               boughtItem.count--;
+            } else {
+               boughtItems = boughtItems.filter(i => i.name !== name);
+            }
+         },
          toAPIObject: () => {
             return {
                email,
                firstName,
                lastName, 
+               fullName: `${firstName} ${lastName}`,
                profilePictureLink,
-               coinsCount
+               coinsCount,
+               boughtItems,
+               unfinishedGames,
             }
          }
       });

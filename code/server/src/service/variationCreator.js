@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-const {makeClassicGame, makeJigsawGame, makeClassicXGame, makeSamuraiGame, makeSamuraiMixedGame} = require('/src/entities');
+const {makeClassicGame, makeJigsawGame, makeClassicXGame} = require('/src/entities');
 
 const createJigsawVariant = (game) => {
    const clonedSeed = _.cloneDeep(game.getSeed());
@@ -31,10 +31,6 @@ const createJigsawVariant = (game) => {
       areaPointersGrid: clonedAreaPointersGrid,
       difficulty: game.getDifficulty()
    });
-};
-
-const createSamuraiVariant = (game) => {
-   //TODO
 };
 
 //create variant clone
@@ -225,7 +221,6 @@ module.exports = {
    createClassicVariant,
    createClassicXVariant,
    createJigsawVariant,
-   createSamuraiVariant,
    rotate90counterClockwise,
    transposeX,
    transposeY,

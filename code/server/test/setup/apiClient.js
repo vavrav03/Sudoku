@@ -28,12 +28,6 @@ const makeApiClient = (app) => {
    const getJigsawGame = async (size, difficulty) => {
       return await api.get('/api/games/jigsaw').query({size, difficulty});
    }
-   const getSamuraiGame = async (size, difficulty) => {
-      return await api.get('/api/games/samurai').query({size, difficulty});
-   }
-   const getSamuraiMixedGame = async (size, difficulty) => {
-      return await api.get('/api/games/samuraiMixed').query({size, difficulty});
-   }
    const getShopItems = async () => {
       return await api.get('/api/shop');
    }
@@ -44,8 +38,6 @@ const makeApiClient = (app) => {
       getClassicGame,
       getClassicXGame,
       getJigsawGame,
-      getSamuraiGame,
-      getSamuraiMixedGame,
       getShopItems,
    };
 };

@@ -1,6 +1,11 @@
 import { push } from 'connected-react-router';
 import routes from 'routes';
 import { responseError } from './error';
+import api from 'api';
+
+import {updateUser} from './user';
+import d from 'entities/index';
+const {makeUser} = d;
 
 export const REPLACE_GAME = 'REPLACE_GAME';
 export const START_LOADING_GAME = 'START_LOADING_GAME';
@@ -29,13 +34,15 @@ export const SET_CURRENTLY_FOCUSED_CELL = 'SET_CURRENTLY_FOCUSED_CELL';
 //    };
 // };
 
-export const loadNewGame = (makeMethod, apiCall, type, size, difficulty) => {
+export const loadNewGame = (makeMethod, apiCall, type, size, difficulty, isPremium) => {
    return async (dispatch, getState) => {
       try {
          dispatch(startLoadingGame(type));
          const res = await apiCall(size, difficulty);
          const game = makeMethod(res.data);
          dispatch(replaceGame(type, game));
+         const userRes = await api.getUser();
+         dispatch(updateUser(makeUser(userRes.data)));
       } catch (error) {
          console.log(error);
          dispatch(push(routes.home));

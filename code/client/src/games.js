@@ -9,8 +9,6 @@ const {
    makeClassicGame,
    makeClassicXGame,
    makeJigsawGame,
-   makeSamuraiGame,
-   makeSamuraiMixedGame,
 } = d;
 
 class Game {
@@ -48,22 +46,6 @@ const games = {
       makeJigsawGame,
       api.getJigsawGame,
       fillInvalidGridJigsaw
-   ),
-   samurai: new Game(
-      'Samurai',
-      'samurai',
-      [9, 12],
-      makeSamuraiGame,
-      api.getSamuraiGame,
-      null
-   ),
-   samuraiMixed: new Game(
-      'Samurai Mixed',
-      'samuraiMixed',
-      [9, 12],
-      makeSamuraiMixedGame,
-      api.getSamuraiMixedGame,
-      null
    ),
 };
 

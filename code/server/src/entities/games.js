@@ -19,13 +19,16 @@ const boxSizesList = {
 };
 
 const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
-   const makeDefaultGame = ({
-      seed,
-      solutions = [],
-      solution,
-      playingBoard,
-      difficulty,
-   }) => {
+   const makeDefaultGame = (props) => {
+      let {
+         seed,
+         solutions = [],
+         solution,
+         playingBoard,
+         difficulty,
+         type,
+      } = props
+      console.log(props);
       if (!seed) {
          throw Error('Seed is not defined');
       }
@@ -39,6 +42,7 @@ const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
          playingBoard = cloneDeep(seed);
       }
       return {
+         getType: () => type,
          getSeed: () => seed,
          getSolution: () => solutions[0],
          getSolutions: () => solutions,
@@ -47,6 +51,7 @@ const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
          getPlayingBoard: () => playingBoard,
          toAPIObject: () => {
             return {
+               type,
                seed,
                solutions,
                playingBoard,
@@ -58,6 +63,7 @@ const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
 
    const makeClassicGame = (props) => {
       const { seed } = props;
+      props.type = 'classic';
       const dg = makeDefaultGame(props);
       const boxSizesWrapper = boxSizesList[`${seed.length}`];
       if (!boxSizesWrapper) {
@@ -87,6 +93,7 @@ const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
    const makeJigsawGame = (props) => {
       const { areaPointersGrid } = props;
       let { areasLists } = props;
+      props.type = 'jigsaw';
       const dg = makeDefaultGame(props);
       if (!areasLists) {
          areasLists = [];
@@ -121,6 +128,7 @@ const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
    };
 
    const makeClassicXGame = (props) => {
+      props.type = 'classicX';
       const dg = makeClassicGame(props);
       return Object.freeze({
          ...dg,
@@ -135,23 +143,11 @@ const buildMakeGames = ({ validator, solvers, cloneDeep }) => {
       });
    };
 
-   const makeSamuraiGame = (props) => {
-      const dg = makeDefaultGame(props);
-      //TODO
-   };
-
-   const makeSamuraiMixedGame = (props) => {
-      const dg = makeDefaultGame(props);
-      //TODO
-   };
-
    return {
       boxSizesList,
       makeClassicGame,
       makeClassicXGame,
       makeJigsawGame,
-      makeSamuraiGame,
-      makeSamuraiMixedGame,
    };
 };
 

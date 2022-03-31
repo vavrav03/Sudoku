@@ -5,8 +5,6 @@ const {
    makeClassicGame,
    makeClassicXGame,
    makeJigsawGame,
-   makeSamuraiGame,
-   makeSamuraiMixedGame,
 } = require('/src/entities');
 // const games = require('../data/games');
 // const { app, database } = require('./testApp');
@@ -48,16 +46,4 @@ describe('games API test', () => {
       makeJigsawGame(response.body);
       expect(true).toEqual(true);
    });
-
-   // it('gets /samurai game', async () => {
-   //    const response = await apiClient.getClassicGame();
-   // expect(response.statusCode).toEqual(200);
-   // expect(true).toEqual(true);
-   // });
-
-   // it('gets /samuraiMixed game', async () => {
-   //    const response = await apiClient.getClassicGame();
-   // expect(response.statusCode).toEqual(200);
-   // expect(true).toEqual(true);
-   // });
 });

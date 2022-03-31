@@ -1,14 +1,14 @@
 const express = require('express');
-const { getGameStatusHandler } = require('/src/middleware');
+const { makeGameMiddleware } = require('/src/middleware');
 const {
    createClassicVariant,
    createClassicXVariant,
    createJigsawVariant,
-   createSamuraiVariant
 } = require('/src/service/variationCreator.js');
 
 const makeGameRoutes = ({ database }) => {
    const router = express.Router();
+   const {getGameStatusHandler} = makeGameMiddleware({database});
 
    router.get('/classic', async (req, res, next) => {
       try {
@@ -17,6 +17,7 @@ const makeGameRoutes = ({ database }) => {
             req.query.difficulty
          );
          res.locals.createVariant = createClassicVariant;
+         res.locals.gameType = 'classic';
       } catch (err) {
          return res.status(400).send(err);
       }
@@ -30,6 +31,7 @@ const makeGameRoutes = ({ database }) => {
             req.query.difficulty
          );
          res.locals.createVariant = createClassicXVariant;
+         res.locals.gameType = 'classicX';
       } catch (err) {
          return res.status(400).send(err);
       }
@@ -43,33 +45,9 @@ const makeGameRoutes = ({ database }) => {
             req.query.difficulty
          );
          res.locals.createVariant = createJigsawVariant;
+         res.locals.gameType = 'jigsaw';
       } catch (err) {
-         return res.status(400).send(err);
-      }
-      next();
-   });
-
-   router.get('/samurai', async (req, res, next) => {
-      try {
-         res.locals.game = await database.findRandomSamuraiGame(
-            parseInt(req.query.size),
-            req.query.difficulty
-         );
-         res.locals.createVariant = createSamuraiVariant;
-      } catch (err) {
-         return res.status(400).send(err);
-      }
-      next();
-   });
-
-   router.get('/samuraiMixed', async (req, res, next) => {
-      try {
-         res.locals.game = await database.findRandomSamuraiMixedGame(
-            parseInt(req.query.size),
-            req.query.difficulty
-         );
-         res.locals.createVariant = createSamuraiVariant;
-      } catch (err) {
+         console.log(err);
          return res.status(400).send(err);
       }
       next();

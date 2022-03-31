@@ -30,3 +30,7 @@ export const getUserSelector = (state) => {
 export const isUserLoadingSelector = (state) => {
    return state?.user?.isUserLoading;
 };
+
+export const getUserBoughtItemsSelector = (state) => {
+   return state?.user?.boughtItems;
+}

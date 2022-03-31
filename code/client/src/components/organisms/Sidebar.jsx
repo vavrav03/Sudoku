@@ -15,8 +15,6 @@ import {
    ClassicNormalSudokuIcon,
    ClassicXSudokuIcon,
    JigsawSudokuIcon,
-   SamuraiMixedSudokuIcon,
-   SamuraiSudokuIcon,
    Size2x2SudokuIcon,
    Size2x3SudokuIcon,
    Size4x4SudokuIcon,
@@ -152,16 +150,6 @@ function Sidebar({ open, closeSidebar }) {
                   text={games.jigsaw.name}
                   onClick={onClickHandler.bind(this, games.jigsaw.type)}
                   ImageIconComponent={JigsawSudokuIcon}
-               />
-               <SidebarItem
-                  text={games.samurai.name}
-                  onClick={onClickHandler.bind(this, games.samurai.type)}
-                  ImageIconComponent={SamuraiSudokuIcon}
-               />
-               <SidebarItem
-                  text={games.samuraiMixed.name}
-                  onClick={onClickHandler.bind(this, games.samuraiMixed.type)}
-                  ImageIconComponent={SamuraiMixedSudokuIcon}
                />
             </List>
          </div>

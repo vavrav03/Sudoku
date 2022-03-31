@@ -5,6 +5,8 @@ export const buildMakeUser = () => {
       email,
       coinsCount = 0,
       profilePictureLink = null,
+      boughtItems,
+      unfinishedGames,
    } = {}) => {
       if (!firstName) {
          throw Error('First name must be defined');
@@ -19,6 +21,8 @@ export const buildMakeUser = () => {
          email,
          coinsCount,
          profilePictureLink,
+         boughtItems,
+         unfinishedGames,
       });
    };
    return makeUser;

@@ -34,6 +34,8 @@ const userSchema = new Schema(
             accessToken: String,
          },
       },
+      bought_items: [{ name: String, count: Number}],
+      unfinished_games: [{ type: Object }],
    },
    { versionKey: false, timestamps: true }
 );
@@ -49,6 +51,8 @@ const makeDBUser = (user) => {
       coins_count: user.getCoinsCount(),
       profile_picture_link: user.getProfilePictureLink(),
       auth: user.getAuthData(),
+      bought_items: user.getBoughtItems(),
+      unfinished_games: user.getUnfinishedGames(),
    });
 };
 

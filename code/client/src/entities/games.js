@@ -106,19 +106,9 @@ export const buildMakeGames = ({ cloneDeep }) => {
       };
    };
 
-   const makeSamuraiGame = ({}) => {
-      //TODO
-   };
-
-   const makeSamuraiMixedGame = ({}) => {
-      //TODO
-   };
-
    return {
       makeClassicGame,
       makeClassicXGame,
       makeJigsawGame,
-      makeSamuraiGame,
-      makeSamuraiMixedGame,
    };
 };

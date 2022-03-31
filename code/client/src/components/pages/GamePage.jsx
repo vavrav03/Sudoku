@@ -50,12 +50,6 @@ function GamePage() {
       case games.jigsaw.type:
          board = <JigsawGameBoard />;
          break;
-      case games.samurai.type:
-         //TODO
-         break;
-      case games.samuraiMixed.type:
-         //TODO
-         break;
       default:
          board = null;
    }

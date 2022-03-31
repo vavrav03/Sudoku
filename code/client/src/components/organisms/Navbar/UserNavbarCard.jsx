@@ -36,6 +36,7 @@ function UserNavbarCard({}) {
          </div>
       );
    } else if (!user?.fullName) {
+      console.log(user);
       return (
          <>
             <IconButton className='nav-item' onClick={handleClick}>

@@ -5,30 +5,20 @@ const {
    makeClassicXDBGame,
    JigsawGame,
    makeJigsawDBGame,
-   SamuraiGame,
-   SamuraiMixedGame,
 } = require('/src/database/models');
 const {
    makeClassicGame,
    makeClassicXGame,
    makeJigsawGame,
-   makeSamuraiGame,
-   makeSamuraiMixedGame,
 } = require('/src/entities');
 
 /**
  * @param {*} size size of seed
- * @returns mongo query used for finding games with seed length of given size (only for square sudokus (no samurai))
+ * @returns mongo query used for finding games with seed length of given size 
  */
 const squareSudokuQuery = (size, difficulty) => {
    return {
       $expr: { $eq: [{ $size: '$seed' }, size] },
-      difficulty
-   };
-};
-const samuraiQuery = (size, difficulty) => {
-   return {
-      $expr: { $eq: [{ $size: '$seed.m' }, size] },
       difficulty
    };
 };
@@ -60,19 +50,6 @@ const findRandomJigsawGame = async (size, difficulty) => {
    );
 };
 
-const findRandomSamuraiGame = async (size, difficulty) => {
-   return convertToEntity(
-      await SamuraiGame.findOne(samuraiQuery(size, difficulty), makeSamuraiGame)
-   );
-};
-
-const findRandomSamuraiMixedGame = async (size, difficulty) => {
-   return convertToEntity(
-      await SamuraiMixedGame.findOne(samuraiQuery(size, difficulty)),
-      makeSamuraiMixedGame
-   );
-};
-
 const saveClassicGame = async (game) => {
    await makeClassicDBGame(game).save();
 };
@@ -85,24 +62,12 @@ const saveJigsawGame = async (game) => {
    await makeJigsawDBGame(game).save();
 };
 
-const saveSamuraiGame = async (game) => {
-   await makeSamuraiDBGame(game).save();
-};
-
-const saveSamuraiMixedGame = async (game) => {
-   await makeSamuraiMixedDBGame(game).save();
-};
-
 module.exports = {
    findRandomClassicGame,
    findRandomClassicXGame,
    findRandomClassicXGame,
    findRandomJigsawGame,
-   findRandomSamuraiGame,
-   findRandomSamuraiMixedGame,
    saveClassicGame,
    saveClassicXGame,
    saveJigsawGame,
-   saveSamuraiGame,
-   saveSamuraiMixedGame,
 };

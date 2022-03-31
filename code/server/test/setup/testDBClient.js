@@ -20,8 +20,6 @@ const makeTestDBClient = (database) => {
       await database.saveClassicGame(classic4x4[0]);
       await database.saveClassicXGame(classicXGames[0]);
       await database.saveJigsawGame(jigsaw9x9[0]);
-      // await database.saveSamuraiGame();
-      // await database.saveSamuraiMixedGame();
    }
 
    const insertShopData = async () => {

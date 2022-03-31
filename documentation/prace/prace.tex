@@ -91,7 +91,7 @@
 % Rok odevzdání
 \def\RokOdevzdani{2022}
 % Měsíc odevzdání
-\def\MesicOdevzdani{Únor}
+\def\MesicOdevzdani{Březen}
 
 % Vedoucí práce: Jméno a příjmení s~tituly
 \def\Vedouci{Ing. Daniel Kahoun}
@@ -140,9 +140,9 @@ Erstellen Sie eine Webanwendung, deren Hauptzweck darin besteht, Sudoku in seine
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0.4pt}
 \fancyhead[C]{}
-\fancyhead[L]{Ročníková práce -- \NazevSkoly}
+\fancyhead[L]{Maturitní práce -- \NazevSkoly}
 \fancyhead[R]{Sudoku se vším všudy}
-\fancyfoot[L]{Vypracovali: \AutorPrace}
+\fancyfoot[L]{Vypracoval: \AutorPrace}
 \fancyfoot[C]{}
 \fancyfoot[R]{\thepage}
 }
@@ -224,26 +224,14 @@ V programové reprezentaci nám zde přibývají dvě proměnné:
    \item \texttt{areasLists} -- každá sekce má v tomto listě 1 list obsahující objekty tvaru {row, col}. Dá se vytvořit z \texttt{areaPointersGrid} a slouží k rychlému zkontrolování, zda se v dané sekci nevyskytuje nějaké číslo dvakrát.
 \end{itemize}
 
-\subsubsection{Samurai}
-Samurai sudoku je složeninou pěti samostatných mřížek, které jsou spojeny jednou sekcí. V této spojovací sekci musí čísla splňovat pravidla obou spojovaných mřížek. V ostatních případech splňuje pouze pravidlo jedné. Pro tento typ a samurai mixed je však zatím v aplikaci pouze minimální podpora.
-
-\begin{figure}[H]
-   \centering
-   \includegraphics[width=0.5\textwidth]{../img/9x9samurai.png}
-   \caption[Samurai 9x9]{Samurai 9x9}
-   \label{fig:9x9samurai}
-\end{figure}
-
-\subsubsection{Samurai Mixed}
-Tento typ je prakticky totožný s typem samurai, nicméně platí, že jednotlivé mřížky mohou být různými variantami. Jedna z variant např. tedy může být jigsaw, zatímco jiná ClassicX. Platí však, že pokud je jedna z variant Jigsaw, musí být spojovací sekce čtverec.
-
 \section{Řešení}
 Řešení sudoku je v kódu implementováno pomocí kódu v souboru \textit{solvers.js}. Jedná se o klasický backtrackingový algoritmus pracující na principu prohledávání do hloubky. Popis algoritmu:
-potřebné proměnné:
 \begin{itemize}
-   \item N=velikost mřížky
-   \item mr=mřížka -- dvourozměrné pole NxN
-   \item
+	\item potřebné proměnné:
+	\begin{itemize}
+		\item N=velikost mřížky
+		   \item mr=mřížka -- dvourozměrné pole NxN
+	\end{itemize}
 \end{itemize}
 \begin{algEnumerate}
    \item začni na souřadnicích 0, 0,
@@ -259,9 +247,9 @@ potřebné proměnné:
 
 Tímto způsobem dojde k nalezení všech řešení daného sudoku. Rekurze vždy skončí buď podmínkou v kroku č. 3, popř. doběhnutím metody až za krok 5. Složitost daného algoritmu je $O(M^{N})$, kde \textit{M} je počet možných dosazovaných čísel a \textit{N} počet políček, za které dosazujeme.
 
-Tato složitost vůbec není dobrá a již pro sudoku 16x16 při určitém čísle \textit{N} již trvá řešení několik minut. Na tomto problému bych do maturitní práce rád zapracoval a vytvořil algoritmus, který řeší sudoku efektivně pokud možno až do velikosti 25x25.
+Tato složitost vůbec není dobrá a již pro sudoku 16x16 při určitém čísle \textit{N} již trvá řešení několik minut. Pro těžké sudoku s malým \textit{M} dokonce není možné v rozumném čase vygenerovat žádné zadání.
 
-Řešící metoda \textit{solveGeneral} v aplikaci přebírá jako parametr list callbacků, které spouští, aby zkontrolovala, zda může na dané políčko položit dané číslo. Jednotlivé sudoku čtvercového typu (mimo samurai) tedy této metodě předají příslušné callbacky a ona daný typ vyřešní. Není tedy třeba psát speciální solver pro každý typ, stačí pouze napsat vstupní metodu, která metodě \texttt{solveGeneral} předá příslušné callbacky (např. metoda \texttt{startSolvingClassic})
+Řešící metoda \textit{solveGeneral} v aplikaci přebírá jako parametr list callbacků, které spouští, aby zkontrolovala, zda může na dané políčko položit dané číslo. Callbackem se myslí metody kontrolující, že v dané části musí být každé číslo právě 1. Jedná se o kontrolu pod-sekce, řádku, sloupce, jigsaw sekci, popř. diagonály. Není tedy třeba psát speciální solver pro každý typ, stačí pouze napsat vstupní metodu, která metodě \texttt{solveGeneral} předá příslušné callbacky (např. metoda \texttt{startSolvingClassic})
 
 Všechna nalezená řešení jsou poté vložena do pole, které bylo metodě předáno jako argument.
 
@@ -290,6 +278,30 @@ Na tvorbu je použit upravený algoritmus řešení:
 V programu je přidána proměnná \texttt{possibleNumbersGrid}, což je trojrozměrné pole o velikost NxNx(N+1). každý \texttt{possibleNumbersGrid}[řádek][sloupec] obsahuje list o N+1 prvcích. Tyto prvky reprezentují, kolikrát je dané číslo na dané pozici ohroženo. Např. pokud je \texttt{possibleNumbersGrid}[řádek][sloupec][2] = 3, poté to znamená, číslo 2 na pozici řádek, sloupec je invalidní ze 3 důvodů -- např. ve stejném řádku je 2, sloupci a boxu. Pokud je zde 0, poté sem číslo položit můžu, pokud něco jiného, tak nesmím.
 
 Na první pohled by si člověk mohl říct, že by vlastně šlo pustit sudoku solver, který pouze vybírá náhodná čísla místo sekvenčního postupu 1 až N na prázdné mřížce, a že není třeba vytvářet nový kód. To by sice šlo, avšak toto řešení je více optimalizované, jelikož škrtání možných čísel na daném políčku se provádí pouze pro políčka, která ještě nejsou obsazena. Pro obsazená čísla by to totiž nemělo smysl, jelikož v backtrackingu jsou odebírány až po prvku, kvůli kterému se škrtá. Samotný způsob hledání je navíc už z principu více optimalizovaný, jelikož škrtání čísel znamená jeden průchod všemi sektory, kterými se má projít, zatímco solver tyto sektory musí projít pro každé číslo, které kontroluje.
+
+\subsection{Tvorba mřížky pro jigsaw variantu}
+Jigsaw varianta je specifická v tom, že k fungování potřebuje proměnné \texttt{areasLists} a \texttt{areaPointersGrid}, které zajistí strukturu mřížky. Předtím, než je tedy možné aplikovat postup z předchozí kapitoly, je tedy nutné rozdělit mřížku do příslušných sekcí a naplnit tak obě proměnné.
+
+Představme si mřížku jako graf, kde jednotlivá políčka jsou uzly a hrany mezi nimi jsou hranami grafu (rohy nejsou hrany grafu). Naším cílem bude bude rozdělit tento graf do \texttt{N} komponent souvislosti o právě \texttt{N} prvcích, kde \texttt{N} je velikost mřížky
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\columnwidth]{../img/jigsawSections.png}
+  \caption{Ukázka rozdělení jigsaw mřížky do sekcí}
+  \label{fig:Ukázka rozdělení jigsaw mřížky do sekcí}
+\end{figure}
+
+Navrhl jsem a implementoval následující algoritmus: 
+\begin{algEnumerate}
+	\item rozdělíme mřížku do N validních sekcí, kdy každá sekce bude odpovídat obdélníku, který by byl podsekcí klasického sudoku při dané velikosti (např. pro 8 bychom měli 8 obdélníků velikosti 4x2). Není možné rozdělit sudoku po řádcích po 8, protože by nebylo možné provést konzistentně další kroky
+	\item náhodně vybereme dvě sekce
+	\item jestliže se nedotýkají (aby se dotýkaly, musí alespoň 2 políčka z každé sekce být vedle políčka ze sekce druhé), jdi na krok 2
+	\item náhodně prohoď 1 políčko mezi těmito dvěma sekcemi
+	\item jestliže vznikla nekonzistence (čísla jedné sekce nejsou v \texttt{areaPointersGrid} v jedné komponentě souvislosti), vrať zpět změny z předchozího kroku a znovu ho vykonej
+	\item vykonávej krok 2 \texttt{K} krát, dokud nebude rozdělení dostatečně dobré (u mě 1000x)
+\end{algEnumerate}
+
+Složitost tohoto algoritmu je poměrně vysoká. Krok 1 bude proveden v čase $O(N^{2})$. Krok 2 bude proveden nejhůře v čase $O(N^{2})$ a bude proveden \texttt{K} krát. Krok 3 se bude provádět $O(\sqrt{N} \sqrt{N})$, tj. $O(N)$. Krok 4 taktéž. Výsledná složitost bude po vynásobení tedy $O(K * N^{3})$ 
 
 \subsection{Tvorba zadání}
 Algoritmus na tvorbu zadání je následující:
@@ -331,7 +343,7 @@ Kód pro frontend a backend je pro přehlednost rozdělen do dvou oddělených s
 
 \section{Autentifikace}
 
-Tato kapitola pojednává o samotném principu autentifikace v aplikaci. Pro specifikaci autentifikačních API endpointů viz 
+Tato kapitola pojednává o samotném principu autentifikace v aplikaci. Pro specifikaci autentifikačních API endpointů viz kapitola 3.3 specifikace endpointů.
 
 Autentifikace je proces zjištění totožnosti uživatele. Aplikace dovoluje uživatelům autentifikovat se třemi různými způsoby:
 \begin{itemize}
@@ -442,7 +454,9 @@ Tyto buildMake metody jsou volány z příslušného \texttt{index.js} souboru, 
       .3 Games.
       .3 index.
       .3 User.
+      .3 ShopItem.
       .2 games.
+      .2 shop.
       .2 index.js.
       .2 sessions.js.
       .2 users.js.
@@ -462,7 +476,7 @@ Díky této zjednodušující můžeme kdykoliv databázi vyměnit a zbytek prog
 \subsection{Modely}
 
 \subsubsection{User}
-Ve schématu se nachází: \texttt{first\_name}, \texttt{last\_name}, \texttt{email}, \texttt{coins\_count} (peníze uživatele), \texttt{profile\_picture\_link} (odkaz na obrázek profilovky), \texttt{auth} -- autentifikační data (\texttt{hash} hesla pro local, \texttt{id} + \texttt{accessToken} pro facebook a google)
+Ve schématu se nachází: \texttt{first\_name}, \texttt{last\_name}, \texttt{email}, \texttt{coins\_count} (peníze uživatele), \texttt{profile\_picture\_link} (odkaz na obrázek profilovky), \texttt{auth} -- autentifikační data (\texttt{hash} hesla pro local, \texttt{id} + \texttt{accessToken} pro facebook a google). Obsahuje také proměnné pro uchovávání informací o jeho nákupech a rozehraných hrách. Rozehraných her je pouze určitý maximální počet, který je hlídán pomocí pomocí kontrolerů.
 
 \subsubsection{ClassicGame}
 Ve schématu se nachází: \texttt{seed} -- mřížka se zadáním (dvojrozměrné pole NxN s -1 jako prázdnými místy), \texttt{solution} -- mřížka s řešením, \texttt{difficulty} -- obtížnost
@@ -471,7 +485,7 @@ Tato reprezentace je výhodná v tom, že sudoku, které pochází z databáze n
 
 Tento model slouží jako základ pro většinu dalších modelů, protože většinou potřebují podobné typy na uložení.
 
-Každý typ má vlastní tabulku hlavně z důvodů výkonnosti, aby při hledání daného typu hry nebylo nutné procházet i typy, které s ním vůbec nesouvisí, ale také z důvodu, že hry nemusí mít stejné schéma -- viz samurai a jigsaw.
+Každý typ má vlastní tabulku hlavně z důvodů výkonnosti, aby při hledání daného typu hry nebylo nutné procházet i typy, které s ním vůbec nesouvisí, ale také z důvodu, že hry nemusí mít stejné schéma -- jigsaw.
 
 \subsubsection{ClassicXGame}
 Stejné schéma jako ClassicGame
@@ -479,8 +493,8 @@ Stejné schéma jako ClassicGame
 \subsubsection{JigsawGame}
 Schéma z classicGame, ale navíc \texttt{areaPointersGrid} (již vysvětleno dříve)
 
-\subsubsection{SamuraiGame, SamuraiMixedGame}
-solution a seed zde nejsou dvojrozměrné pole, ale objekty s vlastnostmi: \texttt{tl} (top left), \texttt{tr}, \texttt{m}, \texttt{bl}, \texttt{br} obsahující dvojrozměrná pole dané části.
+\subsection{Shop}
+Schéma obsahující informací o předmětech, které lze zakoupit v obchodě. Obsahuje proměnné: \texttt{price} -- pro cenu, \texttt{description} -- pro popis předmětu, \texttt{name} -- jméno a volitelně také \texttt{imageUrl} -- odkaz na obrázek předmětu
 
 \section{Specifikace REST API}
 Tato kapitola se věnuje popisu REST API určené pro komunikaci mezi klientem a serverem.
@@ -517,9 +531,12 @@ API endpoint pro vracení zadání typu classic o dané velikosti a složitosti.
 
 \subsubsection{\color{apigreen}{GET -- /api/games/classicX}}
 \subsubsection{\color{apigreen}{GET -- /api/games/jigsaw}}
-\subsubsection{\color{apigreen}{GET -- /api/games/samurai}}
-\subsubsection{\color{apigreen}{GET -- /api/games/samuraiMixed}}
-to samé jako /api/games/classic, akorát pro jiné typy
+
+\subsubsection{\color{apigreen}{GET -- /api/shop/}}
+API endpoint určený pro získání všech předmětů, které lze zakoupit v obchodě
+
+\subsubsection{\color{apigreen}{GET -- /api/shop/buy}}
+API endpoint, pomocí něhož proběhne nákup daného předmětu. Vrací objekt přihlášeného uživatele, jestliže byl updatován state, jinak vrací 400.
 
 \subsection{CLI pro generátor}
 Tato aplikace podporuje i generování her, které trvá vygenerovat i delší dobu než je několik minut. Je proto dobrý nápad nenechat aplikaci generovat hru samotnou, ale nechat administrátora, aby sudoku nechal na požadavek manuálně vygenerovat. 
@@ -532,8 +549,6 @@ Which of these game types would you like to generate? Type only the number prece
 1) Classic
 2) ClassicX
 3) Jigsaw
-4) Samurai
-5) Samurai mixed
 \end{lstlisting}
 
 Odpovědí by mělo být číslo daného typu. Pokud tomu tak není, zeptá se znovu. 
@@ -574,7 +589,7 @@ Jakmile je vše vybráno, začne se daný počet generovat. Jakmile bude vždy 1
 Během tohoto generování může uživatel psát znova, jelikož se generátor vrací v nekonečné while smyčce na první dotaz. Není tedy třeba znovu skript spouštět. Jelikož se ukládání provádí asynchronně, není třeba na čekat, než se vše dogeneruje.
 
 \subsection{Testy}
-Na backendu bylo možné postupovat stylem test-driven development. Jádro tohoto postupu spočívá v tom, že se nejdříve napíše test a jeho výsledek a až následně se píše samotný kód. Ačkoliv jsem ke konci, hlavně u generátorů, byl nucen od tohoto testu upustit, mohu s jistotou tvrdit, že přes 85 procent backendu pokryto automatizovanými unit a integračními testy. 
+Na backendu bylo možné postupovat stylem test-driven development. Jádro tohoto postupu spočívá v tom, že se nejdříve napíše test a jeho výsledek a až následně se píše samotný kód. 
 
 Na testování byl použit framework Jest. Pro testování API knihovna supertest-session, což je wrapper pro supertest podporující session. Testy využívají testovací databázi, která má stejnou strukturu jako ta produkční, akorát je k jejímu jménu přidán postfix test. 
 
@@ -586,6 +601,7 @@ Na testování byl použit framework Jest. Pro testování API knihovna supertes
       .3 integration.
       .4 auth-profile-routes.test.js.
       .4 game-routes.test.js.
+      .4 shop-routes.test.js.
       .3 setup.
       .4 apiClient.js.
       .4 data.js.
@@ -795,15 +811,9 @@ I zde je použito validace, takže se nemůže stát, že by uživatel odeslal i
    \label{fig:architecture}
 \end{figure}
 
-\subsection{Normální stránka}
-\begin{figure}[H]
-   \centering
-   \fbox{\includegraphics[width=0.8\textwidth]{../img/HomePage.jpg}}
-   \caption[Přihlašovací stránka]{Přihlašovací stránka}
-   \label{fig:architecture}
-\end{figure}
+\subsection{Herní stránka}
 
-Normální stránka obsahuje navbar obsahující informaci, jakou hru aktuálně uživatel hraje (pokud žádnou nehraje, nezobrazí nic). a také uživatelské informace. Jestliže uživatel není přihlášený, zobrazí se ikona anonymního uživatele, jelikože se načítá, zobrazí se spinner a jestliže je přihlášený, zobrazí se něco takového: 
+Normální stránka obsahuje navbar obsahující informaci, jakou hru aktuálně uživatel hraje (pokud žádnou nehraje, nezobrazí nic). a také uživatelské informace. Jestliže uživatel není přihlášený, zobrazí se ikona anonymního uživatele, jelikože se načítá, zobrazí se spinner a jestliže je přihlášený, zobrazí se něco takového:
 
 \begin{figure}[H]
    \centering
@@ -817,7 +827,7 @@ Stránka obsahuje také zatahnutelný sidebar, pomocí kterého se vybírají hr
 \begin{figure}[H]
    \centering
    \fbox{\includegraphics[width=0.8\textwidth]{../img/gameMenu.jpg}}
-   \caption[Přihlašovací stránka]{Přihlašovací stránka}
+   \caption[Stránka s výběrem her]{Stránka s výběrem her}
    \label{fig:architecture}
 \end{figure}
 
@@ -840,8 +850,24 @@ Tohoto všeho se dosahuje pomocí dispatchování změny hracích dat do reduxu 
 
 Zároveň je tento postup dobrý v tom, že je díky němu možné jednoduše přidat tlačítkový interface, kdy při kliknutí na tlačítko by se na fokusované políčko vložilo dané číslo.
 
+\subsection{Obchod}
+Tabulka s obchodem obsahuje veškeré předměty, které lze zakoupit. Základ tabulky jsem získal z \footnote{\bibentry{reactTable}}. Na tom jsem provedl poměrně rozsáhlé úpravy. Aktuální funkcemi obchodu jsou vyhledávání na základě podobnosti s textem pomocí fuzzy finderu, stránkování dat a samozřejmě možnost nakoupit daný předmět.
+
+
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=0.8\textwidth]{../img/shop.jpg}
+   \caption[Tabulka obchodu]{Tabulka obchodu}
+   \label{fig:architecture}
+\end{figure}
+
+Jestliže má uživatel dostatek peněz na nákup, zobrazí se mu dialog, ve kterém bude mít uživatel možnost nastavit si počet daných kupovaných předmětů. V opačném případě je vyhozena notifikace, že se akce nezdařila.
+
+\subsection{Rozehrané hry}
+Tabulka rozehraných her umožňuje uživateli pokračovat v rozehrané hře. Každá hra, která je na frontendu spuštěna, je automaticky uložena a bude v tabulce dostupná. Obsahuje datum vytvoření hry, datum posledního hraní hry, typ hry a obtížnost. Kromě toho je také možné mazat záznamy. 
+
 \chapter*{}
-\pagenumbering{roman}
+\pagenumbering{gobble}
 \setcounter{page}{6}
 \include{zaver}
 

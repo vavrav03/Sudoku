@@ -45,6 +45,7 @@ const EnhancedTable = ({
    data,
    setData,
    updateMyData,
+   toolbarRightIcons,
    skipPageReset = true,
    addButton,
    headding,
@@ -125,6 +126,7 @@ const EnhancedTable = ({
             preGlobalFilteredRows={preGlobalFilteredRows}
             setGlobalFilter={setGlobalFilter}
             globalFilter={globalFilter}
+            toolbarRightIcons={toolbarRightIcons}
             headding={headding}
             addButton={addButton}
          />

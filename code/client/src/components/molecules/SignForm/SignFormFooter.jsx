@@ -10,7 +10,7 @@ function SignInFormFooter({}) {
       <SignFormFooter>
          <Link onClick={e => {
             e.preventDefault();
-         }} to="/forgot" >Forgot password?</Link>
+         }} to="/forgot" ></Link>
          <Link to="/register">Sign up</Link>
       </SignFormFooter>
    );

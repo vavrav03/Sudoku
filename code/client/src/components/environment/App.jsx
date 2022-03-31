@@ -17,11 +17,12 @@ import {
    UserProfilePage
 } from 'components/pages';
 import { getNotificationsSelector } from 'redux/selectors';
-import { attemptUpdateUser } from 'redux/actions';
+import { attemptUpdateUser, attemptUpdateShop } from 'redux/actions';
 
-function App({ history, attemptUpdateUser, store, notifications }) {
+function App({ history, attemptUpdateUser, attemptUpdateShop, store, notifications }) {
    useEffect(() => {
       attemptUpdateUser();
+      attemptUpdateShop();
    }, []);
    return (
       <Provider store={store}>
@@ -83,6 +84,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
    return {
       attemptUpdateUser: () => dispatch(attemptUpdateUser()),
+      attemptUpdateShop: () => dispatch(attemptUpdateShop()),
    };
 };
 

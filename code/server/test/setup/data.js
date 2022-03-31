@@ -2,8 +2,6 @@ const {
    makeClassicGame,
    makeClassicXGame,
    makeJigsawGame,
-   makeSamuraiGame,
-   makeSamuraiMixedGame,
    makeShopItem,
 } = require('/src/entities');
 const { makeUser } = require('/src/entities');
@@ -297,14 +295,14 @@ const classicXGames = [
 
 const shopData = [
    makeShopItem({
-      name: 'Samurai 9x9 board',
-      description: 'A 9x9 board with Samurai pieces.',
+      name: 'Jigsaw Hard 9x9 board',
+      description: 'A 9x9 board with pieces.',
       price: 100,
       imageLink: null,
    }),
    makeShopItem({
-      name: 'Mixed Samurai 9x9 board',
-      description: 'A 9x9 board with Mixed Samurai pieces.',
+      name: 'Hard Jigsaw 9x9 board',
+      description: 'A 9x9 board with.',
       price: 120,
       imageLink: null,
    }),

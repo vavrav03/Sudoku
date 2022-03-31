@@ -20,6 +20,8 @@ const updateUser = async (email, newUser) => {
    await DBUser.findOneAndUpdate({ email: email }, dbUser);
 };
 
+// const saveUnfinishedGame = async (email, game) => {
+
 module.exports = {
    findUserByEmail,
    saveUser,
