@@ -16,6 +16,7 @@ function SettingsControl() {
    }
    const handleSolveOnClick = () => {
       cpgInstance.playingBoard = _.cloneDeep(cpgInstance.solution);
+      cpgInstance.usedSolve = true;
       dispatch(replaceGame(cpgType, cpgInstance));
    }
    const handleNewGameOnClick = () => {

@@ -3,7 +3,7 @@ import api from 'api';
 import { push } from 'connected-react-router';
 import routes from 'routes';
 import d from 'entities/index';
-const {makeUser} = d;
+const { makeUser } = d;
 
 export const UPDATE_USER = 'UPDATE_USER';
 export const START_LOADING_USER = 'START_LOADING_USER';
@@ -30,6 +30,15 @@ export const stopLoadingUser = () => {
    };
 };
 
+export const earnCoins = (coinsCount) => {
+   return async (dispatch, getState) => {
+      try {
+         const res = await api.earnCoins(coinsCount);
+         dispatch(updateUser(res.data));
+      } catch (error) {}
+   };
+};
+
 export const attemptUpdateUser = (showNotificationError = false) => {
    return async (dispatch, getState) => {
       try {
@@ -40,7 +49,9 @@ export const attemptUpdateUser = (showNotificationError = false) => {
       } catch (error) {
          console.log(error);
          if (showNotificationError) {
-            dispatch(responseError(error.response, error.response.data.message));
+            dispatch(
+               responseError(error.response, error.response.data.message)
+            );
          }
          dispatch(stopLoadingUser());
       }
@@ -69,7 +80,6 @@ export const attemptLogin = (userData) => {
          dispatch(login(user));
          dispatch(push(routes.home));
       } catch (error) {
-
          dispatch(responseError(error.response, error.response.data.message));
       }
    };

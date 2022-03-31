@@ -28,6 +28,13 @@ const makeUserRoutes = ({ database }) => {
       }
    });
 
+   router.post('/earnCoins', requireAuth, async (req, res) => {
+      let {coinsCount} = req.body;
+      req.user.setCoinsCount(req.user.getCoinsCount() + coinsCount);
+      await database.updateUser(req.user.getEmail(), req.user);
+      res.send(req.user.toAPIObject());
+   });
+
    return router;
 };
 

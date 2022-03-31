@@ -1,21 +1,19 @@
-import React, { useEffect }  from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import games from 'games';
-import { setCurrentlyFocusedCell, replaceGame } from 'redux/actions';
+import { setCurrentlyFocusedCell, replaceGame, earnCoins } from 'redux/actions';
 import {
    getCurrentlyPlayedTypeSelector,
    getCurrentlyPlayedInstanceSelector,
 } from 'redux/selectors';
-import {GameCell} from 'components/molecules';
+import { GameCell } from 'components/molecules';
 
-function BoxSudokuTypeBoard({
-   calculateCellClassnames,
-}) {
+function BoxSudokuTypeBoard({ calculateCellClassnames }) {
    const game = useSelector(getCurrentlyPlayedInstanceSelector);
    useEffect(() => {
-      console.log('rerendering')
-   }, [game.playingBoard])
+      console.log('rerendering');
+   }, [game.playingBoard]);
    const currentlyPlayedType = useSelector(getCurrentlyPlayedTypeSelector);
    const dispatch = useDispatch();
    const seed = game.seed;
@@ -58,6 +56,38 @@ function BoxSudokuTypeBoard({
       playingBoard[row][col] = value;
       games[currentlyPlayedType].fillInvalidGrid(game);
       dispatch(replaceGame(currentlyPlayedType, game));
+      let counter = 0;
+      for (let i = 0; i < playingBoard.length; i++) {
+         for (let j = 0; j < playingBoard.length; j++) {
+            if (playingBoard[i][j] === game.solution[i][j]) {
+               counter++;
+            }
+         }
+      }
+      if (counter === playingBoard.length * playingBoard.length) {
+         if (!game.usedSolve) {
+            let difficultyValue = 0;
+            switch (game.difficulty) {
+               case 'easy':
+                  difficultyValue = 1;
+                  break;
+               case 'medium':
+                  difficultyValue = 2;
+                  break;
+               case 'hard':
+                  difficultyValue = 3;
+                  break;
+            }
+            dispatch(
+               earnCoins(
+                  Math.floor(
+                     Math.sqrt(difficultyValue * Math.sqrt(playingBoard.length))
+                  )
+               )
+            );
+            alert('You successfully completed the puzzle!');
+         }
+      }
       // dispatch(setCurrentlyFocusedCell(row, col));
    };
    return (
@@ -104,14 +134,26 @@ const boxRightBorderClassName = (boxColCount, col, playingBoardLength) => {
       : '';
 };
 
-const jigsawDownBorderClassName = (row, col, areaPointersGrid, playingBoardLength) => {
-   return row + 1 < playingBoardLength && areaPointersGrid[row][col] !== areaPointersGrid[row + 1][col]
+const jigsawDownBorderClassName = (
+   row,
+   col,
+   areaPointersGrid,
+   playingBoardLength
+) => {
+   return row + 1 < playingBoardLength &&
+      areaPointersGrid[row][col] !== areaPointersGrid[row + 1][col]
       ? 'box-down-border'
       : '';
 };
 
-const jigsawRightBorderClassName = (row, col, areaPointersGrid, playingBoardLength) => {
-   return col + 1 < playingBoardLength && areaPointersGrid[row][col] !== areaPointersGrid[row][col + 1]
+const jigsawRightBorderClassName = (
+   row,
+   col,
+   areaPointersGrid,
+   playingBoardLength
+) => {
+   return col + 1 < playingBoardLength &&
+      areaPointersGrid[row][col] !== areaPointersGrid[row][col + 1]
       ? 'box-right-border'
       : '';
 };
@@ -130,12 +172,14 @@ export function ClassicGameBoard() {
          game.boxRowCount,
          row,
          game.playingBoard.length
-      )} ${boxRightBorderClassName(game.boxColCount, col, game.playingBoard.length)}`;
+      )} ${boxRightBorderClassName(
+         game.boxColCount,
+         col,
+         game.playingBoard.length
+      )}`;
    };
    return (
-      <BoxSudokuTypeBoard
-         calculateCellClassnames={calculateCellClassnames}
-      />
+      <BoxSudokuTypeBoard calculateCellClassnames={calculateCellClassnames} />
    );
 }
 
@@ -146,15 +190,33 @@ export function ClassicXGameBoard() {
          game.boxRowCount,
          row,
          game.playingBoard.length
-      )} ${boxRightBorderClassName(game.boxColCount, col, game.playingBoard.length)} ${backgroundHighlight(row, col, game.playingBoard.length)}`;
+      )} ${boxRightBorderClassName(
+         game.boxColCount,
+         col,
+         game.playingBoard.length
+      )} ${backgroundHighlight(row, col, game.playingBoard.length)}`;
    };
-   return <BoxSudokuTypeBoard calculateCellClassnames={calculateCellClassnames}/>;
+   return (
+      <BoxSudokuTypeBoard calculateCellClassnames={calculateCellClassnames} />
+   );
 }
 
 export function JigsawGameBoard() {
    const game = useSelector(getCurrentlyPlayedInstanceSelector);
    const calculateCellClassnames = (row, col) => {
-      return `${jigsawDownBorderClassName(row, col, game.areaPointersGrid, game.playingBoard.length)} ${jigsawRightBorderClassName(row, col, game.areaPointersGrid, game.playingBoard.length)}`;
+      return `${jigsawDownBorderClassName(
+         row,
+         col,
+         game.areaPointersGrid,
+         game.playingBoard.length
+      )} ${jigsawRightBorderClassName(
+         row,
+         col,
+         game.areaPointersGrid,
+         game.playingBoard.length
+      )}`;
    };
-   return <BoxSudokuTypeBoard calculateCellClassnames={calculateCellClassnames}/>;
+   return (
+      <BoxSudokuTypeBoard calculateCellClassnames={calculateCellClassnames} />
+   );
 }

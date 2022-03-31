@@ -41,8 +41,10 @@ export const loadNewGame = (makeMethod, apiCall, type, size, difficulty, isPremi
          const res = await apiCall(size, difficulty);
          const game = makeMethod(res.data);
          dispatch(replaceGame(type, game));
-         const userRes = await api.getUser();
-         dispatch(updateUser(makeUser(userRes.data)));
+         if(isPremium){
+            const userRes = await api.getUser();
+            dispatch(updateUser(makeUser(userRes.data)));
+         }
       } catch (error) {
          console.log(error);
          dispatch(push(routes.home));

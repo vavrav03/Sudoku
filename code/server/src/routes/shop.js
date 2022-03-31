@@ -26,6 +26,7 @@ const makeShopRoutes = ({ database }) => {
       await database.updateUser(req.user.getEmail(), req.user);
       res.send(req.user.toAPIObject());
    });
+
    return router;
 };
 
