@@ -111,3 +111,25 @@ export const attemptLogout = () => {
       }
    };
 };
+
+export const removeUnfinishedGame = (created_at) => {
+   return async (dispatch, getState) => {
+      try {
+         const res = await api.removeUnfinishedGame(created_at);
+         dispatch(res.data);
+      } catch (error) {
+         dispatch(responseError(error.response, error.response.data.message));
+      }
+   };
+}
+
+export const saveUnfinishedGame = (created_at, game) => {
+   return async (dispatch, getState) => {
+      try {
+         const res = await api.saveUnfinishedGame(created_at, game);
+         dispatch(res.data);
+      } catch (error) {
+         dispatch(responseError(error.response, error.response.data.message));
+      }
+   };
+}

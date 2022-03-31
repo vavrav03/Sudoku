@@ -2,17 +2,13 @@ import React from "react";
 
 import {Section} from "components/molecules";
 import {NormalPage} from "components/templates";
+import posterMainPage from 'assets/img/posterMainPage.png';
 
 function HomePage() {
    return (
       <NormalPage>
-         <Section>
-            <h1>Sudoku se vším všudy</h1>
-            <p>Tato webová aplikace slouží jako maturitní práce z předmětu programování </p>
-         </Section>
-         <Section>
-            
-         </Section>
+         <img src={posterMainPage} alt="poster" className="poster"/>
+      
       </NormalPage>
    );
 }

@@ -5,6 +5,7 @@ import {
    Menu as MenuIcon,
    Notifications as NotificationsIcon,
    LocalGroceryStore as LocalGroceryStoreIcon,
+   PlayCircle as PlayCircleIcon
 } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
@@ -71,12 +72,10 @@ function Navbar({ isSidebarOpen, menuButtonAction }) {
             </IconButton>
             <IconButton
                className='nav-item'
-               data-tip={'Notifications'}
-               onClick={() => {}}
+               data-tip={'Unfinished games'}
+               onClick={(e) => {dispatch(push(routes.unfinishedGames))}}
             >
-               <Badge badgeContent={17} color='secondary'>
-                  <NotificationsIcon />
-               </Badge>
+               <PlayCircleIcon/>
             </IconButton>
             <UserNavbarCard />
          </nav>

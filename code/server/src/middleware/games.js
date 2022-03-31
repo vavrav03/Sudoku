@@ -45,8 +45,10 @@ const makeGameMiddleware = ({ database }) => {
             created_at: new Date().toISOString(),
             last_played: new Date().toISOString(),
          };
-         req.user.addUnfinishedGame(unfinishedGame);
-         await database.updateUser(req.user.getEmail(), req.user);
+         if(req.user.getUnfinishedGames().length < 100){
+            req.user.addUnfinishedGame(unfinishedGame);
+            await database.updateUser(req.user.getEmail(), req.user);
+         }
          return res.status(200).send(game.toAPIObject());
       } catch (err) {
          console.log(err);

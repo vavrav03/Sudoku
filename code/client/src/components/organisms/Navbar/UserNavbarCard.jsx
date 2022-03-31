@@ -86,10 +86,10 @@ function UserNavbarCard({}) {
             transformOrigin={{ vertical: 'top', horizontal: 'center' }}
             onClose={handleClose}
          >
-            <MenuItem onClick={e => dispatch(push(routes.userProfilePage))}>
+            {/* <MenuItem onClick={e => dispatch(push(routes.userProfilePage))}>
                <PersonOutline className="icon" fontSize='small' />
                <span>Your profile</span>
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem onClick={e => dispatch(attemptLogout())}>
                <ExitToApp className="icon" fontSize='small' />
                <span>Log out</span>

@@ -34,3 +34,7 @@ export const isUserLoadingSelector = (state) => {
 export const getUserBoughtItemsSelector = (state) => {
    return state?.user?.boughtItems;
 }
+
+export const getUserUnfinishedGamesSelector = (state) => {
+   return state?.user?.unfinishedGames;
+}

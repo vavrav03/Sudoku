@@ -35,6 +35,20 @@ const makeUserRoutes = ({ database }) => {
       res.send(req.user.toAPIObject());
    });
 
+   router.post('/unfinishedGames', requireAuth, async (req, res) => {
+      const {created_at, game} = req.body;
+      req.user.changeUnfinishedGame(created_at, game);
+      await database.updateUser(req.user.getEmail(), req.user);
+      res.send(req.user.toAPIObject());
+   });
+
+   router.delete('/unfinishedGame', requireAuth, async (req, res) => {
+      const {created_at} = req.body;
+      req.user.removeUnfinishedGame(created_at);
+      await database.updateUser(req.user.getEmail(), req.user);
+      res.send(req.user.toAPIObject());
+   });
+
    return router;
 };
 

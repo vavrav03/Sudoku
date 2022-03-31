@@ -6,7 +6,6 @@ export const routes = {
    signUp: '/register',
    shop: '/shop',
    unfinishedGames: '/unfinishedGames',
-   userProfile: '/userProfile',
 };
 
 export default routes;

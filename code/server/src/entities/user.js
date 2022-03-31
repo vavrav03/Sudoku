@@ -87,8 +87,16 @@ const buildMakeUser = (validator, createHash) => {
          addUnfinishedGame: (game) => {
             unfinishedGames.push(game);
          },
-         removeUnfinishedGame: (game) => {
-            unfinishedGames = unfinishedGames.filter(g => g.id !== game.id);
+         removeUnfinishedGame: (created_at) => {
+            unfinishedGames = unfinishedGames.filter(g => g.created_at !== created_at);
+         },
+         changeUnfinishedGame: (created_at, game) => {
+            for(let i = 0; i < unfinishedGames.length; i++){
+               if(unfinishedGames[i].created_at === created_at){
+                  unfinishedGames[i] = game;
+                  break;
+               }
+            }
          },
          removeBoughtItem: (name) => {
             const boughtItem = boughtItems.find(i => i.name === name);
